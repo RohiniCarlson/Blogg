@@ -1,0 +1,12 @@
+Peter
+- inläggslistan + inlägg
+
+Jonas
+- main, databas
+
+Christian
+- Kamera, skapa nytt inlägg
+
+Rohini
+- registrering/profil
+
