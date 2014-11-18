@@ -1,6 +1,7 @@
 package com.example.ithsblog;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,20 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Send to author view or reader view, check shared preferences for saved mail		
+		new CheckIfAuthor().execute();
+		
+		if(true) {
+			// send to author
+			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
+			// startActivity(myTriggerActivityIntent);
+		} else {
+			// send to reader activity
+			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
+			// startActivity(myTriggerActivityIntent);
+		}
+		
 	}
 
 	@Override
