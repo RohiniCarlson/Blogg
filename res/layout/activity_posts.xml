@@ -42,8 +42,8 @@
         android:src="@drawable/ic_action_storage" />
         -->
 
-    <TextView
-        android:id="@+id/text_view_head"
+    <EditText
+        android:id="@+id/edit_view_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_camera"
@@ -54,11 +54,11 @@
         android:layout_marginTop="10dp"
          />
     
-    <TextView
-        android:id="@+id/text_view_regular"
+    <EditText
+        android:id="@+id/edit_view_regular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_head"
+        android:layout_below="@+id/edit_view_head"
 		android:hint="@string/regular"
 		android:singleLine="true"
 		android:inputType="textCapWords"
