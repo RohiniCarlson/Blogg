@@ -61,7 +61,8 @@
         android:layout_below="@+id/edit_view_head"
 		android:hint="@string/regular"
 		android:singleLine="true"
-		android:inputType="textCapWords"
+		android:inputType="textMultiLine"
+		android:maxLines="5"
         android:layout_marginTop="5dp" />
     
 
