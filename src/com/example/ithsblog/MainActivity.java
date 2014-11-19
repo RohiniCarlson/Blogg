@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor().execute();
 		
-		if(true) {
+		if(CheckIfAuthor.isAuthor) {
 			// send to author
 			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
 			// startActivity(myTriggerActivityIntent);
