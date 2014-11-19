@@ -1,37 +1,24 @@
 package com.example.ithsblog;
 
 import android.support.v7.app.ActionBarActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity {
+public class Posts extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_posts);
 		
-		// Send to author view or reader view, check shared preferences for saved mail		
-		new CheckIfAuthor().execute();
-		
-		if(CheckIfAuthor.isAuthor) {
-			// send to author
-			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
-			// startActivity(myTriggerActivityIntent);
-		} else {
-			// send to reader activity
-			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
-			// startActivity(myTriggerActivityIntent);
-		}
 		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.posts, menu);
 		return true;
 	}
 
@@ -42,8 +29,7 @@ public class MainActivity extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			Intent intent = new Intent (MainActivity.this , Posts.class);
-        	startActivity(intent);
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
