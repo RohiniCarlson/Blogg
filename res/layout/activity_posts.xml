@@ -8,6 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.textviewexample.MainActivity" >
 
+
+
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
@@ -17,43 +19,50 @@
         android:scaleType="fitXY"
         android:src="@drawable/pic" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_below="@id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         >
-    
-    
-    <ImageView
-        android:id="@+id/image_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_camera" />
-     
-    <ImageView
-        android:id="@+id/image_upload"
-       
-        android:layout_toRightOf="@+id/image_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_storage" />
-        -->
+    <LinearLayout android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/image_view"
+        android:layout_height="wrap_content" >
 
+        <Button
+            android:id="@+id/upload_button"
+            android:layout_marginLeft="1dp"
+            android:layout_width="156dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginTop="1dp"
+            android:background="#202020"
+            android:layout_marginRight="1dp"
+            android:text="@string/button_camera"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/camera_button"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:layout_width="156dp"
+            android:layout_marginTop="1dp"
+            android:layout_height="50dp"
+            android:background="#202020"
+            android:text="@string/button_upload"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+   
     <EditText
         android:id="@+id/edit_view_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_camera"
+        android:layout_below="@+id/buttons"
         android:textSize="30sp"
         android:hint="@string/head"
 		android:singleLine="true"
 		android:inputType="textCapWords"
         android:layout_marginTop="10dp"
          />
-    
+     
     <EditText
         android:id="@+id/edit_view_regular"
         android:layout_width="match_parent"
@@ -64,33 +73,14 @@
 		android:inputType="textMultiLine"
 		android:maxLines="5"
         android:layout_marginTop="5dp" />
-    
-
-
-    <!--  
-    <Button
-        android:id="@+id/upload_button"
-        android:layout_width="156dp"
-        android:layout_height="70dp"
-        android:layout_alignLeft="@+id/text_view"
-        android:layout_below="@+id/image_view"
-        android:layout_marginTop="20dp"
-        android:background="#DA81F5"
-        android:text="@string/button_camera"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp" />
-
-    <Button
-        android:id="@+id/camera_button"
-        android:layout_width="156dp"
-        android:layout_height="70dp"
-        android:layout_alignBaseline="@+id/upload_button"
-        android:layout_alignBottom="@+id/upload_button"
-        android:layout_alignRight="@+id/image_view"
-        android:background="#DA81F5"
-        android:text="@string/button_upload"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp" />
-        -->
-</RelativeLayout>
+ 
+		<ImageView
+		    android:id="@+id/post_icon"
+		    android:layout_width="wrap_content"
+		    android:layout_marginTop="1dp"
+		    android:gravity="right"
+		    android:src="@drawable/ic_action_upload"
+		    android:layout_below="@+id/edit_view_regular"
+		    android:layout_height="wrap_content" />
+        
 </RelativeLayout>

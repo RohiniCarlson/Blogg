@@ -8,8 +8,10 @@
     <string name="title_activity_posts">Posts</string>
     
     <!-- Posts XML -->
-    <string name="head">Rubrik</string>
-    <string name="regular">Skriv.....</string>
+    <string name="head">Titel</string>
+    <string name="regular">Write.....</string>
+    <string name="button_camera">Camera</string>
+    <string name="button_upload">|  |  |</string>
     
 
 </resources>
