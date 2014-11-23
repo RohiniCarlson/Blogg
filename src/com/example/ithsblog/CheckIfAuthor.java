@@ -13,6 +13,7 @@ import android.util.Log;
 public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 
 	String theResult;
+	public static boolean isAuthor;
 
 	// konstruktor
 	public CheckIfAuthor() {
@@ -22,7 +23,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 	protected String doInBackground(String... arg0) {
 
 		try{
-			String username = "zlatansmejl";
+			String username = "author";
 			String password = "zlatanspassword";
 
 			String link = "http://jonasekstrom.se/ANNAT/iths_blog/check_login.php?username="
@@ -38,6 +39,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 				theResult = in.readLine();
 				break;
 			}
+			
 			in.close();
 			return theResult;
 		}catch(Exception e){
@@ -47,6 +49,8 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 	}
 	@Override
 	protected void onPostExecute(String result){
+		
+		this.isAuthor = false;
 		Log.d("hej",result);		
 	}
 }
