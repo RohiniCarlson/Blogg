@@ -85,13 +85,6 @@
 		android:maxLines="5"
         android:layout_marginTop="5dp" />
  
-		<ImageView
-		    android:id="@+id/post_icon"
-		    android:layout_width="wrap_content"
-		    android:layout_marginTop="1dp"
-		    android:gravity="right"
-		    android:src="@drawable/ic_action_upload"
-		    android:layout_below="@+id/edit_view_regular"
-		    android:layout_height="wrap_content" />
+		
         
 </RelativeLayout>
