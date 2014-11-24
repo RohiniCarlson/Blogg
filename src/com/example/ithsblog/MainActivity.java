@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
 			// send to author
 			Intent myTriggerActivityIntent = new Intent(this,Posts.class);
 			startActivity(myTriggerActivityIntent);
+			finish();
 		} else {
 			// send to reader activity
 			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
