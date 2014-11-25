@@ -4,9 +4,16 @@ Hur skall agenda se ut och mål med mötet. exempel vilka frågor skall mötet g
 PDCA. Skall vi prata mer om nästa vecka.
 
 Effekt, ändra syftet. Vilken effekt vill vi ha med appen.
-Vi vill ha den som mall.   
+Vi vill ha den som mall. Blog för vår klass. Kan göra en iosvariant sen, databaserna är på plats. Vi kan klassblogga………….   
 
+Agenda: Status, vad som är nästa steg. Och när vi behöver träffas.
 
-
+MÖTE 25 november
+Effektmål, vad skall vi mäta.
+Jobba ihop, viktigt! Lite problem just nu.
+Onsdagsmöte, unit testing! Hur testa vi vår kod.
+Om vi ändrar gantschema etc. Viktigt för VG. 
+Skriva varför vi ändrar inte bara att vi ändrar.
+Kollapå ithsdistans vad som förväntas individuellt att vi skall reflektera över etc.
 
 

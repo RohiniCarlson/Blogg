@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
 			finish();
 		} else {
 			// send to reader activity
-			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
+			// Intent myTriggerActivityIntent=new Intent(this,ListActivity.class);
 			// startActivity(myTriggerActivityIntent);
 		}
 		
