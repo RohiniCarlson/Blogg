@@ -13,7 +13,6 @@ import android.util.Log;
 public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 
 	String theResult;
-	public static boolean isAuthor;
 
 	// konstruktor
 	public CheckIfAuthor() {
@@ -25,7 +24,6 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 		try{
 
 			String mail = "jonas@jonasekstrom.se";
-
 			String password = "zlatanspassword";
 
 			String link = "http://jonasekstrom.se/ANNAT/iths_blog/check_login.php?mail="

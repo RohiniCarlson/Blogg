@@ -1,8 +1,11 @@
 package com.example.ithsblog;
 
+import java.util.concurrent.ExecutionException;
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,12 +17,23 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		
 		// Send to author view or reader view, check shared preferences for saved mail		
-		new CheckIfAuthor().execute();
+		String check = "";
+		try {
+			check = new CheckIfAuthor().execute().get();
+			Log.d("hej","check: "+check);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		if(CheckIfAuthor.isAuthor) {
+		if(check.equals("1")) {
 			// send to author
-			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
-			// startActivity(myTriggerActivityIntent);
+			Intent myTriggerActivityIntent=new Intent(this,Posts.class);
+			startActivity(myTriggerActivityIntent);
+			finish();
 		} else {
 			// send to reader activity
 			// Intent myTriggerActivityIntent=new Intent(this,SecondActivity.class);
