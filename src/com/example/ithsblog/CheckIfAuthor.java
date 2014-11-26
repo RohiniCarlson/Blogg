@@ -1,6 +1,10 @@
 package com.example.ithsblog;
 
+import android.content.Context;
 import android.os.AsyncTask;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -13,9 +17,12 @@ import android.util.Log;
 public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 
 	String theResult;
+	private PropertyChangeSupport pcs;
 
 	// konstruktor
-	public CheckIfAuthor() {
+	public CheckIfAuthor(PropertyChangeListener c) {
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
 	}
 
 	@Override
@@ -49,7 +56,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 	}
 	@Override
 	protected void onPostExecute(String result){
-
+		pcs.firePropertyChange("checkIfAuthorDone", null, result);
 		Log.d("hej","done async");		
 
 	}
