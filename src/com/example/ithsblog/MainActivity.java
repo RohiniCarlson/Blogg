@@ -2,12 +2,9 @@ package com.example.ithsblog;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.concurrent.ExecutionException;
-
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,7 +17,8 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
-		Log.d("hej","check: ");
+		new GetObjects(this).execute();
+		// Log.d("hej","check: ");
 	}
 
 	@Override
@@ -60,9 +58,6 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 				// startActivity(myTriggerActivityIntent);
 			}			
 		}
-		
-		
-
 		
 	}
 }

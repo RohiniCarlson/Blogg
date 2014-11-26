@@ -40,7 +40,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 			request.setURI(new URI(link));
 			HttpResponse response = client.execute(request);
 			BufferedReader in = new BufferedReader
-					(new InputStreamReader(response.getEntity().getContent()));
+				(new InputStreamReader(response.getEntity().getContent()));
 
 			while ((in.readLine()) != null) {
 				theResult = in.readLine();
