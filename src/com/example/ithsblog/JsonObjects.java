@@ -7,8 +7,8 @@ public class JsonObjects {
 	private String mail;	
 	
 	public JsonObjects(String name, String mail) {
-		this.name = name;
-		this.mail = mail;		
+		setName(name);
+		setMail(mail);		
 	}
 
 	public String getName() {
