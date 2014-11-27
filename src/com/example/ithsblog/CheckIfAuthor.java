@@ -56,9 +56,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 	}
 	@Override
 	protected void onPostExecute(String result){
-		pcs.firePropertyChange("checkIfAuthorDone", null, result);
-		Log.d("hej","done async");		
-
+		pcs.firePropertyChange("checkIfAuthorDone", null, result);		
 	}
 }
 

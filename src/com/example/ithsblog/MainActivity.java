@@ -2,14 +2,19 @@ package com.example.ithsblog;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity implements PropertyChangeListener {
 
+	ArrayList<JsonObjects> objectList = new ArrayList();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +62,14 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 				// Intent myTriggerActivityIntent=new Intent(this,ListActivity.class);
 				// startActivity(myTriggerActivityIntent);
 			}			
+		} else if (event.getPropertyName().equals("getObjectsDone")) {
+			// log all object info, listarray 
+			objectList = (ArrayList<JsonObjects>) event.getNewValue();
+			
+			for(int i = 0;i < objectList.size(); i++) {
+				Log.d("hej",objectList.get(i).getMail()+" , "+objectList.get(i).getName());
+			}
+			
 		}
 		
 	}

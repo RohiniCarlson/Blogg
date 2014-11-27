@@ -17,24 +17,26 @@ import org.json.JSONObject;
 import android.net.ParseException;
 import android.os.AsyncTask;
 import android.util.Log;
+import java.util.ArrayList;
 
-public class GetObjects extends AsyncTask<String, Void, Boolean>{
+public class GetObjects extends AsyncTask<String, Void, ArrayList<JsonObjects>>{
 
 	private PropertyChangeSupport pcs;
-
+	ArrayList<JsonObjects> objectList = new ArrayList();
+	
 	// konstruktor
 	public GetObjects(PropertyChangeListener c) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
 	}
 
-//	@Override 
-//	protected void onPreExecute() { 
-//		super.onPreExecute();  
-//	} 
+	//	@Override 
+	//	protected void onPreExecute() { 
+	//		super.onPreExecute();  
+	//	} 
 
 	@Override 
-	protected Boolean doInBackground(String... params) { 
+	protected ArrayList<JsonObjects> doInBackground(String... params) { 
 		try { 
 			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/json_posts.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
@@ -49,17 +51,15 @@ public class GetObjects extends AsyncTask<String, Void, Boolean>{
 
 				JSONArray jArray = new JSONArray(data); 
 
-				String hej = "Lenght: " + jArray.length();
-	
-				Log.d("hej",hej);
-				
 				for(int i=0; i<jArray.length(); i++){ 
 
 					JSONObject jRealObject = jArray.getJSONObject(i); 
-					Log.d("hej","json: "+jRealObject.getString("name")+" , "+jRealObject.getString("mail"));					
+					// Log.d("hej","json: "+jRealObject.getString("name")+" , "+jRealObject.getString("mail"));
+					JsonObjects object = new JsonObjects(jRealObject.getString("name"), jRealObject.getString("mail"));
+					objectList.add(object);
 
 				} 
-				return true; 
+				return objectList; 
 			} 
 
 		} catch (ParseException e1) { 
@@ -69,12 +69,12 @@ public class GetObjects extends AsyncTask<String, Void, Boolean>{
 		} catch (JSONException e) { 
 			e.printStackTrace(); 
 		} 
-		return false; 
+		return objectList; 
 	}
 
 	@Override 
-	protected void onPostExecute(Boolean result) { 
-		pcs.firePropertyChange("checkIfAuthorDone", null, "hej"); 
+	protected void onPostExecute(ArrayList<JsonObjects> objectList) { 
+		pcs.firePropertyChange("getObjectsDone", null, objectList); 
 	} 
 } 
 
