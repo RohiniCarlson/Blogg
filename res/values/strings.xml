@@ -14,5 +14,7 @@
     <string name="button_upload">|  |  |</string>
     <string name="title_activity_camera">Camera</string>
     <string name="up_upload">Upload</string>
+    <string name="title_activity_post_list">PostList</string>
+    <string name="title_activity_read_post">ReadPost</string>
 
 </resources>

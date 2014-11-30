@@ -7,12 +7,17 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permisson.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" />
- <uses-feature android:name="android.hardware.camera.autofocus" />
- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
- <uses-feature android:name="android.hardware.camera" android:required="true" />
 
+    <uses-permission android:name="android.permisson.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +43,14 @@
         <activity
             android:name=".Camera"
             android:label="@string/title_activity_camera" >
+        </activity>
+        <activity
+            android:name=".PostList"
+            android:label="@string/title_activity_post_list" >
+        </activity>
+        <activity
+            android:name=".ReadPost"
+            android:label="@string/title_activity_read_post" >
         </activity>
     </application>
 

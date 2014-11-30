@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <ImageView
+                android:id="@+id/item_imageView"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:layout_height="330dp"
+                android:src="@drawable/pic" />
+
+            <TextView
+                android:id="@+id/item_titleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="30sp"
+                android:text="Header For Zlatan"/>
+            
+            <TextView
+                android:id="@+id/item_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="14dp"
+                android:text="Bla bla bla bla bla.."/>
+            
+  	<LinearLayout android:id="@+id/linearTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_textView" >
+
+        <Button
+            android:id="@+id/comment_button"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="1dp"
+            android:background="#202020"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="36dp"
+            android:text="Add"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+        
+        <EditText
+        android:id="@+id/item_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="36dp"
+		android:hint="Comment"
+		android:inputType="textMultiLine"
+		android:maxLines="5"
+		android:maxLength="120" />
+
+</LinearLayout>
+
+</LinearLayout>
