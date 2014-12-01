@@ -67,10 +67,11 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			}			
 		} else if (event.getPropertyName().equals("getObjectsDone")) {
 			// log all object info, listarray 
+			
 			objectList = (ArrayList<JsonObjects>) event.getNewValue();
 			
 			for(int i = 0;i < objectList.size(); i++) {
-				Log.d("hej",objectList.get(i).getMail()+" , "+objectList.get(i).getName());
+				Log.d("hej",objectList.get(i).getId()+", "+objectList.get(i).getTitle()+", "+objectList.get(i).getText());
 			}
 			
 		}

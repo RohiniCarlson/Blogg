@@ -26,7 +26,7 @@ import java.util.List;
 public class GetObjects extends AsyncTask<String, Void, ArrayList<JsonObjects>>{
 
 	private PropertyChangeSupport pcs;
-	ArrayList<JsonObjects> objectList = new ArrayList();
+	ArrayList<JsonObjects> objectList = new ArrayList<JsonObjects>();
 	
 	// konstruktor
 	public GetObjects(PropertyChangeListener c) {
@@ -63,8 +63,8 @@ public class GetObjects extends AsyncTask<String, Void, ArrayList<JsonObjects>>{
 				for(int i=0; i<jArray.length(); i++){ 
 
 					JSONObject jRealObject = jArray.getJSONObject(i); 
-					// Log.d("hej","json: "+jRealObject.getString("name")+" , "+jRealObject.getString("mail"));
-					JsonObjects object = new JsonObjects(jRealObject.getString("name"), jRealObject.getString("mail"));
+					// Log.d("hej","json: "+jRealObject.getString("id")+", "+jRealObject.getString("title")+", "+jRealObject.getString("text"));
+					JsonObjects object = new JsonObjects(jRealObject.getInt("id"), jRealObject.getString("title"), jRealObject.getString("txt"));
 					objectList.add(object);
 
 				} 
