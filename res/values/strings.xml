@@ -16,5 +16,19 @@
     <string name="up_upload">Upload</string>
     <string name="title_activity_post_list">PostList</string>
     <string name="title_activity_read_post">ReadPost</string>
+    <string name="title_activity_register_new_user">RegisterNewUser</string>
+    <string name="title_activity_log_in">LogIn</string>
+    
+    <!-- Log In -->
+    <string name="title_activity_sign_in">Sign In</string>
+    <string name="sign_in">Sign In</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="not_member">Not a member?</string>
+    <string name="register_new">Register New</string>
+
+    <!-- Register New User -->
+    <string name="title_activity_register_new">Register New</string>
+    <string name="reenter_password">Re-enter Password</string>
 
 </resources>

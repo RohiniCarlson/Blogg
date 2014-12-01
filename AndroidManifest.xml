@@ -52,6 +52,14 @@
             android:name=".ReadPost"
             android:label="@string/title_activity_read_post" >
         </activity>
+        <activity
+            android:name=".RegisterNewUser"
+            android:label="@string/title_activity_register_new_user" >
+        </activity>
+        <activity
+            android:name=".LogIn"
+            android:label="@string/title_activity_log_in" >
+        </activity>
     </application>
 
 </manifest>

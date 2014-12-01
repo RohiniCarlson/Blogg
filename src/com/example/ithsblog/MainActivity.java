@@ -43,6 +43,9 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			Intent intent = new Intent (MainActivity.this , Posts.class);
         	startActivity(intent);
 			return true;
+		} else if (id == R.id.action_sign_in) {
+			showSignInScreen();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -72,5 +75,10 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			
 		}
 		
+	}
+	
+	private void showSignInScreen() {
+		Intent intent = new Intent(MainActivity.this, LogIn.class);
+		startActivity(intent);
 	}
 }
