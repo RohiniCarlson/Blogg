@@ -62,8 +62,8 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 				finish();
 			} else {
 				// send to reader activity
-				// Intent myTriggerActivityIntent=new Intent(this,ListActivity.class);
-				// startActivity(myTriggerActivityIntent);
+				Intent myTriggerActivityIntent=new Intent(this,PostList.class);
+				startActivity(myTriggerActivityIntent);
 			}			
 		} else if (event.getPropertyName().equals("getObjectsDone")) {
 			// log all object info, listarray 
