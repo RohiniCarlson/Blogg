@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 public class Posts extends ActionBarActivity {
 	private static final int CAMERA_REQUEST = 1888; 
     private ImageView imageView;
-	private static final int CAPTURE_IMAGE_CAPTURE_CODE = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +30,7 @@ public class Posts extends ActionBarActivity {
 	            @Override
 	            public void onClick(View v) {
 	                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+	                cameraIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	                startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	            }
 	        });
@@ -49,21 +48,6 @@ public class Posts extends ActionBarActivity {
 		         Toast.makeText(this, "You are booring!", Toast.LENGTH_LONG).show();
 		      }
 	     
-		
-		Button cam = (Button) findViewById(R.id.upload_button);
-
-		cam.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Posts.this, Posts.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				
-				startActivity(intent);
-				
-			}
-		});
-		
 		
 	}
 
