@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		return super.onOptionsItemSelected(item);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 
@@ -65,6 +66,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 				// send to reader activity
 				Intent myTriggerActivityIntent=new Intent(this,PostList.class);
 				startActivity(myTriggerActivityIntent);
+				finish();
 			}			
 		} else if (event.getPropertyName().equals("getObjectsDone")) {
 			// log all object info, listarray 
