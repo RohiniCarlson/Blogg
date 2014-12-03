@@ -22,7 +22,8 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
-		new GetObjects(this).execute();
+		new GetComments(this).execute();
+		// new GetObjects(this).execute();
 		// Log.d("hej","check: ");
 	}
 
@@ -73,6 +74,8 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			for(int i = 0;i < objectList.size(); i++) {
 				Log.d("hej",objectList.get(i).getId()+", "+objectList.get(i).getTitle()+", "+objectList.get(i).getText());
 			}
+			
+		} else if (event.getPropertyName().equals("getCommentsDone")) {
 			
 		}
 		
