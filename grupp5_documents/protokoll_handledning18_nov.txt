@@ -14,6 +14,10 @@ Jobba ihop, viktigt! Lite problem just nu.
 Onsdagsmöte, unit testing! Hur testa vi vår kod.
 Om vi ändrar gantschema etc. Viktigt för VG. 
 Skriva varför vi ändrar inte bara att vi ändrar.
-Kollapå ithsdistans vad som förväntas individuellt att vi skall reflektera över etc.
+Kolla på ithsdistans vad som förväntas individuellt att vi skall reflektera över etc.
+
+effekt engagemang
+
+
 
 
