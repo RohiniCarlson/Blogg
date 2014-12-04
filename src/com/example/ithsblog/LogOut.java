@@ -1,3 +1,4 @@
+package com.example.ithsblog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
