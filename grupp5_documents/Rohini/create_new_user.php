@@ -8,7 +8,7 @@
 	$mail = $_POST['email'];	
 	$password = $_POST['password'];
 
-	$result = mysqli_query($con,"SELECT COUNT(*) FROM iths_users WHERE mail = '$mail' AND password = '$password'");
+	$result = mysqli_query($con,"SELECT 1 FROM iths_users WHERE mail = '$mail' AND password = '$password'");
 	
 	$count = mysqli_num_rows($result); 
     
