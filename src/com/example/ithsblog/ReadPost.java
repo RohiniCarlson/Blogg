@@ -1,6 +1,11 @@
 package com.example.ithsblog;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+
+import org.json.JSONObject;
+
 
 
 import android.support.v7.app.ActionBarActivity;
@@ -14,19 +19,26 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
-public class ReadPost extends ActionBarActivity {
+public class ReadPost extends ActionBarActivity implements PropertyChangeListener {
 	
+	private String title;
+	private String text;
+	private String date;
 	private String id;
-	private ArrayList<Object> list = new ArrayList<Object>();
+	private String imageURL;
+	private String commentText;
+	private EditText comment;
 	private ListView listView;
 	private View post;
 	private boolean author = false;
+	private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 	private Button editButton, deleteButton, addButton;
-	private EditText comment;
-	private String commentText;
+	
 	
 	private OnClickListener editButtonListener = new OnClickListener() {
 		public void onClick(View v) { 			
@@ -35,7 +47,7 @@ public class ReadPost extends ActionBarActivity {
     };
     private OnClickListener deleteButtonListener = new OnClickListener() {
 		public void onClick(View v) { 			
-			edit();
+			delete();
 		}
     };
     private OnClickListener addButtonListener = new OnClickListener() {
@@ -53,9 +65,18 @@ public class ReadPost extends ActionBarActivity {
 
 	private void edit() {
 		Intent intent = new Intent(ReadPost.this, Posts.class);
-		//intent.putExtra("ID", value);
+		intent.putExtra("ID", id);
+		intent.putExtra("DATE", date);
+		intent.putExtra("TITLE", title);
+		intent.putExtra("TEXT", text);
+		intent.putExtra("IMAGE", imageURL);
 		finish();
 		startActivity(intent);
+		
+	}
+	
+	private void delete() {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -64,16 +85,19 @@ public class ReadPost extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_read_post);
 		Intent intent = getIntent();
+		title = intent.getStringExtra("TITLE");
+		date = intent.getStringExtra("DATE");
+		text = intent.getStringExtra("TEXT");
 		id = intent.getStringExtra("ID");
+		imageURL = intent.getStringExtra("IMAGEURL");
 		
-		newList();
-		startListView();
+		new GetComments(this).execute();
 		
 	}
 
 	private void startListView() {
 		
-		ArrayAdapter<Object> adapter = new ReadPostListAdapter(ReadPost.this, list);
+		ArrayAdapter<JSONObject> adapter = new ReadPostListAdapter(ReadPost.this, list);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		if(author){
 		post = inflater.inflate(R.layout.author_post, null);
@@ -88,17 +112,26 @@ public class ReadPost extends ActionBarActivity {
 		addButton = (Button) post.findViewById(R.id.comment_button);
         addButton.setOnClickListener(addButtonListener);
 		}
+		
+		//Image
+		ImageView imageView = (ImageView)post.findViewById(R.id.item_imageView);  
+		new ImageLoader(imageView, "http://blogg.varldenidag.se/dahlman/files/2013/12/6714634885891628422738.jpg").execute();
+		// Title
+	    TextView titleView = (TextView)post.findViewById(R.id.item_titleView);
+	    titleView.setText(title);
+	    //Text
+	    TextView textView = (TextView)post.findViewById(R.id.item_textView);
+	    textView.setText(text);
+	    // Date
+	    TextView dateView = (TextView)post.findViewById(R.id.item_dateView);
+		dateView.setText(date);
+		
 		listView = (ListView) findViewById(R.id.comment_list);
 		listView.addHeaderView(post);
 		listView.setAdapter(adapter);
 		
 	}
 
-	// Fill the ArrayList
-	private void newList() {
-		
-		
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,5 +150,11 @@ public class ReadPost extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		list = (ArrayList<JSONObject>) event.getNewValue();
+		startListView();
 	}
 }

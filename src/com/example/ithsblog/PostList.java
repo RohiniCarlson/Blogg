@@ -1,6 +1,11 @@
 package com.example.ithsblog;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
@@ -12,57 +17,56 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class PostList extends ActionBarActivity {
+public class PostList extends ActionBarActivity implements PropertyChangeListener{
 
 	private ListView listView;
-	private ArrayList<Object> postList = new ArrayList<Object>(); 
+	private ArrayList<JSONObject> postList = new ArrayList<JSONObject>(); 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_list);
-		
-		newList();
-		startListView();
-		listClick();
+
+		new GetPosts(this).execute();
 	}
 	
 	// Handle clicking the items in the list
 	private void listClick() {
 		
-		ListView listView = (ListView) findViewById(R.id.content_list);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View viewClicked,
 					int position, long id) {
 				
-				Object postClicked = postList.get(position);
+				JSONObject itemClicked = postList.get(position);
 				
 				Intent intent = new Intent(PostList.this, ReadPost.class);
-				//intent.putExtra("ID", postClicked.getId());
+				try {
+					intent.putExtra("TITLE", itemClicked.getString("title"));
+					intent.putExtra("TEXT", itemClicked.getString("txt"));
+					intent.putExtra("DATE", itemClicked.getString("date"));
+					intent.putExtra("ID", itemClicked.getInt("id"));
+					intent.putExtra("IMAGEURL", itemClicked.getString("image"));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 	    		startActivity(intent);
 				
 			}
-		});		
-		
+		});
 	}
 	
 	// 
 	private void startListView() {
 
-		ArrayAdapter<Object> adapter = new PostListAdapter(PostList.this, postList);
+		ArrayAdapter<JSONObject> adapter = new PostListAdapter(PostList.this, postList);
 		listView = (ListView) findViewById(R.id.content_list);
 		listView.setAdapter(adapter);
 
 
 	}
 
-	// Fill the ArrayList
-	private void newList() {
-		
-		
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,5 +85,14 @@ public class PostList extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+
+		postList = (ArrayList<JSONObject>) event.getNewValue();
+		startListView();
+		listClick();
+		
 	}
 }
