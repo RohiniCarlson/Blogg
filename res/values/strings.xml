@@ -16,19 +16,26 @@
     <string name="up_upload">Upload</string>
     <string name="title_activity_post_list">PostList</string>
     <string name="title_activity_read_post">ReadPost</string>
-    <string name="title_activity_register_new_user">RegisterNewUser</string>
-    <string name="title_activity_log_in">LogIn</string>
     
     <!-- Log In -->
-    <string name="title_activity_sign_in">Sign In</string>
-    <string name="sign_in">Sign In</string>
+    <string name="title_activity_log_in">Log In</string>
+    <string name="log_in">Log In</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="not_member">Not a member?</string>
     <string name="register_new">Register New</string>
+    <string name="required">Required!</string>
+    <string name="invalid_email">Enter valid e-mail: abc@fgh.com</string>
+    
+    <!-- Log Out -->
+    <string name="log_out">Log Out</string>
 
     <!-- Register New User -->
-    <string name="title_activity_register_new">Register New</string>
+    <string name="title_activity_register_new_user">Register New</string>
     <string name="reenter_password">Re-enter Password</string>
+    <string name="atleast_eight_characters">Password must be at least 8 characters</string>
+    <string name="not_identical">Passwords must be identical</string>
+    <string name="email_hint">E-mail</string>
+    <string name="register">Register</string>
 
 </resources>
