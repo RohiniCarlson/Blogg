@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,9 +24,12 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
-		new GetComments(this).execute();
+		
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
+		new AddPost("hej", "hej", bitmap).execute();
+		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
-		// Log.d("hej","check: ");
+		
 	}
 
 	@Override
