@@ -89,6 +89,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		setContentView(R.layout.activity_log_in);
 		logInButton = (Button)findViewById(R.id.log_in_button);
 		logInButton.setOnClickListener(logInButtonListener);
+		logInButton.setEnabled(false);
 		registerNewButton = (Button)findViewById(R.id.register_new_button);
 		registerNewButton.setOnClickListener(registerNewButtonListener);
 		email = (EditText)findViewById(R.id.email_address_edit);
@@ -101,13 +102,13 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		editor = mySettings.edit();
 		
 		// Check if email/password exists in SharedPreferences and enable/disable login/logout buttons
-		if (!mySettings.contains("email") && !mySettings.contains("password")) {
+		/*if (!mySettings.contains("email") && !mySettings.contains("password")) {
 			logInButton.setEnabled(false);
 		} else {
 			email.setVisibility(View.INVISIBLE);
 			password.setVisibility(View.INVISIBLE);
 			logInButton.setVisibility(View.INVISIBLE);
-		}
+		}*/
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 			} else { // Credentials incorrect. Allow to re-enter. 
 				email.setText("");
 				password.setText("");
-				Toast.makeText(getApplicationContext(),"Invalid Email/Password. Please re-enter!",Toast.LENGTH_SHORT).show();									
+				Toast.makeText(getApplicationContext(),"Invalid Email/Password. Please re-enter if already a member.!",Toast.LENGTH_SHORT).show();									
 			}			
 		}		
 	}
