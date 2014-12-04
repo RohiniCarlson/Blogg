@@ -1,48 +1,34 @@
 package com.example.ithsblog;
+
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-@SuppressLint("NewApi")
-public class Camera extends Activity {
-	
-	
-	
-	
- private static final int CAPTURE_IMAGE_CAPTURE_CODE = 0;
- Intent i;
- private ImageButton ib;
+public class Camera extends ActionBarActivity {
 
-  @Override
- protected void onCreate(Bundle savedInstanceState) {
-  super.onCreate(savedInstanceState);
-  setContentView(R.layout.activity_main);
-  ib = (ImageButton) findViewById(R.id.buttonToast);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.camera_activity);
+	}
 
-   ib.setOnClickListener(new OnClickListener() {
-   @Override
-   public void onClick(View v) {
-    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    startActivityForResult(i, CAPTURE_IMAGE_CAPTURE_CODE);
-   }
-  });
- }
- protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-  if (requestCode == CAPTURE_IMAGE_CAPTURE_CODE) {
-   if (resultCode == RESULT_OK) {
-    Toast.makeText(this, "Image Captured", Toast.LENGTH_LONG).show();
-   } else if (resultCode == RESULT_CANCELED) {
-    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-   }
-  }
- }
- 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.camera, menu);
+		return true;
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }
