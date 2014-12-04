@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <ImageView
+            
+            <ImageView
                 android:id="@+id/item_imageView"
-                android:layout_width="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:adjustViewBounds="true"
-                android:layout_height="330dp"
-                android:src="@drawable/pic" />
+                android:minHeight="330dp"
+                android:maxHeight="330dp" />
 
             <TextView
                 android:id="@+id/item_titleView"
@@ -28,6 +27,13 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="14dp"
                 android:text="Bla bla bla bla bla.."/>
+            
+            <TextView
+                android:id="@+id/item_dateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Small Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             
   	<LinearLayout android:id="@+id/linearTwo"
         android:layout_width="match_parent"
@@ -60,5 +66,4 @@
 		android:maxLength="120" />
 
 </LinearLayout>
-
 </LinearLayout>

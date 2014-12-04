@@ -2,6 +2,9 @@ package com.example.ithsblog;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,13 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class PostListAdapter extends ArrayAdapter<Object>{
+public class PostListAdapter extends ArrayAdapter<JSONObject>{
 
 	private LayoutInflater inflater;
 	private ArrayList list;
 	private int pos;
 
-	public PostListAdapter(Activity activity, ArrayList<Object> list) {
+	public PostListAdapter(Activity activity, ArrayList<JSONObject> list) {
 		super(activity, R.layout.posts_list_item, list);
 		this.list = list;
     	inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -35,19 +38,23 @@ public class PostListAdapter extends ArrayAdapter<Object>{
 		}
 		
 		// Find the post
-		Object currentObjects = (Object) list.get(pos);
+		JSONObject currentObjects = (JSONObject) list.get(pos);
 		
 		// Fill the view
+		try {
 		// Image
 		ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
 		//imageView.setImageResource(currentObjects.getImageId());
 		// Title
-	    TextView tv = (TextView)view.findViewById(R.id.item_titleView);
-	    //tv.setText(currentObjects.getHeader());
+	    TextView titleView = (TextView)view.findViewById(R.id.item_titleView);
+		titleView.setText(currentObjects.getString("title"));
 	    // Date
-	    TextView date = (TextView)view.findViewById(R.id.item_dateTextView);
-	    //date.setText(""+currentObjects.getDate());
+	    TextView dateView = (TextView)view.findViewById(R.id.item_dateTextView);
+	    dateView.setText(""+currentObjects.getString("date"));
 	    
+	    } catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return view;
 
 	}
