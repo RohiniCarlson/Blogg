@@ -76,14 +76,14 @@ public class AddPost extends AsyncTask<String,Void,String>{
 			
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
-			pairs.add(new BasicNameValuePair("title", "value_title"));
-			pairs.add(new BasicNameValuePair("text", "value_text"));
+			pairs.add(new BasicNameValuePair("title", getTitle()));
+			pairs.add(new BasicNameValuePair("text", getText()));
 						           
-//			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//			bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
-//			byte [] byte_arr = stream.toByteArray();
-//			String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT); 
-//			pairs.add(new BasicNameValuePair("image", image_str));	
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); //compress to which format you want.
+			byte [] byte_arr = stream.toByteArray();
+			String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT); 
+			pairs.add(new BasicNameValuePair("image", image_str));	
 			
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
