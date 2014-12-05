@@ -62,31 +62,28 @@ public class AddPost extends AsyncTask<String,Void,String>{
 	}
 
 	protected String doInBackground(String... params) {
-		
-		//		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);          
-		//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		//    	bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
-		//    	byte [] byte_arr = stream.toByteArray();
-		//    	String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);    
-		//    	params.add(new BasicNameValuePair("image",image_str));
-		
+
 		try { 
 			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_posts.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
-			
+
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
 			pairs.add(new BasicNameValuePair("title", getTitle()));
 			pairs.add(new BasicNameValuePair("text", getText()));
-						           
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); //compress to which format you want.
-			byte [] byte_arr = stream.toByteArray();
-			String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT); 
-			pairs.add(new BasicNameValuePair("image", image_str));	
-			
+
+			if (bitmap != null) {
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); //compress to which format you want.
+				byte [] byte_arr = stream.toByteArray();
+				String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT); 
+				pairs.add(new BasicNameValuePair("image", image_str));	
+			} else {
+				pairs.add(new BasicNameValuePair("image", "0"));
+			}
+
 			post.setEntity(new UrlEncodedFormEntity(pairs));
-			
+
 			HttpResponse response = clienten.execute(post); 
 
 			int status = response.getStatusLine().getStatusCode();
