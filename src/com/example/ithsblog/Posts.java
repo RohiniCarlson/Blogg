@@ -38,7 +38,7 @@ private Uri fileUri;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_posts);
     imageView = (ImageView) findViewById(R.id.image_view);
     button = (Button) findViewById(R.id.upload_button);
     button.setOnClickListener(buttonListener);

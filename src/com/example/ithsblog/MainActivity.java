@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		new CheckIfAuthor(this).execute();
 		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
-		new AddPost("hej_title", "hej_text", null).execute();
+		// new AddPost("hej_title", "hej_text", null).execute();
 		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
 		
