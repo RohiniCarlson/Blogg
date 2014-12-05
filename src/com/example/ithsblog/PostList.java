@@ -84,6 +84,12 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		inflateMenu(menu);	
 		return true;						
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		inflateMenu(menu);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,7 +105,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 			return true;
 		} else if (id == R.id.action_logout) {
 			LogOut.doLogOut(this);
-			//invalidateOptionsMenu();
+			supportInvalidateOptionsMenu();
 			Toast.makeText(getApplicationContext(),"Logout!",Toast.LENGTH_LONG).show();
 			return true;
 		}
@@ -108,7 +114,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	
 	@Override
 	protected void onResume() {
-		//invalidateOptionsMenu() ;
+		supportInvalidateOptionsMenu() ;
 		super.onResume();
 	}
 	
