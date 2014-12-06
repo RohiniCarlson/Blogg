@@ -25,10 +25,12 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
 		
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
-		// new AddPost("hej_title", "hej_text", null).execute();
+		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
+		// new AddPost("hej_title", "hej_text", bitmap).execute();
+		
 		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
+		new DeletePost(this, 51).execute();
 		
 	}
 
@@ -81,6 +83,9 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			
 		} else if (event.getPropertyName().equals("getCommentsDone")) {
 			
+		} else if (event.getPropertyName().equals("deletePostDone")) {
+			String result = (String) event.getNewValue();
+			Log.d("hej",result);
 		}
 		
 	}		
