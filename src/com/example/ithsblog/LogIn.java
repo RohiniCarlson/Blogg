@@ -49,10 +49,12 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		    {
 		        if(!Validation.isValidEmail(s)){
 		        	logInButton.setEnabled(false);
+		        	emailValidatedSuccessfully = false;
 		        	email.setError(getResources().getString(R.string.required) + " " + getResources().getString(R.string.invalid_email));
 		        	
 			    } else if (Validation.isEmpty(s)) {
 			    	logInButton.setEnabled(false);
+			    	emailValidatedSuccessfully = false;
 			    	email.setError(getResources().getString(R.string.required));	
 			    	
 			    } else {
@@ -62,6 +64,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		    } else if (password.getText().hashCode() == s.hashCode()) {
 		    	if (Validation.isEmpty(s)) {
 		    		logInButton.setEnabled(false);
+		    		passwordValidatedSuccessfully = false;
 		    		password.setError(getResources().getString(R.string.required));	 
 		        } else {
 		        	password.setError(null);
@@ -99,16 +102,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		
 		// Create shared preferences -- can be accessed by all activities in application
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
-		editor = mySettings.edit();
-		
-		// Check if email/password exists in SharedPreferences and enable/disable login/logout buttons
-		/*if (!mySettings.contains("email") && !mySettings.contains("password")) {
-			logInButton.setEnabled(false);
-		} else {
-			email.setVisibility(View.INVISIBLE);
-			password.setVisibility(View.INVISIBLE);
-			logInButton.setVisibility(View.INVISIBLE);
-		}*/
+		editor = mySettings.edit();		
 	}
 
 	@Override
@@ -134,16 +128,22 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("checkIfAuthenticationDone")) {
 			String result = (String) event.getNewValue();
-			if(result.equals("1")) { // Credentials correct. Write to shared preferences
+			if("1".equals(result)) { // Credentials correct and registration is confirmed. Write to shared preferences.
 				editor.putString("email", email.getText().toString());
 				editor.putString("password", password.getText().toString());
 				editor.commit();	
 				Toast.makeText(getApplicationContext(),"Welcome! result = " + result ,Toast.LENGTH_SHORT).show();
-				finish();				
-			} else { // Credentials incorrect. Allow to re-enter. 
+				finish();
+			} else if ("2".equals(result)) { // Credentials correct but registration is still pending.
 				email.setText("");
 				password.setText("");
-				Toast.makeText(getApplicationContext(),"Invalid Email/Password. Please re-enter if already a member.!",Toast.LENGTH_SHORT).show();									
+				Toast.makeText(getApplicationContext(),"Please confirm your registration by clicking on the link sent to you via email. result = " + result,Toast.LENGTH_SHORT).show();
+				finish();
+			}
+			else { // Credentials incorrect. Allow to re-enter. 
+				email.setText("");
+				password.setText("");
+				Toast.makeText(getApplicationContext(),"Invalid Email/Password! Please re-enter if already a member.",Toast.LENGTH_SHORT).show();									
 			}			
 		}		
 	}
@@ -155,20 +155,15 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	}
 	
 	private void doLogIn() {		
-		//new Authentication(this, email.getText().toString(), password.getText().toString()).execute();
-		editor.putString("email", email.getText().toString());
-		editor.putString("password", password.getText().toString());
-		editor.commit();
-		Toast.makeText(getApplicationContext(),"Login successful!" + email.getText().toString()+"/"+ password.getText().toString(),Toast.LENGTH_LONG).show();
-		finish();	
+		new Authentication(this, email.getText().toString(), password.getText().toString()).execute();
 	}
 	
 	private void enableLogInButton() {
 		if (emailValidatedSuccessfully && passwordValidatedSuccessfully) {
 			logInButton.setEnabled(true);
 			// Reset the validation markers
-			emailValidatedSuccessfully = false;
-			passwordValidatedSuccessfully = false;
+			/*emailValidatedSuccessfully = false;
+			passwordValidatedSuccessfully = false;*/
 		}		
 	}
 }

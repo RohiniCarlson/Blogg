@@ -156,14 +156,14 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("createNewUserDone")) {
 			String result = (String) event.getNewValue();
-			if(result.equals("1")) { // User can be created. Saved to database. Write to shared preferences. 
+			if("1".equals(result)) { // User can be created. Saved to database. Write to shared preferences. 
 				editor.putString("name", username.getText().toString());
 				editor.putString("email", email.getText().toString());
 				editor.putString("password", password1.getText().toString());
 				editor.commit();						
 				Toast.makeText(getApplicationContext(),"Successfully registered! result = " + result ,Toast.LENGTH_SHORT).show();
 				finish();				
-			} else if (result.equals("0")){ // User exists - user not created.
+			} else if ("0".equals(result)){ // User exists - user not created.
 				username.setText("");
 				email.setText("");
 				password1.setText("");

@@ -4,7 +4,7 @@
 
 <?php
    
-	$mail = $_GET['email'];	
+	$mail = $_GET['mail'];	
 	$password = $_GET['password'];
 
 	$result = mysqli_query($con,"SELECT status FROM iths_users WHERE mail = '$mail' AND password = '$password'");
