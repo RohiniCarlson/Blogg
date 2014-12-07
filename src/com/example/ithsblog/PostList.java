@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class PostList extends ActionBarActivity implements PropertyChangeListener{
 
@@ -101,12 +100,10 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 			return true;
 		}else if (id == R.id.action_login) {
 			showSignInScreen();
-			Toast.makeText(getApplicationContext(),"Login!",Toast.LENGTH_LONG).show();
 			return true;
 		} else if (id == R.id.action_logout) {
 			LogOut.doLogOut(this);
 			supportInvalidateOptionsMenu();
-			Toast.makeText(getApplicationContext(),"Logout!",Toast.LENGTH_LONG).show();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
