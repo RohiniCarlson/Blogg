@@ -161,9 +161,6 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private void enableLogInButton() {
 		if (emailValidatedSuccessfully && passwordValidatedSuccessfully) {
 			logInButton.setEnabled(true);
-			// Reset the validation markers
-			/*emailValidatedSuccessfully = false;
-			passwordValidatedSuccessfully = false;*/
 		}		
 	}
 }
