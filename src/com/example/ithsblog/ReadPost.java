@@ -6,10 +6,9 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-
-
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,7 +75,8 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	}
 	
 	private void delete() {
-		// TODO Auto-generated method stub
+		new DeletePost(this, id).execute();
+		finish();
 		
 	}
 
@@ -91,7 +91,16 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		id = intent.getStringExtra("ID");
 		imageURL = intent.getStringExtra("IMAGEURL");
 		
-		new GetComments(this).execute();
+		
+		
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		
+		new CheckIfAuthor(this).execute();
+		//new GetComments(this).execute();
 		
 	}
 
@@ -114,8 +123,13 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		}
 		
 		//Image
-		ImageView imageView = (ImageView)post.findViewById(R.id.item_imageView);  
-		new ImageLoader(imageView, "http://blogg.varldenidag.se/dahlman/files/2013/12/6714634885891628422738.jpg").execute();
+		ImageView imageView = (ImageView)post.findViewById(R.id.item_imageView);
+		String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+id+".jpg";
+		if(ImageCache.checkCache(id)){
+			imageView.setImageBitmap(ImageCache.getBitmap());
+		}else{
+			new ImageLoader(imageView, url, id).execute();
+		}
 		// Title
 	    TextView titleView = (TextView)post.findViewById(R.id.item_titleView);
 	    titleView.setText(title);
@@ -154,7 +168,17 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		list = (ArrayList<JSONObject>) event.getNewValue();
-		startListView();
+		if(event.getPropertyName().equals("checkIfAuthorDone")){
+			if(event.getNewValue().equals("1")){
+				author = true;
+				new GetComments(this, id).execute();
+			}else{
+				new GetComments(this, id).execute();				
+			}
+		} else if(event.getPropertyName().equals("getCommentsDone")){
+			list = (ArrayList<JSONObject>) event.getNewValue();
+			startListView();
+		}
+		
 	}
 }

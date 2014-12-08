@@ -25,10 +25,10 @@ import android.os.AsyncTask;
 public class DeletePost extends AsyncTask<String,Void,String>{
 
 	private PropertyChangeSupport pcs;
-	private int delete_id;
+	private String delete_id;
 	
 	// konstruktor
-	public DeletePost(PropertyChangeListener c, int delete_id) {
+	public DeletePost(PropertyChangeListener c, String delete_id) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
 		

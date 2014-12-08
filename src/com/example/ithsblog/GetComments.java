@@ -26,12 +26,14 @@ import android.util.Log;
 public class GetComments extends AsyncTask<String, Void, ArrayList<JSONObject>>{
 	
 	private PropertyChangeSupport pcs;
-	ArrayList<JSONObject> objectList = new ArrayList<JSONObject>();
+	private String postId;
+	private ArrayList<JSONObject> objectList = new ArrayList<JSONObject>();
 	
 	// konstruktor
-	public GetComments(PropertyChangeListener c) {
+	public GetComments(PropertyChangeListener c, String id) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
+		postId = id;
 	}
 
 	//	@Override 

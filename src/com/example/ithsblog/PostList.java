@@ -28,8 +28,15 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_list);
-		
 		new GetPosts(this).execute();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		supportInvalidateOptionsMenu() ;
+		//new GetPosts(this).execute();
+		
 	}
 	
 	// Handle clicking the items in the list
@@ -49,7 +56,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 					intent.putExtra("TITLE", itemClicked.getString("title"));
 					intent.putExtra("TEXT", itemClicked.getString("txt"));
 					intent.putExtra("DATE", itemClicked.getString("date"));
-					intent.putExtra("ID", itemClicked.getInt("id"));
+					intent.putExtra("ID", itemClicked.getString("id"));
 					intent.putExtra("IMAGEURL", itemClicked.getString("image"));
 
 				} catch (JSONException e) {
@@ -72,11 +79,6 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 	}
 
-	// Fill the ArrayList
-	private void newList() {
-		
-		
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,11 +111,6 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
-	protected void onResume() {
-		supportInvalidateOptionsMenu() ;
-		super.onResume();
-	}
 	
 	private void inflateMenu(Menu menu) {
 		menu.clear();
