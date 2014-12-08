@@ -44,7 +44,12 @@ public class PostListAdapter extends ArrayAdapter<JSONObject>{
 		try {
 		// Image
 		ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
-		//imageView.setImageResource(currentObjects.getImageId());
+		String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+currentObjects.getString("id")+".jpg";
+		if(ImageCache.checkCache(currentObjects.getString("id"))){
+			imageView.setImageBitmap(ImageCache.getBitmap());
+		}else{
+			new ImageLoader(imageView, url, currentObjects.getString("id")).execute();
+		} 
 		// Title
 	    TextView titleView = (TextView)view.findViewById(R.id.item_titleView);
 		titleView.setText(currentObjects.getString("title"));

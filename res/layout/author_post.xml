@@ -4,18 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <ImageView
+   	 		<ImageView
                 android:id="@+id/item_imageView"
-                android:layout_width="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:adjustViewBounds="true"
-                android:layout_height="330dp"
-                android:src="@drawable/pic" />
+                android:minHeight="30dp"
+                android:maxHeight="330dp" />
     
     <LinearLayout android:id="@+id/buttons"
         	android:layout_width="match_parent"
-        	android:layout_below="@id/item_imageView"
         	android:layout_height="wrap_content" >
 	
         <Button
@@ -27,7 +25,7 @@
             android:layout_marginTop="1dp"
             android:background="#FF4747"
             android:layout_marginRight="1dp"
-            android:text="Delet"
+            android:text="Delete"
             android:textColor="#FFFFFF"
             android:textSize="25sp" />
 
@@ -70,6 +68,13 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="14dp"
                 android:text="Bla bla bla bla bla.."/>
+            
+             <TextView
+                android:id="@+id/item_dateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Small Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             
   	<LinearLayout android:id="@+id/linearTwo"
         android:layout_width="match_parent"

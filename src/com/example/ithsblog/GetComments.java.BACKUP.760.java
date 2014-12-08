@@ -21,18 +21,31 @@ import org.json.JSONObject;
 
 import android.net.ParseException;
 import android.os.AsyncTask;
+import android.util.Log;
 
-public class DeletePost extends AsyncTask<String,Void,String>{
-
+public class GetComments extends AsyncTask<String, Void, ArrayList<JSONObject>>{
+	
 	private PropertyChangeSupport pcs;
-	private String delete_id;
+<<<<<<< HEAD
+	ArrayList<JSONObject> objectList = new ArrayList<JSONObject>();
+	private String theId;
 	
 	// konstruktor
-	public DeletePost(PropertyChangeListener c, String delete_id) {
+	public GetComments(PropertyChangeListener c, String theId) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
 		
-		this.delete_id = delete_id;
+		this.theId = theId;
+=======
+	private String postId;
+	private ArrayList<JSONObject> objectList = new ArrayList<JSONObject>();
+	
+	// konstruktor
+	public GetComments(PropertyChangeListener c, String id) {
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
+		postId = id;
+>>>>>>> 38b30438aad339ed42f3030d8344d0b732189ae2
 	}
 
 	//	@Override 
@@ -41,16 +54,13 @@ public class DeletePost extends AsyncTask<String,Void,String>{
 	//	} 
 
 	@Override 
-	protected String doInBackground(String... params) { 
+	protected ArrayList<JSONObject> doInBackground(String... params) { 
 		try { 
-			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/delete_posts.php"); 
+			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/json_comments.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
 			
-			String delete = "" + this.delete_id;			
-			
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
-			pairs.add(new BasicNameValuePair("post_id", delete));
+			pairs.add(new BasicNameValuePair("post_id", this.theId));
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
 			HttpResponse response = clienten.execute(post); 
@@ -62,19 +72,31 @@ public class DeletePost extends AsyncTask<String,Void,String>{
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
 
-				return data; 
+				JSONArray jArray = new JSONArray(data); 
+
+				for(int i=0; i<jArray.length(); i++){ 
+
+					JSONObject jRealObject = jArray.getJSONObject(i); 
+					Log.d("hej","json: "+jRealObject.getString("commenttext"));
+					// JsonObjects object = new JsonObjects(jRealObject.getInt("id"), jRealObject.getString("title"), jRealObject.getString("txt"));
+					objectList.add(jRealObject);
+
+				} 
+				return objectList; 
 			} 
 
 		} catch (ParseException e1) { 
 			e1.printStackTrace(); 
 		} catch (IOException e) { 
 			e.printStackTrace(); 
+		} catch (JSONException e) { 
+			e.printStackTrace(); 
 		} 
-		return "0"; 
+		return objectList; 
 	}
 
 	@Override 
-	protected void onPostExecute(String result) { 
-		pcs.firePropertyChange("deletePostDone", null, result); 
+	protected void onPostExecute(ArrayList<JSONObject> objectList) { 
+		pcs.firePropertyChange("getCommentsDone", null, objectList); 
 	} 
 } 
