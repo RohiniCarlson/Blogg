@@ -25,8 +25,6 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private EditText email, password;
 	private SharedPreferences mySettings;
 	private Editor editor;
-	private boolean emailValidatedSuccessfully = false;
-	private boolean passwordValidatedSuccessfully = false;
 	
 	private OnClickListener logInButtonListener = new OnClickListener(){
 		@Override
@@ -45,33 +43,12 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private TextWatcher commonTextWatcher = new TextWatcher() {	
 		@Override
 		public void afterTextChanged(Editable s) {
-			if (email.getText().hashCode() == s.hashCode())
-		    {
-		        if(!Validation.isValidEmail(s)){
-		        	logInButton.setEnabled(false);
-		        	emailValidatedSuccessfully = false;
-		        	email.setError(getResources().getString(R.string.required) + " " + getResources().getString(R.string.invalid_email));
-		        	
-			    } else if (Validation.isEmpty(s)) {
-			    	logInButton.setEnabled(false);
-			    	emailValidatedSuccessfully = false;
-			    	email.setError(getResources().getString(R.string.required));	
-			    	
-			    } else {
-			    	email.setError(null);
-			    	emailValidatedSuccessfully = true;
-			    }
+			if (email.getText().hashCode() == s.hashCode()) {
+				validateEmail();
 		    } else if (password.getText().hashCode() == s.hashCode()) {
-		    	if (Validation.isEmpty(s)) {
-		    		logInButton.setEnabled(false);
-		    		passwordValidatedSuccessfully = false;
-		    		password.setError(getResources().getString(R.string.required));	 
-		        } else {
-		        	password.setError(null);
-		        	passwordValidatedSuccessfully = true;
-		        }	            
+		    	validatePassword();	            
 		    }			
-			enableLogInButton();
+			enableDisableLogInButton();
 		}
 	
 		@Override
@@ -135,15 +112,13 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 				Toast.makeText(getApplicationContext(),"Welcome! result = " + result ,Toast.LENGTH_SHORT).show();
 				finish();
 			} else if ("2".equals(result)) { // Credentials correct but registration is still pending.
-				email.setText("");
-				password.setText("");
-				Toast.makeText(getApplicationContext(),"Please confirm your registration by clicking on the link sent to you via email. result = " + result,Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
 				finish();
 			}
 			else { // Credentials incorrect. Allow to re-enter. 
 				email.setText("");
 				password.setText("");
-				Toast.makeText(getApplicationContext(),"Invalid Email/Password! Please re-enter if already a member.",Toast.LENGTH_SHORT).show();									
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();					
 			}			
 		}		
 	}
@@ -158,9 +133,34 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		new Authentication(this, email.getText().toString(), password.getText().toString()).execute();
 	}
 	
-	private void enableLogInButton() {
-		if (emailValidatedSuccessfully && passwordValidatedSuccessfully) {
-			logInButton.setEnabled(true);
+	private boolean validateEmail() {
+		if(!Validation.isValidEmail(email.getText())){
+			email.setError(getResources().getString(R.string.invalid_email));
+			return false;
+		} else if (Validation.isEmpty(email.getText())) {
+			email.setError(getResources().getString(R.string.required));
+			return false;
+		} else {
+			email.setError(null);
+			return true;
 		}		
+	}
+	
+	private boolean validatePassword() {
+		if (Validation.isEmpty(password.getText())) {
+			password.setError(getResources().getString(R.string.required));	
+			return false;
+		} else {
+			password.setError(null);
+			return true;
+		}
+	}
+	
+	private void enableDisableLogInButton() {
+		if (validateEmail() && validatePassword()) {
+			logInButton.setEnabled(true);
+		} else {
+			logInButton.setEnabled(false);
+		}
 	}
 }

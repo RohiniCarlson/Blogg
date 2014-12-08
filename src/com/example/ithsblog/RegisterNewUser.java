@@ -22,11 +22,6 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	
 	private Button registerButton;	
 	private EditText username, email, password1, password2;
-	private boolean userNameValidatedSuccessfully = false;
-	private boolean emailValidatedSuccessfully = false;
-	private boolean passwordsValidatedSuccessfully = false;
-	private boolean pswd1Validated = false;
-	private boolean pswd2Validated = false;
 	private SharedPreferences mySettings;
 	private Editor editor;
 	
@@ -36,69 +31,22 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 			registerNewUser();
 		}		
 	};
-	
+			
 	private TextWatcher commonTextWatcher = new TextWatcher() {		
 		@Override
 		public void afterTextChanged(Editable s) {									
-			if (username.getText().hashCode() == s.hashCode())
-			{
-				if (Validation.isEmpty(s)) {
-					username.setError(getResources().getString(R.string.required));					
-					registerButton.setEnabled(false);
-				}else{
-					username.setError(null);
-					userNameValidatedSuccessfully = true;
-				}				
+			if (username.getText().hashCode() == s.hashCode()){
+				validateUserName();
+			} else if (email.getText().hashCode() == s.hashCode()) {
+				validateEmail();					
+			} else if (password1.getText().hashCode() == s.hashCode()) {
+				validatePassword(password1, password2);							
+			} else if (password2.getText().hashCode() == s.hashCode()) {
+				validatePassword(password2, password1);			
 			}
-			else if (email.getText().hashCode() == s.hashCode()) {
-				if(!Validation.isValidEmail(s)){
-					registerButton.setEnabled(false);
-					email.setError(getResources().getString(R.string.required) + " " + getResources().getString(R.string.invalid_email));
-
-				} else if (Validation.isEmpty(s)) {
-					registerButton.setEnabled(false);
-					email.setError(getResources().getString(R.string.required));	
-
-				} else {
-					email.setError(null);
-					emailValidatedSuccessfully = true;
-				}				
-			}
-			else if (password1.getText().hashCode() == s.hashCode()) {
-				if (Validation.isEmpty(s)) {
-					password1.setError(getResources().getString(R.string.required));
-					registerButton.setEnabled(false);
-				}else if(!Validation.isAtleastEightCharactersLong(s)) {
-					password1.setError(getResources().getString(R.string.atleast_eight_characters));
-					registerButton.setEnabled(false);
-				}else{
-					password1.setError(null);
-					pswd1Validated = true;
-				}				
-			}
-			else if (password2.getText().hashCode() == s.hashCode()) {
-				if (Validation.isEmpty(s)) {
-					password2.setError(getResources().getString(R.string.required));
-					registerButton.setEnabled(false);
-				}else if(!Validation.isAtleastEightCharactersLong(s)) {
-					password2.setError(getResources().getString(R.string.atleast_eight_characters));
-					registerButton.setEnabled(false);
-				}else{
-					password2.setError(null);
-					pswd2Validated = true;
-				}
-			}
-			if(pswd1Validated && pswd2Validated) {
-				if(!Validation.passwordsAreEqual(password1.getText().toString(), password2.getText().toString())) {
-					password2.setError(getResources().getString(R.string.not_identical));
-				}else {
-					password2.setError(null);
-					passwordsValidatedSuccessfully = true;
-				}
-			}			
-			enableRegisterNewButton();	
+			enableDisableRegisterNewButton();	
 		}
-		
+				
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
@@ -156,35 +104,83 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("createNewUserDone")) {
 			String result = (String) event.getNewValue();
-			if("1".equals(result)) { // User can be created. Saved to database. Write to shared preferences. 
-				editor.putString("name", username.getText().toString());
-				editor.putString("email", email.getText().toString());
-				editor.putString("password", password1.getText().toString());
-				editor.commit();						
-				Toast.makeText(getApplicationContext(),"Successfully registered! result = " + result ,Toast.LENGTH_SHORT).show();
+			if("EmailEmpty".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
+			} else if ("EmailInvalid".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_email) + "Result = " + result,Toast.LENGTH_LONG).show();								
+			} else if ("NameEmpty".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
+			} else if ("PasswordEmpty".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
+			} else if ("RegistrationConfirmed".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_confirmed) + "Result = " + result,Toast.LENGTH_LONG).show();
+				finish();
+			} else if ("RegistrationPending".equals(result)) {				
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
+				finish();
+			} else if ("MailSent".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_sent) + "Result = " + result,Toast.LENGTH_LONG).show();
 				finish();				
-			} else if ("0".equals(result)){ // User exists - user not created.
-				username.setText("");
-				email.setText("");
-				password1.setText("");
-				password2.setText("");
-				Toast.makeText(getApplicationContext(),"Email/Password already in use. Please re-enter. result = " + result,Toast.LENGTH_LONG).show();
+			} else if ("MailUnsent".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_unsent) + "Result = " + result,Toast.LENGTH_LONG).show();
+				finish();
+			} else if ("-1".equals(result)) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_created) + "Result = " + result,Toast.LENGTH_LONG).show();
+				finish();
 			} else {
-				Toast.makeText(getApplicationContext(),"Result = " + result,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Result = " + result,Toast.LENGTH_LONG).show();
 			}
 		}		
 	}
 	
-	private void registerNewUser(){
-		new CreateNewUser(this, username.getText().toString(), email.getText().toString(), password1.getText().toString()).execute();				
+	private boolean validateUserName() {	
+		if (Validation.isEmpty(username.getText())) {
+			username.setError(getResources().getString(R.string.required));					
+			 return false;
+		}else{
+			username.setError(null);
+			return true;
+		}		
 	}
 	
-	private void enableRegisterNewButton() {
-		if(userNameValidatedSuccessfully && emailValidatedSuccessfully && passwordsValidatedSuccessfully) {
-			registerButton.setEnabled(true);
-			userNameValidatedSuccessfully = false;
-			emailValidatedSuccessfully = false;
-			passwordsValidatedSuccessfully = false;
-		}	
+	private boolean validateEmail() {
+		if(!Validation.isValidEmail(email.getText())){
+			email.setError(getResources().getString(R.string.invalid_email));
+			return false;
+		} else if (Validation.isEmpty(email.getText())) {
+			email.setError(getResources().getString(R.string.required));
+			return false;
+		} else {
+			email.setError(null);
+			return true;
+		}		
 	}
+	
+	private boolean validatePassword(EditText pwd, EditText otherPwd) {
+		if (Validation.isEmpty(pwd.getText())) {
+			pwd.setError(getResources().getString(R.string.required));
+			return false;
+		}else if(!Validation.isAtleastEightCharactersLong(pwd.getText())) {
+			pwd.setError(getResources().getString(R.string.atleast_eight_characters));
+			return false;
+		}else if (!Validation.passwordsAreEqual(pwd.getText().toString(), otherPwd.getText().toString())) {
+			pwd.setError(getResources().getString(R.string.not_identical));
+			return false;
+		}else{
+			pwd.setError(null);
+			return true;
+		}
+	}	
+	
+	private void enableDisableRegisterNewButton() {
+		if(validateUserName() && validateEmail() && validatePassword(password1, password2) && validatePassword(password2, password1)) {
+			registerButton.setEnabled(true);
+		}else{
+			registerButton.setEnabled(false);
+		}
+	}
+	
+	private void registerNewUser(){
+		new CreateNewUser(this, username.getText().toString(), email.getText().toString(), password1.getText().toString()).execute();				
+	}	
 }

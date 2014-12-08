@@ -2,7 +2,8 @@ package com.example.ithsblog;
 
 import android.text.TextUtils;
 
-public class Validation {
+public class Validation {	
+	
 	public final static boolean isValidEmail(CharSequence target) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
 	}
