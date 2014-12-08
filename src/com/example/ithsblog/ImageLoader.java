@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,11 +22,13 @@ public class ImageLoader extends AsyncTask<String, Void, String>{
 
 	private String imageURL;
 	private ImageView view;
+	private String id;
 
 	
-	public ImageLoader(ImageView view, String imageURL){
+	public ImageLoader(ImageView view, String imageURL, String id){
 		this.view = (ImageView) view;
 		this.imageURL = imageURL;
+		this.id = id;
 		
 	}
 	@Override
@@ -47,7 +50,11 @@ public class ImageLoader extends AsyncTask<String, Void, String>{
 
 				        Bitmap bitmap = BitmapFactory.decodeStream(input);
 
+				        ImageCache.cacheImage(id, bitmap);
+				        
 				        view.setImageBitmap(bitmap);
+				        
+				        
 
 				    } catch (Exception ex) {
 

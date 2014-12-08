@@ -2,6 +2,7 @@ package com.example.ithsblog;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,44 +16,65 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import android.graphics.Bitmap;
 import android.net.ParseException;
 import android.os.AsyncTask;
+import android.util.Base64;
+import android.util.Log;
 
-public class DeletePost extends AsyncTask<String,Void,String>{
+public class AddComments extends AsyncTask<String,Void,String>{
 
+	private String theId;
+	private String text;
+	private String user_id;
 	private PropertyChangeSupport pcs;
-	private String delete_id;
-	
-	// konstruktor
-	public DeletePost(PropertyChangeListener c, String delete_id) {
-		pcs = new PropertyChangeSupport(this);
-		pcs.addPropertyChangeListener(c);
-		
-		this.delete_id = delete_id;
+
+	// konstruktor, ta emot rubrik, text, eventuell bild
+	public AddComments(PropertyChangeListener c, String theId, String text, String user_id) {
+		setText(text);
+		setTheId(theId);
+		setUser_id(user_id);
 	}
 
-	//	@Override 
-	//	protected void onPreExecute() { 
-	//		super.onPreExecute();  
-	//	} 
+	public String getUser_id() {
+		return user_id;
+	}
 
-	@Override 
-	protected String doInBackground(String... params) { 
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	
+	public String getTheId() {
+		return theId;
+	}
+
+	public void setTheId(String theId) {
+		this.theId = theId;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	protected String doInBackground(String... params) {
+
 		try { 
-			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/delete_posts.php"); 
+			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comment.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
-			
-			String delete = "" + this.delete_id;			
-			
+
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
-			pairs.add(new BasicNameValuePair("post_id", delete));
+			pairs.add(new BasicNameValuePair("post_id", getTheId()));
+			pairs.add(new BasicNameValuePair("user_id", getUser_id()));
+			pairs.add(new BasicNameValuePair("comment", getText()));
+
 			post.setEntity(new UrlEncodedFormEntity(pairs));
-			
+
 			HttpResponse response = clienten.execute(post); 
 
 			int status = response.getStatusLine().getStatusCode();
@@ -61,7 +83,7 @@ public class DeletePost extends AsyncTask<String,Void,String>{
 
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
-
+				Log.d("hej","tjoo comment "+data);
 				return data; 
 			} 
 
@@ -70,11 +92,12 @@ public class DeletePost extends AsyncTask<String,Void,String>{
 		} catch (IOException e) { 
 			e.printStackTrace(); 
 		} 
-		return "0"; 
+		return null; 
 	}
 
 	@Override 
 	protected void onPostExecute(String result) { 
 		pcs.firePropertyChange("deletePostDone", null, result); 
 	} 
-} 
+
+}
