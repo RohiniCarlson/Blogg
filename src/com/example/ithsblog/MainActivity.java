@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		// new GetComments(this, "id här").execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
+		new AddComments(this, "", "", "").execute();
 		
 	}
 
@@ -84,6 +85,10 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		} else if (event.getPropertyName().equals("getCommentsDone")) {
 			
 		} else if (event.getPropertyName().equals("deletePostDone")) {
+			String result = (String) event.getNewValue();
+			Log.d("hej",result);
+		}
+		else if (event.getPropertyName().equals("addCommentsDone")) {
 			String result = (String) event.getNewValue();
 			Log.d("hej",result);
 		}
