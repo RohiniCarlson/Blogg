@@ -32,6 +32,9 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 	// konstruktor, ta emot rubrik, text, eventuell bild
 	public AddComments(PropertyChangeListener c, String theId, String text, String user_id) {
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
+		
 		setText(text);
 		setTheId(theId);
 		setUser_id(user_id);
@@ -64,7 +67,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	protected String doInBackground(String... params) {
 
 		try { 
-			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comment.php"); 
+			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comments.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -83,7 +86,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
-				Log.d("hej","tjoo comment "+data);
+				// Log.d("hej","tjoo comment "+data);
 				return data; 
 			} 
 
@@ -96,8 +99,8 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	}
 
 	@Override 
-	protected void onPostExecute(String result) { 
-		pcs.firePropertyChange("deletePostDone", null, result); 
+	protected void onPostExecute(String result) { 		
+		pcs.firePropertyChange("addCommentsDone", null, result);
 	} 
 
 }

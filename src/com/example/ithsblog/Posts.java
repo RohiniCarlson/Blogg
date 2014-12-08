@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
-	
+
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
@@ -32,10 +32,10 @@ public class Posts extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts);
-		
+
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
-		
+
 	}
 	private OnClickListener cameraListener = new OnClickListener(){
 		public void onClick(View v){
@@ -50,19 +50,19 @@ public class Posts extends ActionBarActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		super.onActivityResult(requestCode, resultCode, intent);
-		
+
 		if(resultCode == Activity.RESULT_OK){
 			Uri selectedImage = imageUri;
 			getContentResolver().notifyChange(selectedImage, null);
-			
+
 			ImageView imageView = (ImageView)findViewById(R.id.image_view);
 			ContentResolver cr = getContentResolver();
 			Bitmap bitmap;
-			
+
 			try{
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 				imageView.setImageBitmap(bitmap);
@@ -70,9 +70,9 @@ public class Posts extends ActionBarActivity {
 			}catch(Exception e){
 				Log.d(logtag, e.toString());
 			}
-			
+
 		}
-		
+
 	}
 
 
