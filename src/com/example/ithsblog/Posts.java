@@ -1,10 +1,14 @@
+
 package com.example.ithsblog;
 
 import java.io.File;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,79 +24,55 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
-	private static final int REQUEST_CAMERA_CODE = 10;
-	private OnClickListener buttonListener = new OnClickListener(){
-
-		@Override
-		public void onClick(View v) {
-
-			showCamera();
-
-		}
-
-	};
-	private ImageView imageView;
-	private Button button;
-	private Uri fileUri;
-
+	
+	private static String logtag = "Camera";
+	private static int TAKE_PICTURE = 1;
+	private Uri imageUri;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts);
-		imageView = (ImageView) findViewById(R.id.image_view);
-		button = (Button) findViewById(R.id.upload_button);
-		button.setOnClickListener(buttonListener);
+		
+		Button cameraButton = (Button) findViewById(R.id.upload_button);
+		cameraButton.setOnClickListener(cameraListener);
+		
 	}
-
-
-
-	private void showCamera(){
-		//	Show camera here
-
-		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		File photo = createFile();
-		Uri.fromFile(photo);
-		i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		if(i.resolveActivity(getPackageManager())!=null){
-			startActivityForResult(i, REQUEST_CAMERA_CODE);
-
+	private OnClickListener cameraListener = new OnClickListener(){
+		public void onClick(View v){
+			takePhoto(v);
 		}
+	};
+
+	private void takePhoto(View v){
+		Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+		File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"pictures.jpg");
+		imageUri = Uri.fromFile(photo);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		startActivityForResult(intent, TAKE_PICTURE);
 	}
-
-	private File createFile(){
-		return new File(createDirectory(),"myFile.jpg");
-	}
-	private File createDirectory(){
-		File picDir =	Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-		File bloggDir = new File(picDir, "bloggDir");
-
-		if(!bloggDir.exists()){
-			if(!bloggDir.mkdirs()){
-				Log.d("Check", "sry kunde inte skapa folder");
-
-			}
-
-		}
-		return bloggDir;
-	}
-
+	
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-
-
-		if(requestCode == REQUEST_CAMERA_CODE && resultCode == RESULT_OK){
-			Toast.makeText(this, "Image Captured", Toast.LENGTH_LONG).show();
-
-			// HÄR KRASCHAR DET
-			// Bitmap bild = (Bitmap) BitmapFactory.decodeFile(fileUri.getPath());
-			// imageView.setImageBitmap(bild);
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+		super.onActivityResult(requestCode, resultCode, intent);
+		
+		if(resultCode == Activity.RESULT_OK){
+			Uri selectedImage = imageUri;
+			getContentResolver().notifyChange(selectedImage, null);
+			
+			ImageView imageView = (ImageView)findViewById(R.id.image_view);
+			ContentResolver cr = getContentResolver();
+			Bitmap bitmap;
+			
+			try{
+				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+				imageView.setImageBitmap(bitmap);
+				Toast.makeText(Posts.this, selectedImage.toString(), Toast.LENGTH_LONG).show();
+			}catch(Exception e){
+				Log.d(logtag, e.toString());
+			}
+			
 		}
-		else if (resultCode == RESULT_CANCELED) {
-			Toast.makeText(this, "You are booring!", Toast.LENGTH_LONG).show();
-		}
-
+		
 	}
 
 
