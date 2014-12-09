@@ -38,6 +38,8 @@ public class AddComments extends AsyncTask<String,Void,String>{
 		setText(text);
 		setTheId(theId);
 		setUser_id(user_id);
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
 	}
 
 	public String getUser_id() {
@@ -99,8 +101,13 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	}
 
 	@Override 
+<<<<<<< HEAD
+	protected void onPostExecute(String result) { 
+		//pcs.firePropertyChange("addCommentsDone", null, result); 
+=======
 	protected void onPostExecute(String result) { 		
 		pcs.firePropertyChange("addCommentsDone", null, result);
+>>>>>>> 4d5305f317c1de120a5ff5e1295dbbb72538764c
 	} 
 
 }
