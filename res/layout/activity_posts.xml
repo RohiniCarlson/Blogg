@@ -1,8 +1,4 @@
 
-
-
-    
-    
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     
     android:layout_width="match_parent"
@@ -16,19 +12,14 @@
     
 <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
         
-
-
-     
 
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="600dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:scaleType="fitXY"
             android:src="@drawable/pic" />
 
@@ -36,7 +27,7 @@
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image_view" >
+             >
 
             <Button
                 android:id="@+id/upload_button"
@@ -80,7 +71,6 @@
             android:id="@+id/edit_view_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttons"
             android:layout_marginTop="10dp"
             android:hint="@string/head"
             android:inputType="textCapWords"
@@ -91,7 +81,6 @@
             android:id="@+id/edit_view_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edit_view_head"
             android:layout_marginTop="5dp"
             android:hint="@string/regular"
             android:inputType="textMultiLine"

@@ -28,10 +28,16 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
 		// new AddPost("hej_title", "hej_text", bitmap).execute();
 		
+<<<<<<< HEAD
+		// new GetComments(this).execute();
+		// new GetObjects(this).execute();
+//		new DeletePost(this, 51).execute();
+=======
 		new GetComments(this, "50").execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
 		// new AddComments(this, "", "", "").execute();
+>>>>>>> e31c71151e41fe47b0b8003fd1064e18c1e66289
 		
 	}
 
@@ -85,10 +91,6 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		} else if (event.getPropertyName().equals("getCommentsDone")) {
 			
 		} else if (event.getPropertyName().equals("deletePostDone")) {
-			String result = (String) event.getNewValue();
-			Log.d("hej",result);
-		}
-		else if (event.getPropertyName().equals("addCommentsDone")) {
 			String result = (String) event.getNewValue();
 			Log.d("hej",result);
 		}
