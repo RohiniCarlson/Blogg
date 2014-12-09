@@ -124,7 +124,7 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 			} else if ("MailUnsent".equals(result)) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_unsent) + "Result = " + result,Toast.LENGTH_LONG).show();
 				finish();
-			} else if ("-1".equals(result)) {
+			} else if ("NotCreated".equals(result)) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_created) + "Result = " + result,Toast.LENGTH_LONG).show();
 				finish();
 			} else {
