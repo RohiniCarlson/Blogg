@@ -27,6 +27,7 @@
     <string name="required">Required!</string>
     <string name="invalid_email">Enter valid e-mail: abc@fgh.com</string>
     <string name="invalid_credentials">Invalid Email/Password! Please re-enter if already a member.</string>
+    <string name="image_description">Person</string>
     
     <!-- Log Out -->
     <string name="log_out">Log Out</string>

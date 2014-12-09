@@ -16,5 +16,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
+    
+    <!-- Custom button style -->
+    <style name="button_style">
+ 		<item name="android:background">@drawable/button_bkg</item>	
+ 		<item name="android:textStyle">bold</item>
+    </style>
 </resources>
