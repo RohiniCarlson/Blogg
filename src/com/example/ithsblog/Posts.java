@@ -61,12 +61,13 @@ public class Posts extends ActionBarActivity {
 
 			ImageView imageView = (ImageView)findViewById(R.id.image_view);
 			ContentResolver cr = getContentResolver();
+			
 			Bitmap bitmap;
 
 			try{
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 				imageView.setImageBitmap(bitmap);
-				Toast.makeText(Posts.this, selectedImage.toString(), Toast.LENGTH_LONG).show();
+				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
 			}catch(Exception e){
 				Log.d(logtag, e.toString());
 			}
