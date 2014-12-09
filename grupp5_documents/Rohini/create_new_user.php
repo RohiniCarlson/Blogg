@@ -31,26 +31,62 @@
 
 				$confirmationLink = "http://jonasekstrom.se/ANNAT/iths_blog/confirm_registration.php?code=" . $verificationCode;
 
-				$htmlStr = "";
-                $htmlStr .= "Hi " . $mail . ",<br /><br />";
+				// $htmlStr = "";
+    //             $htmlStr .= "Hi " . $mail . ",<br /><br />";
                  
-                $htmlStr .= "Please click the button below to confirm your registration and be able to write comments.<br /><br /><br />";
-                $htmlStr .= "<a href='{$confirmationLink}' target='_blank' style='padding:1em; font-weight:bold; background-color:blue; color:#fff;'>CONFIRM REGISTRATION</a><br /><br /><br />";
+    //             $htmlStr .= "Please click the button below to confirm your registration and be able to write comments.<br /><br /><br />";
+    //             $htmlStr .= "<a href='{$confirmationLink}' target='_blank' style='padding:1em; font-weight:bold; background-color:blue; color:#fff;'>CONFIRM REGISTRATION</a><br /><br /><br />";
                  
-                $htmlStr .= "Kind regards,<br />";
-                $htmlStr .= "<a href='http://jonasekstrom.se/' target='_blank'>ITHS Blogg</a><br />";
+    //             $htmlStr .= "Kind regards,<br />";
+    //             $htmlStr .= "<a href='http://jonasekstrom.se/' target='_blank'>ITHS Blogg</a><br />";
                 
-                $body = $htmlStr; 
+    //             $body = $htmlStr; 
+
+				// $name_sender = "ITHS Blogg";
+               // $email_sender = "no-reply@jonasekstrom.se";
+                
+               
+
+               // $headers  = "MIME-Version: 1.0rn";
+               // $headers .= "Content-type: text/html; charset=iso-8859-1rn";
+               // $headers .= "From: {$name_sender} <{$email_sender}> n";
+
+                $message = "
+                <html>
+                <head>
+                	<title>Confirm Registration (ITHS Blogg)</title>
+                </head>
+                	<body>
+                		<p> 
+                			Hi! 
+                			<br><br>
+                			Please click the button below to confirm your registration and be able to write comments.
+                			<br><br><br>
+                			<a href='{$confirmationLink}' target='_blank' style='padding:1em; font-weight:bold; background-color:blue; color:#fff;'>CONFIRM REGISTRATION></a>
+                			<br><br><br>
+                			Kind regards,
+                			<br>
+                			<a href='http://jonasekstrom.se/' target='_blank'>ITHS Blogg</a>
+                			<br>
+         				</p>
+                	</body>
+                </html>
+                ";
          
-                $name_sender = "ITHS Blogg";
-                $email_sender = "no-reply@jonasekstrom.se";
+               
+
                 $subject = "Registration Confirmation | ITHS Blogg ";
+                
                 $recipient_email = $mail;
 
-                $headers  = "MIME-Version: 1.0rn";
-                $headers .= "Content-type: text/html; charset=iso-8859-1rn";
-                $headers .= "From: {$name_sender} <{$email_sender}> n";
-                if (mail($recipient_email,$subject,$body,$headers)) {
+                $headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+				// Additional headers
+				$headers .= 'To: ' . $recipient_email . '<'. $recipient_email . '>' . "\r\n";
+				$headers .= 'From: ITHS Blogg <no-reply@jonasekstrom.se>' . "\r\n";
+
+                if (mail($recipient_email,$subject,$message,$headers)) {
                 	echo "MailSent";
                 } else {
                 	echo "MailUnsent";
