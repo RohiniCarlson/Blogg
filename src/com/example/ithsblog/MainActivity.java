@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		// new GetComments(this, "id här").execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
-		new AddComments(this, "", "", "").execute();
+		//new AddComments(this, "45", "55", "55").execute();
 		
 	}
 

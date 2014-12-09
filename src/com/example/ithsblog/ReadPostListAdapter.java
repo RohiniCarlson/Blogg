@@ -47,6 +47,9 @@ public class ReadPostListAdapter extends ArrayAdapter<JSONObject>{
 	    // Comment
 	    TextView commentView = (TextView)view.findViewById(R.id.item_commentView);
 	    commentView.setText(currentObjects.getString("commenttext"));
+	    // Date
+	    TextView dateView = (TextView)view.findViewById(R.id.item_dateTextView);
+	    dateView.setText(currentObjects.getString("date"));
 	    
 	    } catch (JSONException e) {
 			// TODO Auto-generated catch block

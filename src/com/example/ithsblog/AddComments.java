@@ -35,6 +35,8 @@ public class AddComments extends AsyncTask<String,Void,String>{
 		setText(text);
 		setTheId(theId);
 		setUser_id(user_id);
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
 	}
 
 	public String getUser_id() {
@@ -64,7 +66,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	protected String doInBackground(String... params) {
 
 		try { 
-			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comment.php"); 
+			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comments.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -97,7 +99,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 	@Override 
 	protected void onPostExecute(String result) { 
-		pcs.firePropertyChange("deletePostDone", null, result); 
+		//pcs.firePropertyChange("addCommentsDone", null, result); 
 	} 
 
 }

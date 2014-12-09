@@ -2,6 +2,7 @@ package com.example.ithsblog;
 
 
 
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -18,11 +19,12 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-public class ImageLoader extends AsyncTask<String, Void, String>{
+public class ImageLoader extends AsyncTask<String, Void, Bitmap>{
 
 	private String imageURL;
 	private ImageView view;
 	private String id;
+	private Bitmap bitmap;
 
 	
 	public ImageLoader(ImageView view, String imageURL, String id){
@@ -32,7 +34,8 @@ public class ImageLoader extends AsyncTask<String, Void, String>{
 		
 	}
 	@Override
-	protected String doInBackground(String... params) {
+	protected Bitmap doInBackground(String... params) {
+	
 		
 				try {
 				        URL url = new URL(imageURL);
@@ -47,18 +50,25 @@ public class ImageLoader extends AsyncTask<String, Void, String>{
 				        HttpEntity entity = response.getEntity();
 				        BufferedHttpEntity b_entity = new BufferedHttpEntity(entity);
 				        InputStream input = b_entity.getContent();
-
-				        Bitmap bitmap = BitmapFactory.decodeStream(input);
-
-				        ImageCache.cacheImage(id, bitmap);
+				        	
+				        bitmap = BitmapFactory.decodeStream(input);
 				        
+				        ImageCache.cacheImage(id, bitmap);
+						
 				        view.setImageBitmap(bitmap);
 				        
+				        return bitmap;
 				        
-
+				        
 				    } catch (Exception ex) {
 
 				    }
 		return null;
 	}
+//	@Override
+//	protected void onPostExecute(Bitmap result){
+//		if(!result.equals(null)){
+//			view.setImageBitmap(result);
+//		}
+//	}
 }
