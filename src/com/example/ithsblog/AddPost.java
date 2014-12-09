@@ -106,7 +106,7 @@ public class AddPost extends AsyncTask<String,Void,String>{
 
 	@Override 
 	protected void onPostExecute(String string) { 
-
+		Log.d("hej","post added");
 	} 
 
 }
