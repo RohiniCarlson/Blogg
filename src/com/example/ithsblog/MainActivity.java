@@ -16,29 +16,29 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements PropertyChangeListener {
 
 	ArrayList<JsonObjects> objectList = new ArrayList();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
-		
+
 		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
 		// new AddPost("hej_title", "hej_text", bitmap).execute();
-		
-<<<<<<< HEAD
+
+
 		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
-//		new DeletePost(this, 51).execute();
-=======
+		// new DeletePost(this, 51).execute();
+
 		new GetComments(this, "50").execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
 		// new AddComments(this, "", "", "").execute();
->>>>>>> e31c71151e41fe47b0b8003fd1064e18c1e66289
-		
+
+
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			Intent intent = new Intent (MainActivity.this , Posts.class);
-        	startActivity(intent);
+			startActivity(intent);
 			return true;
 		} 
 		return super.onOptionsItemSelected(item);
@@ -81,19 +81,19 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			}			
 		} else if (event.getPropertyName().equals("getObjectsDone")) {
 			// log all object info, listarray 
-			
+
 			objectList = (ArrayList<JsonObjects>) event.getNewValue();
-			
+
 			for(int i = 0;i < objectList.size(); i++) {
 				Log.d("hej",objectList.get(i).getId()+", "+objectList.get(i).getTitle()+", "+objectList.get(i).getText());
 			}
-			
+
 		} else if (event.getPropertyName().equals("getCommentsDone")) {
-			
+
 		} else if (event.getPropertyName().equals("deletePostDone")) {
 			String result = (String) event.getNewValue();
 			Log.d("hej",result);
 		}
-		
+
 	}		
 }
