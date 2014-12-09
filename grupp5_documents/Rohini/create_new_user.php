@@ -65,7 +65,7 @@
 				$headers .= 'To: ' . $recipient_email  . "\r\n";
 				$headers .= 'From: ITHS Blogg <no-reply@jonasekstrom.se>' . "\r\n";
 
-                if (mysqli_query($con,"INSERT INTO iths_users (name,readerOrAdmin,mail,password,confirm_code) VALUES ('$name',0,'$mail','$password','$verificationCode')") {
+                if (mysqli_query($con,"INSERT INTO iths_users (name,readerOrAdmin,mail,password,confirm_code) VALUES ('$name',0,'$mail','$password','$verificationCode')")) {
                 	if (mail($recipient_email,$subject,$message,$headers)) {
                 		echo "MailSent";
                 	} else {
