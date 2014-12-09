@@ -16,7 +16,13 @@
 	} elseif (empty($password)) { // Checks if password is empty.
 		echo "PasswordEmpty";
 	} else {
-		echo $name . " + " . $mail . " + " . $password;
+		$result = mysqli_query($con,"SELECT 1 FROM iths_users WHERE mail = '$mail' AND status = 1");
+		$count = mysqli_num_rows($result); 
+		if($count > 0) {  // User already confirmed.
+			echo "RegistrationConfirmed"; // Echo "0"
+		} else {
+			echo "NotFound";
+		}
 	}
 
 	
