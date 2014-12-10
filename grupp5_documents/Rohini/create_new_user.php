@@ -26,7 +26,7 @@
 			if($count > 0) { // User still pending.
 				echo "RegistrationPending";
 				// Resend registration confirmation email??
-			} else {
+			} else { // Create and send email
 				$verificationCode = md5(uniqid("yourveryownuniqueverificationcodefortheithsbloggapp")); // generate verification code, acts as 'key'.
 
 				$confirmationLink = "http://jonasekstrom.se/ANNAT/iths_blog/confirm_registration.php?code=" . $verificationCode;
@@ -78,7 +78,7 @@
 		}
 	}
 	
-   ?>
+?>
 
 <?php
 	mysqli_free_result($result);
