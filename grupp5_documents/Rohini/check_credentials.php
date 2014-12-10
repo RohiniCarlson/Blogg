@@ -13,7 +13,7 @@
 	//$result=mysqli_query($con,$sql);
 	$count = mysqli_num_rows($result);		
 
-  if ($count > 1) {
+  if ($count > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
       $status = $row["status"];
     }
