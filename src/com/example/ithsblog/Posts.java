@@ -72,6 +72,7 @@ public class Posts extends ActionBarActivity {
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 				imageView.setImageBitmap(bitmap);
 				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
+				new AddPost("TITLE","TEXT TEXT TEXT",bitmap).execute();
 			}catch(Exception e){
 				Log.d(logtag, e.toString());
 			}

@@ -24,40 +24,43 @@ public class PostListAdapter extends ArrayAdapter<JSONObject>{
 	public PostListAdapter(Activity activity, ArrayList<JSONObject> list) {
 		super(activity, R.layout.posts_list_item, list);
 		this.list = list;
-    	inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 	}
 	public View getView(int pos, View currentView, ViewGroup parent){
 		View view = null;
-		
+
 		// Make sure we have a view to work on
 		if(currentView == null){
 			view = inflater.inflate(R.layout.posts_list_item, parent, false);
 		}else {
-	        view = currentView;
+			view = currentView;
 		}
-		
+
 		// Find the post
 		JSONObject currentObjects = (JSONObject) list.get(pos);
-		
+
 		// Fill the view
 		try {
-		// Image
-		ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
-		String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+currentObjects.getString("id")+".jpg";
-		if(ImageCache.checkCache(currentObjects.getString("id"))){
-			imageView.setImageBitmap(ImageCache.getBitmap());
-		}else{
-			new ImageLoader(imageView, url, currentObjects.getString("id")).execute();
-		} 
-		// Title
-	    TextView titleView = (TextView)view.findViewById(R.id.item_titleView);
-		titleView.setText(currentObjects.getString("title"));
-	    // Date
-	    TextView dateView = (TextView)view.findViewById(R.id.item_dateTextView);
-	    dateView.setText(""+currentObjects.getString("date"));
-	    
-	    } catch (JSONException e) {
+			// Image
+			ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
+			imageView.setImageBitmap(null);
+			if(currentObjects.getString("image").equals("1")){
+				String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+currentObjects.getString("id")+".jpg";
+				if(ImageCache.checkCache(currentObjects.getString("id"))){
+					imageView.setImageBitmap(ImageCache.getBitmap());
+				}else{
+					new ImageLoader(imageView, url, currentObjects.getString("id")).execute();
+				} 
+			}
+			// Title
+			TextView titleView = (TextView)view.findViewById(R.id.item_titleView);
+			titleView.setText(currentObjects.getString("title"));
+			// Date
+			TextView dateView = (TextView)view.findViewById(R.id.item_dateTextView);
+			dateView.setText(""+currentObjects.getString("date"));
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return view;

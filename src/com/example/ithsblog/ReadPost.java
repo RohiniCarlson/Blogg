@@ -37,11 +37,13 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	private String id;
 	private String imageURL;
 	private String commentText;
+	private String user_id;
 	private EditText comment;
 	private ListView listView;
 	private View post;
 	private boolean author = false;
 	private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+	private ArrayAdapter<JSONObject> adapter;
 	private Button editButton, deleteButton, addButton;
 	
 	
@@ -66,6 +68,17 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		comment = (EditText) post.findViewById(R.id.item_comment);
         commentText = comment.getText().toString();
         comment.setText("");
+        user_id="55";
+        new AddComments(this, id, commentText, user_id).execute();
+        
+        Intent newIntent = new Intent(ReadPost.this, ReadPost.class);
+		newIntent.putExtra("ID", id);
+		newIntent.putExtra("DATE", date);
+		newIntent.putExtra("TITLE", title);
+		newIntent.putExtra("TEXT", text);
+		newIntent.putExtra("IMAGEURL", imageURL);
+		finish();
+		startActivity(newIntent);
 		
 	}
 
@@ -75,7 +88,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		intent.putExtra("DATE", date);
 		intent.putExtra("TITLE", title);
 		intent.putExtra("TEXT", text);
-		intent.putExtra("IMAGE", imageURL);
+		intent.putExtra("IMAGEURL", imageURL);
 		finish();
 		startActivity(intent);
 		
@@ -83,7 +96,9 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	
 	private void delete() {
 		new DeletePost(this, id).execute();
-		finish();
+		Intent deleteIntent = new Intent(ReadPost.this, PostList.class);
+		deleteIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(deleteIntent);
 		
 	}
 
@@ -97,9 +112,6 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		text = intent.getStringExtra("TEXT");
 		id = intent.getStringExtra("ID");
 		imageURL = intent.getStringExtra("IMAGEURL");
-		
-		
-		
 	}
 	
 	@Override
@@ -113,7 +125,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 
 	private void startListView() {
 		
-		ArrayAdapter<JSONObject> adapter = new ReadPostListAdapter(ReadPost.this, list);
+		adapter = new ReadPostListAdapter(ReadPost.this, list);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		if(author){
 		post = inflater.inflate(R.layout.author_post, null);
@@ -185,6 +197,8 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		} else if(event.getPropertyName().equals("getCommentsDone")){
 			list = (ArrayList<JSONObject>) event.getNewValue();
 			startListView();
+		} else if(event.getPropertyName().equals("addCommentsDone")){
+			new GetComments(this, id).execute();
 		}
 	}
 	

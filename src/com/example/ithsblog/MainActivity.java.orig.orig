@@ -16,31 +16,70 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements PropertyChangeListener {
 
 	ArrayList<JsonObjects> objectList = new ArrayList();
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+<<<<<<< HEAD
+		
+		// Send to author view or reader view, check shared preferences for saved mail		
+		new CheckIfAuthor(this).execute();
+		
+		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
+		// new AddPost("hej_title", "hej_text", bitmap).execute();
+		
+=======
 
 		// Send to author view or reader view, check shared preferences for saved mail		
 		new CheckIfAuthor(this).execute();
 
 		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
 		// new AddPost("hej_title", "hej_text", bitmap).execute();
-		
+<<<<<<< HEAD
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 
 
 		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
+<<<<<<< HEAD
+//		new DeletePost(this, 51).execute();
+
+=======
 		// new DeletePost(this, 51).execute();
+=======
+		
 
+		// new GetComments(this).execute();
+		// new GetObjects(this).execute();
+//		new DeletePost(this, 51).execute();
+>>>>>>> 44517dad037abe4a2c73f5ec345901f0fbe0b750
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 
-		// GetComments(this, "50").execute();
+		new GetComments(this, "50").execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
+<<<<<<< HEAD
+<<<<<<< HEAD
+		//new AddComments(this, "45", "55", "55").execute();
+=======
 		// new AddComments(this, "", "", "").execute();
 
+>>>>>>> 4d5305f317c1de120a5ff5e1295dbbb72538764c
 		
+=======
+		// new AddComments(this, "", "", "").execute();
+<<<<<<< HEAD
+
+
+=======
+		
+>>>>>>> 44517dad037abe4a2c73f5ec345901f0fbe0b750
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 	}
 
 	@Override
@@ -58,7 +97,11 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			Intent intent = new Intent (MainActivity.this , Posts.class);
+<<<<<<< HEAD
+        	startActivity(intent);
+=======
 			startActivity(intent);
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 			return true;
 		} 
 		return super.onOptionsItemSelected(item);
@@ -83,6 +126,17 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			}			
 		} else if (event.getPropertyName().equals("getObjectsDone")) {
 			// log all object info, listarray 
+<<<<<<< HEAD
+			
+			objectList = (ArrayList<JsonObjects>) event.getNewValue();
+			
+			for(int i = 0;i < objectList.size(); i++) {
+				Log.d("hej",objectList.get(i).getId()+", "+objectList.get(i).getTitle()+", "+objectList.get(i).getText());
+			}
+			
+		} else if (event.getPropertyName().equals("getCommentsDone")) {
+			
+=======
 
 			objectList = (ArrayList<JsonObjects>) event.getNewValue();
 
@@ -92,10 +146,15 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 
 		} else if (event.getPropertyName().equals("getCommentsDone")) {
 
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 		} else if (event.getPropertyName().equals("deletePostDone")) {
 			String result = (String) event.getNewValue();
 			Log.d("hej",result);
 		}
+<<<<<<< HEAD
+		
+=======
 
+>>>>>>> f8afd0706395ba5d5928f44fb79aa75a456565fd
 	}		
 }
