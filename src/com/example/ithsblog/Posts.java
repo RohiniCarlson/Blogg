@@ -20,11 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
-
+	private AddPost addPost;
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
@@ -35,8 +36,11 @@ public class Posts extends ActionBarActivity {
 
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
+		
+			
+		}
 
-	}
+
 	private OnClickListener cameraListener = new OnClickListener(){
 		public void onClick(View v){
 			takePhoto(v);
@@ -75,8 +79,7 @@ public class Posts extends ActionBarActivity {
 		}
 
 	}
-
-
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
