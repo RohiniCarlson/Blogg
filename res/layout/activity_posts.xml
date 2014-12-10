@@ -27,8 +27,11 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"  
             android:scaleType="fitXY"
-            
             android:src="@drawable/pic" />
+        
+        
+          <!--   android:rotation="90"--> 
+            
         
         </LinearLayout>
  
@@ -62,6 +65,7 @@
                 android:background="#202020"
                 android:text="@string/button_upload"
                 android:textColor="#FFFFFF"
+                android:onClick="UP"
                 android:textSize="25sp" />
 
             <Button
