@@ -79,7 +79,7 @@ public class Posts extends ActionBarActivity {
 				String title = editTitle.getText().toString();
 				
 				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-				String text = editTitle.getText().toString();
+				String text = editTxt.getText().toString();
 				
 				new AddPost(title,text,bitmap).execute();				
 				
