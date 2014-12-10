@@ -9,7 +9,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,31 +22,28 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
-	private AddPost addPost;
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts);
 
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
-		cameraButton.setOnClickListener(cameraListener);
-		
-			
-		}
+		cameraButton.setOnClickListener(new View.OnClickListener(){
 
 
-	private OnClickListener cameraListener = new OnClickListener(){
-		public void onClick(View v){
-			takePhoto(v);
-		}
-	};
+			public void onClick(View v){
+				takePhoto(v);
+			}
+		});
+
+	}
 
 	private void takePhoto(View v){
 		Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -67,30 +63,66 @@ public class Posts extends ActionBarActivity {
 
 			ImageView imageView = (ImageView)findViewById(R.id.image_view);
 			ContentResolver cr = getContentResolver();
-			
-			Bitmap bitmap;
+
+			final Bitmap bitmap;
 
 			try{
+
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-				imageView.setImageBitmap(bitmap);
-				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
-				
-				EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
-				String title = editTitle.getText().toString();
-				
-				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-				String text = editTxt.getText().toString();
-				
-				new AddPost(title,text,bitmap).execute();				
-				
+				//				imageView.setImageBitmap(bitmap);
+
+				final int vWidth = imageView.getWidth();
+				final int vHeight = imageView.getHeight();
+
+				// Image size
+				BitmapFactory.Options opt = new BitmapFactory.Options();
+				opt.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(imageUri.getPath(), opt);
+				// Now, values are available in opt.outWidth and opt.outHeight
+				Log.d("hej", "w:"+opt.outWidth+", h:"+opt.outHeight);
+
+				int scaleFactor = Math.min(opt.outWidth/vWidth, opt.
+						outHeight/vHeight);
+
+				// Load image with correct factor
+				opt = new BitmapFactory.Options();
+				opt.inSampleSize = scaleFactor; // Gör mindre
+				Bitmap photo = BitmapFactory.decodeFile(imageUri.getPath(), opt);
+				// Show in view
+				imageView.setImageBitmap(photo);
+
+
+				Button uploadButton = (Button) findViewById(R.id.up_button);
+				uploadButton.setOnClickListener(new View.OnClickListener(){
+
+
+
+
+					public void onClick(View v){
+
+						EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+						String title = editTitle.getText().toString();
+
+						EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+						String text = editTxt.getText().toString();
+
+						new AddPost(title,text,bitmap).execute();
+
+						Toast.makeText(Posts.this, "Inlägg uppladdat", Toast.LENGTH_LONG).show();
+
+						Intent intent = new Intent(Posts.this, ReadPost.class);
+						startActivity(intent);
+					}
+				});
+
+
 			}catch(Exception e){
 				Log.d(logtag, e.toString());
-			}
 
+			}
 		}
 
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
