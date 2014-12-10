@@ -25,7 +25,7 @@
 			$count = mysqli_num_rows($result); 
 			if($count > 0) { // User still pending.
 				echo "RegistrationPending";
-				// Resend registration confirmation email?? create a resend verification mail??
+				// Resend registration confirmation email??
 			} else {
 				$verificationCode = md5(uniqid("yourveryownuniqueverificationcodefortheithsbloggapp")); // generate verification code, acts as 'key'.
 
