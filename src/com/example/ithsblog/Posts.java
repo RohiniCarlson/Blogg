@@ -3,6 +3,7 @@ package com.example.ithsblog;
 
 import java.io.File;
 
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
@@ -72,7 +74,15 @@ public class Posts extends ActionBarActivity {
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 				imageView.setImageBitmap(bitmap);
 				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
-				new AddPost("TITLE","TEXT TEXT TEXT",bitmap).execute();
+				
+				EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+				String title = editTitle.getText().toString();
+				
+				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+				String text = editTitle.getText().toString();
+				
+				new AddPost(title,text,bitmap).execute();				
+				
 			}catch(Exception e){
 				Log.d(logtag, e.toString());
 			}
