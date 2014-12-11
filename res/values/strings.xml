@@ -27,6 +27,7 @@
     <string name="required">Required!</string>
     <string name="invalid_email">Enter valid e-mail: abc@fgh.com</string>
     <string name="invalid_credentials">Invalid Email/Password! Please re-enter if already a member.</string>
+    <string name="could_not_login">Our apologies, you could not be logged in at this time. Please try again later.</string>
     <string name="image_description">Person</string>
     
     <!-- Log Out -->
