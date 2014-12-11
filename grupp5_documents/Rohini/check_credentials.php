@@ -12,14 +12,24 @@
 	$count = mysqli_num_rows($result);	
   if ($count > 0) {
     //echo "Found";
-     while ($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
       $status = $row["status"];
       $id = $row["id"];
       $isAdmin = $row["readerOrAdmin"];
-      echo "status:" . $status . "/id:" . $id . "/isAdmin:" . $isAdmin;
-     }
+    }
+    if ($status == 0) { // Correct credentials, but registration incomplete (status=0, i.e pending).
+      echo "StatusPending";
+    } else { // Correct credentials and registration complete (status=1, i.e confirmed).
+      //echo "StatusConfirmed";
+      $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
+      if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE id = '$id'")) {
+        echo $session_id . "$$$" . $isAdmin;
+      } else {
+          echo "LogInFailed";
+      }
+    }
   }	else {
-    echo "Not Found";
+    echo "NotFound";
   }
 
   // if ($count > 0) {
