@@ -25,6 +25,8 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// new GetPosts(this, "20").execute();
+		
 		// Send to author view or reader view, check shared preferences for saved mail				
 		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);
 		

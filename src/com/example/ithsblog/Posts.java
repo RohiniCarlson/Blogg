@@ -87,16 +87,25 @@ public class Posts extends ActionBarActivity {
 				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
 				String text = editTxt.getText().toString();
 				
+				int rotation;
+				int rotationInDegrees;
+				
 				ExifInterface exif;
 				try {
 					exif = new ExifInterface(imageUri.getPath());
-					int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
-					int rotationInDegrees = exifToDegrees(rotation);
+					rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+					rotationInDegrees = exifToDegrees(rotation);
 					Log.d("hej","rotation: "+rotationInDegrees);
 				} catch (IOException e1) {				
 					e1.printStackTrace();
 				}
 				
+//				Matrix matrix = new Matrix();
+//				if (rotation != 0f) {
+//					matrix.preRotate(rotationInDegrees);
+//				}
+//				Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+//				Bitmap adjustedBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0, width, height, matrix, true);
 				
 				new AddPost(title,text,bitmap).execute();				
 				

@@ -28,12 +28,14 @@ public class GetPosts extends AsyncTask<String, Void, ArrayList<JSONObject>>{
 	private String data;
 	private JSONArray jasonArray;
 	private ArrayList<JSONObject> theList = new ArrayList<JSONObject>();
+	private String offset;
 
 
 	// konstruktor
-	public GetPosts(PropertyChangeListener c) {
+	public GetPosts(PropertyChangeListener c, String offset) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
+		this.offset = offset;
 	}
 
 	@Override 
@@ -43,7 +45,7 @@ public class GetPosts extends AsyncTask<String, Void, ArrayList<JSONObject>>{
 			HttpClient clienten = new DefaultHttpClient(); 
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			pairs.add(new BasicNameValuePair("post1", "value2"));
+			pairs.add(new BasicNameValuePair("offset", this.offset));
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 
 			HttpResponse response = clienten.execute(post); 
