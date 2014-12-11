@@ -22,8 +22,6 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	
 	private Button registerButton;	
 	private EditText username, email, password1, password2;
-	private SharedPreferences mySettings;
-	private Editor editor;
 	
 	OnClickListener registerButtonListener = new OnClickListener() {
 		@Override
@@ -75,10 +73,6 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 		password1.addTextChangedListener(commonTextWatcher);
 		password2 = (EditText)findViewById(R.id.new_password2_edit);
 		password2.addTextChangedListener(commonTextWatcher);
-		
-		// Get default shared preferences
-		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
-		editor = mySettings.edit();
 	}
 
 	@Override
@@ -181,6 +175,7 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	}
 	
 	private void registerNewUser(){
+		// Password should be encrypted using EncryptionUtilities.encodePassword()
 		new CreateNewUser(this, username.getText().toString(), email.getText().toString(), password1.getText().toString()).execute();				
 	}	
 }

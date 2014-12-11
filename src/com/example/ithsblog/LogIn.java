@@ -24,7 +24,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private Button logInButton, registerNewButton;
 	private EditText email, password;
 	private SharedPreferences mySettings;
-	//private Editor editor;
+	private Editor editor;
 	
 	private OnClickListener logInButtonListener = new OnClickListener(){
 		@Override
@@ -79,7 +79,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		
 		// Create shared preferences -- can be accessed by all activities in application
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
-		//editor = mySettings.edit();		
+		editor = mySettings.edit();		
 	}
 
 	@Override
@@ -103,30 +103,26 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-	//	String sessionId = "";
-	//	String isAdmin = "";
+	String sessionId = "";
+	String isAdmin = "";
 		
 		if (event.getPropertyName().equals("checkIfAuthenticationDone")) {
 			String result = (String) event.getNewValue();
 			
-			Toast.makeText(getApplicationContext(), "Result = " + result, Toast.LENGTH_LONG).show();
-			//finish();
-			
-			/*if ("-1".equals(result)) { //SessionId could not be created.
+			if ("StatusPending".equals(result)) { //Credentials correct but registration is still pending.
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
+				finish();				
+			} else if ("LogInFailed".equals(result)) { //SessionId could not be created.
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_login) + "Result = " + result,Toast.LENGTH_LONG).show();
 				finish();
-			} else if ("0".equals(result)) { //Credentials incorrect. Allow to re-enter.
+			} else if ("NotFound".equals(result)) { //Credentials incorrect. Allow to re-enter.
 				email.setText("");
 				password.setText("");
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();
-			} else if ("2".equals(result)) { //Credentials correct but registration is still pending.
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
-			} else if (!result.isEmpty() && result.length() > 0 && result.indexOf("+") != -1) { //Credentials correct and registration confirmed. 
-				int index = result.indexOf("+"); result.
-				if (index > 0) {
+			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
+				int index = result.indexOf("$");
 				sessionId = result.substring(0, index);
-				isAdmin = result.substring(index+1);
+				isAdmin = result.substring(index+3);
 				editor.putString("sessionId", sessionId);
 				if ("1".equals(isAdmin)) {
 					editor.putBoolean("isAdmin", true);
@@ -134,30 +130,12 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 					editor.putBoolean("isAdmin", false);
 				}				
 				editor.commit();
-				Toast.makeText(getApplicationContext(),"SessionID = " + sessionId + ", isAdmin = " + isAdmin + ", Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
-				}
-				
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID = " + sessionId + ", isAdmin = " + isAdmin + ", Result = " + result,Toast.LENGTH_LONG).show();
+				finish();				
 			} else {
 				Toast.makeText(getApplicationContext(), "Result = " + result, Toast.LENGTH_LONG).show();
 				finish();
-			}
-			
-			/*if("1".equals(result)) { // Credentials correct and registration is confirmed. Write to shared preferences.
-				editor.putString("email", email.getText().toString());
-				editor.putString("password", password.getText().toString());
-				editor.commit();	
-				Toast.makeText(getApplicationContext(),"Welcome! result = " + result ,Toast.LENGTH_SHORT).show();
-				finish();
-			} else if ("2".equals(result)) { // Credentials correct but registration is still pending.
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
-			}
-			else { // Credentials incorrect. Allow to re-enter. 
-				email.setText("");
-				password.setText("");
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();					
-			}*/			
+			}						
 		}		
 	}
 	
@@ -168,7 +146,10 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	}
 	
 	private void doLogIn() {		
-		new Authentication(this, email.getText().toString(), password.getText().toString()).execute();
+		//Password to be encrypted once server side decryption support is in place.
+		//String encyptedPassword = EncryptionUtilities.encodePassword(this, password.getText().toString());
+		String encyptedPassword = password.getText().toString();
+		new Authentication(this, email.getText().toString(), encyptedPassword).execute();
 	}
 	
 	private boolean validateEmail() {

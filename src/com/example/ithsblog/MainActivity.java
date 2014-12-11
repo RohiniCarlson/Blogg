@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		if (mySettings.contains("isAdmin")) {
 															
 			// new CheckIfAuthor(this).execute();			
-			Boolean admin = mySettings.getBoolean("isAdmin", false);
+			boolean admin = mySettings.getBoolean("isAdmin", false);
 			if (admin) {
 				Intent myTriggerActivityIntent=new Intent(this,Posts.class);
 				startActivity(myTriggerActivityIntent);
@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			
 		} else {
 			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
-			myTriggerActivityIntent=new Intent(this,Posts.class);
+			myTriggerActivityIntent=new Intent(this,PostList.class);
 			startActivity(myTriggerActivityIntent);
 			finish();
 		}
