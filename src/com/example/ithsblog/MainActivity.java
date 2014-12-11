@@ -6,9 +6,12 @@ import java.util.ArrayList;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,24 +25,39 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// Send to author view or reader view, check shared preferences for saved mail		
-		new CheckIfAuthor(this).execute();
+		// Send to author view or reader view, check shared preferences for saved mail				
+		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		if (mySettings.contains("isAdmin")) {
+															
+			// new CheckIfAuthor(this).execute();			
+			Boolean admin = mySettings.getBoolean("isAdmin", false);
+			if (admin) {
+				Intent myTriggerActivityIntent=new Intent(this,Posts.class);
+				startActivity(myTriggerActivityIntent);
+				finish();
+			} else {
+				Intent myTriggerActivityIntent=new Intent(this,PostList.class);
+				startActivity(myTriggerActivityIntent);
+				finish();				
+			}			
+			
+		} else {
+			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
+			myTriggerActivityIntent=new Intent(this,Posts.class);
+			startActivity(myTriggerActivityIntent);
+			finish();
+		}
+		
 
 		// Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher); 
 		// new AddPost("hej_title", "hej_text", bitmap).execute();
-		
-
-
-		// new GetComments(this).execute();
 		// new GetObjects(this).execute();
 		// new DeletePost(this, 51).execute();
-
-
-		// GetComments(this, "50").execute();
+		// new GetComments(this, "50").execute();
 		// new GetObjects(this).execute();
-		// new DeletePost(this, 51).execute();
+		// new DeletePost(this, "74").execute();
 		// new AddComments(this, "", "", "").execute();
-
 		
 	}
 

@@ -2,14 +2,14 @@
 package com.example.ithsblog;
 
 import java.io.File;
-
+import java.io.IOException;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +23,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Posts extends ActionBarActivity {
@@ -56,7 +55,14 @@ public class Posts extends ActionBarActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
-
+	
+	private int exifToDegrees(int exifOrientation) {        
+	    if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } 
+	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; } 
+	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }            
+	    return 0;    
+	 }
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		super.onActivityResult(requestCode, resultCode, intent);
@@ -79,7 +85,18 @@ public class Posts extends ActionBarActivity {
 				String title = editTitle.getText().toString();
 				
 				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-				String text = editTitle.getText().toString();
+				String text = editTxt.getText().toString();
+				
+				ExifInterface exif;
+				try {
+					exif = new ExifInterface(imageUri.getPath());
+					int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+					int rotationInDegrees = exifToDegrees(rotation);
+					Log.d("hej","rotation: "+rotationInDegrees);
+				} catch (IOException e1) {				
+					e1.printStackTrace();
+				}
+				
 				
 				new AddPost(title,text,bitmap).execute();				
 				
