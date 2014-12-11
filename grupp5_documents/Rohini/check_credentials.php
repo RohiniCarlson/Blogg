@@ -11,8 +11,13 @@
 
 	$count = mysqli_num_rows($result);	
   if ($count > 0) {
-    echo "Found";
-
+    //echo "Found";
+     while ($row = mysqli_fetch_assoc($result)) {
+      $status = $row["status"];
+      $id = $row["id"];
+      $isAdmin = $row["readerOrAdmin"];
+      echo "status:" . $status . "/id:" . $id . "/isAdmin:" . $isAdmin;
+     }
   }	else {
     echo "Not Found";
   }
