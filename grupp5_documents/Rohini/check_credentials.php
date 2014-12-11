@@ -7,17 +7,15 @@
 	$mail = mysqli_real_escape_string($con, $_GET['mail']);	
 	$password = mysqli_real_escape_string($con, $_GET['password']);
 
-  echo "mail:" . $mail . "/password:" . $password;
+  $result = mysqli_query($con,"SELECT status, id, readerOrAdmin FROM iths_users WHERE mail = '$mail'");
 
- //  $result = mysqli_query($con,"SELECT status, id, readerOrAdmin FROM iths_users WHERE mail = '$mail'");
+	$count = mysqli_num_rows($result);	
+  if ($count > 0) {
+    echo "Found";
 
-	// $count = mysqli_num_rows($result);	
- //  if ($count > 0) {
- //    echo "Found";
-
- //  }	else {
- //    echo "Not Found";
- //  }
+  }	else {
+    echo "Not Found";
+  }
 
   // if ($count > 0) {
   //   while ($row = mysqli_fetch_assoc($result)) {
