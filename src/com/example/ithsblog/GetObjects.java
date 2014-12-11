@@ -46,7 +46,7 @@ public class GetObjects extends AsyncTask<String, Void, ArrayList<JsonObjects>>{
 			HttpClient clienten = new DefaultHttpClient(); 
 			
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			pairs.add(new BasicNameValuePair("post1", "value2"));
+			pairs.add(new BasicNameValuePair("offset", "20"));
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
 			HttpResponse response = clienten.execute(post); 

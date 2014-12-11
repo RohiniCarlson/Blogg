@@ -28,12 +28,14 @@ public class EditPost extends AsyncTask<String,Void,String>{
 	private String title;
 	private String text;
 	private Bitmap bitmap;
+	private String post_id;
 
 	// konstruktor, ta emot rubrik, text, eventuell bild
-	public EditPost(String title, String text, Bitmap bitmap) {
+	public EditPost(String title, String text, String post_id, Bitmap bitmap) {
 		setTitle(title);
 		setText(text);
 		setImg(bitmap);
+		this.post_id = post_id;
 	}
 
 
@@ -71,6 +73,7 @@ public class EditPost extends AsyncTask<String,Void,String>{
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
 			pairs.add(new BasicNameValuePair("title", getTitle()));
 			pairs.add(new BasicNameValuePair("text", getText()));
+			pairs.add(new BasicNameValuePair("post_id", this.post_id));
 
 			if (bitmap != null) {
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();

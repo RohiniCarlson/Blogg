@@ -27,8 +27,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_post_list);
-		new GetPosts(this).execute();
+		setContentView(R.layout.activity_post_list);		
 	}
 	
 	@Override
