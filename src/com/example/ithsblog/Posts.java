@@ -32,6 +32,7 @@ public class Posts extends ActionBarActivity {
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
+	Bitmap bitmap;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,72 +71,93 @@ public class Posts extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		if(resultCode == Activity.RESULT_OK){
-			Uri selectedImage = imageUri;
-			getContentResolver().notifyChange(selectedImage, null);
-
-			ImageView imageView = (ImageView)findViewById(R.id.image_view);
-			ContentResolver cr = getContentResolver();
 			
-			Bitmap bitmap;
+			final Button uploadButton = (Button) findViewById(R.id.up_button);
+			uploadButton.setOnClickListener(new View.OnClickListener(){
 
-			try{
-				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-				imageView.setImageBitmap(bitmap);
-				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
-				
-				EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
-				String title = editTitle.getText().toString();
-				
-				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-				String text = editTxt.getText().toString();
-				
-				int rotation = 0;
-				int rotationInDegrees = 0;
-				
-				ExifInterface exif;
-				try {
-					exif = new ExifInterface(imageUri.getPath());
-					rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
-					rotationInDegrees = exifToDegrees(rotation);
-					Log.d("hej","rotation: "+rotationInDegrees);
-				} catch (IOException e1) {				
-					e1.printStackTrace();
-				}
-				
-				Matrix matrix = new Matrix();
-				if (true) {
-				// if (rotation != 0f) {
-					matrix.preRotate(rotationInDegrees);
-				
-					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-					int width = 640;
-					int height = 480;					
+				public void onClick(View v){;
+										
 					
-					int imageWidth = bitmap.getWidth();
-					int imageHeight = bitmap.getHeight();
-					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
+					//Rostad macka med bild.
+					Toast toast = new Toast(Posts.this);
+				    ImageView view = new ImageView(Posts.this); 
+				    view.setImageResource(R.drawable.upload); 
+				    toast.setView(view); 
+				    toast.show();
+
+				    Uri selectedImage = imageUri;
+					getContentResolver().notifyChange(selectedImage, null);
+
+					ImageView imageView = (ImageView)findViewById(R.id.image_view);
+					ContentResolver cr = getContentResolver();
 					
-					 					
-					if (imageWidth < imageHeight){
-						int scalefactor = imageWidth/720;
-						imageWidth = 720;
-						imageHeight = imageHeight/scalefactor;						
-					} else {
-						int scalefactor = imageHeight/720;
-						imageHeight = 720;
-						imageWidth = imageWidth/scalefactor;											
+					
+
+					try{
+						bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+						imageView.setImageBitmap(bitmap);						
+						
+						EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+						String title = editTitle.getText().toString();
+						
+						EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+						String text = editTxt.getText().toString();
+						
+						int rotation = 0;
+						int rotationInDegrees = 0;
+						
+						ExifInterface exif;
+						try {
+							exif = new ExifInterface(imageUri.getPath());
+							rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+							rotationInDegrees = exifToDegrees(rotation);
+							Log.d("hej","rotation: "+rotationInDegrees);
+						} catch (IOException e1) {				
+							e1.printStackTrace();
+						}
+						
+						Matrix matrix = new Matrix();
+						if (true) {
+						// if (rotation != 0f) {
+							matrix.preRotate(rotationInDegrees);
+						
+							// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+							int width = 640;
+							int height = 480;					
+							
+							int imageWidth = bitmap.getWidth();
+							int imageHeight = bitmap.getHeight();
+							Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
+							
+							 					
+							if (imageWidth < imageHeight){
+								int scalefactor = imageWidth/720;
+								imageWidth = 720;
+								imageHeight = imageHeight/scalefactor;						
+							} else {
+								int scalefactor = imageHeight/720;
+								imageHeight = 720;
+								imageWidth = imageWidth/scalefactor;											
+							}
+							Log.d("hej",imageHeight+" "+imageWidth);
+							bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
+							bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+							
+						}
+						
+						new AddPost(title,text,bitmap).execute();				
+						
+					}catch(Exception e){
+						Log.d(logtag, e.toString());
 					}
-					Log.d("hej",imageHeight+" "+imageWidth);
-					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
-					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
-					
+				    
+				    uploadButton.setEnabled(false);
+				    
+//					Intent intent = new Intent(Posts.this, ReadPost.class);
+//					startActivity(intent);
 				}
-				
-				new AddPost(title,text,bitmap).execute();				
-				
-			}catch(Exception e){
-				Log.d(logtag, e.toString());
-			}
+			});
+			
 
 		}
 
