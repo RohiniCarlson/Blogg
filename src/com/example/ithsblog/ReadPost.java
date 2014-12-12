@@ -8,11 +8,14 @@ import org.json.JSONObject;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,10 +44,13 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	private EditText comment;
 	private ListView listView;
 	private View post;
-	private boolean author = false;
+	private boolean author = true;
 	private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 	private ArrayAdapter<JSONObject> adapter;
 	private Button editButton, deleteButton, addButton;
+	private boolean first = true;
+//	private SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
+
 	
 	
 	private OnClickListener editButtonListener = new OnClickListener() {
@@ -69,7 +75,9 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
         commentText = comment.getText().toString();
         comment.setText("");
         user_id="55";
+        first = false;
         new AddComments(this, id, commentText, user_id).execute();
+        
         
         Intent newIntent = new Intent(ReadPost.this, ReadPost.class);
 		newIntent.putExtra("ID", id);
@@ -112,13 +120,15 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		text = intent.getStringExtra("TEXT");
 		id = intent.getStringExtra("ID");
 		imageURL = intent.getStringExtra("IMAGEURL");
+		
+		new CheckIfAuthor(this).execute();
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
 		
-		new CheckIfAuthor(this).execute();
+		
 		//new GetComments(this).execute();
 		
 	}
@@ -170,6 +180,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.read_post, menu);
+//			menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("author", false));
 		return true;
 	}
 
@@ -179,7 +190,10 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_new_post) {
+			Intent intent = new Intent (ReadPost.this , Posts.class);
+        	startActivity(intent);
+        	finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -196,7 +210,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 			}
 		} else if(event.getPropertyName().equals("getCommentsDone")){
 			list = (ArrayList<JSONObject>) event.getNewValue();
-			startListView();
+				startListView();
 		} else if(event.getPropertyName().equals("addCommentsDone")){
 			new GetComments(this, id).execute();
 		}
@@ -220,11 +234,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		   popup.setHeight(popupHeight);
 		   popup.setFocusable(true);
 		 
-		 
-		   // Clear the default translucent background
-		   //popup.setBackgroundDrawable(new BitmapDrawable());
-		   
-		 
+
 		   // Displaying the popup at the specified location, + offsets.
 		   popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
