@@ -107,14 +107,26 @@ public class Posts extends ActionBarActivity {
 				
 					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
 					int width = 640;
-					int height = 480;
-					// bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+					int height = 480;					
 					
 					int imageWidth = bitmap.getWidth();
 					int imageHeight = bitmap.getHeight();
 					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
 					
-					bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+					 					
+					if (imageWidth < imageHeight){
+						int scalefactor = imageWidth/720;
+						imageWidth = 720;
+						imageHeight = imageHeight/scalefactor;						
+					} else {
+						int scalefactor = imageHeight/720;
+						imageHeight = 720;
+						imageWidth = imageWidth/scalefactor;											
+					}
+					Log.d("hej",imageHeight+" "+imageWidth);
+					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
+					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+					
 				}
 				
 				new AddPost(title,text,bitmap).execute();				
