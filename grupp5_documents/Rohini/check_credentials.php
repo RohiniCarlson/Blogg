@@ -4,8 +4,8 @@
 
 <?php
    
-	$mail = mysqli_real_escape_string($con, $_GET['mail']);	
-	$password = mysqli_real_escape_string($con, $_GET['password']);
+	$mail = mysqli_real_escape_string($con, $_POST['mail']);	
+	$password = mysqli_real_escape_string($con, $_POST['password']);
 
   $result = mysqli_query($con,"SELECT status, id, readerOrAdmin FROM iths_users WHERE mail = '$mail'");
 

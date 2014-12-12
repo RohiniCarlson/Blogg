@@ -7,6 +7,7 @@
 	$name = mysqli_real_escape_string($con, $_POST['name']);
 	$mail = mysqli_real_escape_string($con, $_POST['email']);	
 	$password = mysqli_real_escape_string($con, $_POST['password']);
+	
 	if (empty($mail)) { // Checks if email is empty.
 		echo "EmailEmpty";
 	} elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
