@@ -17,47 +17,24 @@
 	$count = mysqli_num_rows($result);
 
   if ($count > 0) {
-     while ($row = mysqli_fetch_assoc($result)) {
-      $status = $row["status"];
-      $id = $row["id"];
-      $isAdmin = $row["readerOrAdmin"];
-    }
-
-    echo "status(" . $status .")/id(" . $id . ")/isAdmin(" . $isAdmin . ")";
-    // if ($status == 1) {
-    //   echo "StatusConfirmed";
-    // } else {
-    //   echo "StatusPending";
-    // }
-  } else {
-    echo "NotFound";
-  }
-
-  
-
-  if ($count > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
       $status = $row["status"];
       $id = $row["id"];
       $isAdmin = $row["readerOrAdmin"];
     }
-    if ($status == 1) { // Correct credentials, but registration incomplete (status=0, i.e pending).
-      // $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
-      // if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE id = '$id'")) {
-      //   echo $session_id . "$$$" . $isAdmin;
-      // } else {
-      //     echo "LogInFailed";
-        echo "StatusConfirmed";     
-    } else { // Correct credentials and registration complete (status=1, i.e confirmed).
-      
-        echo "StatusPending";
-      // }
-
+    if ($status == 1) { // Correct credentials and registration complete (status=1, i.e confirmed).
+        $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
+        if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE id = '$id'")) {
+          echo $session_id . "$$$" . $isAdmin;
+        } else {
+          echo "LogInFailed";         
+    } else { // Correct credentials, but registration pending (status=0, i.e confirmed).
+      echo "StatusPending";
     }
-  }	else {
+  } else {
     echo "NotFound";
   }
-    
+
 ?>
 
 <?php
