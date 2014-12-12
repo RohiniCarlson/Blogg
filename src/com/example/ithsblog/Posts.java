@@ -87,8 +87,8 @@ public class Posts extends ActionBarActivity {
 				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
 				String text = editTxt.getText().toString();
 				
-				int rotation;
-				int rotationInDegrees;
+				int rotation = 0;
+				int rotationInDegrees = 0;
 				
 				ExifInterface exif;
 				try {
@@ -100,12 +100,22 @@ public class Posts extends ActionBarActivity {
 					e1.printStackTrace();
 				}
 				
-//				Matrix matrix = new Matrix();
-//				if (rotation != 0f) {
-//					matrix.preRotate(rotationInDegrees);
-//				}
-//				Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-//				Bitmap adjustedBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0, width, height, matrix, true);
+				Matrix matrix = new Matrix();
+				if (true) {
+				// if (rotation != 0f) {
+					matrix.preRotate(rotationInDegrees);
+				
+					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+					int width = 640;
+					int height = 480;
+					// bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+					
+					int imageWidth = bitmap.getWidth();
+					int imageHeight = bitmap.getHeight();
+					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
+					
+					bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+				}
 				
 				new AddPost(title,text,bitmap).execute();				
 				
