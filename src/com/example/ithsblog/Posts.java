@@ -91,6 +91,7 @@ public class Posts extends ActionBarActivity {
 			}
 
 			final Button uploadButton = (Button) findViewById(R.id.up_button);
+			uploadButton.setBackgroundResource(R.drawable.check);
 			uploadButton.setOnClickListener(new View.OnClickListener(){
 
 				public void onClick(View v){;
@@ -153,15 +154,19 @@ public class Posts extends ActionBarActivity {
 					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
 
 					new AddPost(title,text,bitmap).execute();				
-
+					uploadButton.setEnabled(false);
+					uploadButton.setBackgroundResource(R.drawable.grey);
+//					Intent intent = new Intent(Posts.this, ReadPost.class);
+//					startActivity(intent);
+					
 				}catch(Exception e){
 					Log.d(logtag, e.toString());
 				}
+				
+				
+				
 
-				uploadButton.setEnabled(false);
-
-				//					Intent intent = new Intent(Posts.this, ReadPost.class);
-				//					startActivity(intent);
+									
 				}
 			});
 

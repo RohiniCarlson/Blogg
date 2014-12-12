@@ -22,25 +22,27 @@ import android.widget.ListView;
 public class PostList extends ActionBarActivity implements PropertyChangeListener{
 
 	private ListView listView;
-	private ArrayList<JSONObject> postList = new ArrayList<JSONObject>(); 
-	
+	private ArrayList<JSONObject> postList = new ArrayList<JSONObject>();
+	private SharedPreferences mySettings;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_list);		
+		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		supportInvalidateOptionsMenu() ;
 		//new GetPosts(this).execute();
-		
+
 	}
-	
+
 	// Handle clicking the items in the list
 	private void listClick() {
-		
+
 		ListView listView = (ListView) findViewById(R.id.content_list);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -65,9 +67,9 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 			}
 		});		
-		
+
 	}
-	
+
 	// 
 	private void startListView() {
 
@@ -81,10 +83,10 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		inflateMenu(menu);	
+		inflateMenu(menu);
 		return true;						
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		inflateMenu(menu);
@@ -97,9 +99,9 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-			if (id == R.id.action_settings) {
-				Intent intent = new Intent (PostList.this , Posts.class);
-	        	startActivity(intent);
+		if (id == R.id.action_new_post) {
+			Intent intent = new Intent (PostList.this , Posts.class);
+			startActivity(intent);
 			return true;
 		}else if (id == R.id.action_login) {
 			showSignInScreen();
@@ -111,18 +113,19 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
+
 	private void inflateMenu(Menu menu) {
 		menu.clear();
-		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
+//		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
 		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);
 		}
+		menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("isAdmin", false));
 	}
-	
+
 	private void showSignInScreen() {
 		Intent intent = new Intent(PostList.this, LogIn.class);
 		startActivity(intent);

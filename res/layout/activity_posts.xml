@@ -55,18 +55,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="25sp" />
 
-            <Button
-                android:id="@+id/camera_button"
-                android:layout_width="156dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_weight="1"
-                android:background="#202020"
-                android:text="@string/button_upload"
-                android:textColor="#FFFFFF"
- 
-                android:textSize="25sp" />
+          
 
             <Button
                 android:id="@+id/up_button"
@@ -75,7 +64,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
-                android:background="#202020"
+                android:background="#D8D8D8"
                 android:text="@string/up_upload"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp" />

@@ -46,8 +46,8 @@ public class PostListAdapter extends ArrayAdapter<JSONObject>{
 			ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
 			imageView.setImageBitmap(null);
 			if(currentObjects.getString("image").equals("1")){
-				String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+currentObjects.getString("id")+".jpg";
-				if(ImageCache.checkCache(currentObjects.getString("id"))){
+				String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+currentObjects.getString("id")+"_thumb.jpg";
+				if(ImageCache.checkCache(url)){
 					imageView.setImageBitmap(ImageCache.getBitmap());
 				}else{
 					new ImageLoader(imageView, url, currentObjects.getString("id")).execute();
