@@ -116,7 +116,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	private void inflateMenu(Menu menu) {
 		menu.clear();
 		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
-		if (mySettings.contains("email") && mySettings.contains("password")) {			
+		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);
