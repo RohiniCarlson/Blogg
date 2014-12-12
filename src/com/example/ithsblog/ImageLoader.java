@@ -53,9 +53,9 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>{
 				        	
 				        bitmap = BitmapFactory.decodeStream(input);
 				        
-				        ImageCache.cacheImage(id, bitmap);
+				        ImageCache.cacheImage(imageURL, bitmap);
 						
-				        view.setImageBitmap(bitmap);
+//				        view.setImageBitmap(bitmap);
 				        
 				        return bitmap;
 				        
@@ -65,10 +65,10 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>{
 				    }
 		return null;
 	}
-//	@Override
-//	protected void onPostExecute(Bitmap result){
-//		if(!result.equals(null)){
-//			view.setImageBitmap(result);
-//		}
-//	}
+	@Override
+	protected void onPostExecute(Bitmap result){
+
+			view.setImageBitmap(result);
+
+	}
 }
