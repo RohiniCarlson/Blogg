@@ -28,8 +28,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_post_list);
-		new GetPosts(this).execute();
+		setContentView(R.layout.activity_post_list);		
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
@@ -119,7 +118,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	private void inflateMenu(Menu menu) {
 		menu.clear();
 //		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
-		if (mySettings.contains("email") && mySettings.contains("password")) {			
+		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);

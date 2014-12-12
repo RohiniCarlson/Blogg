@@ -1,8 +1,7 @@
 package com.example.ithsblog;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,44 +17,34 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ParseException;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-public class AddComments extends AsyncTask<String,Void,String>{
+public class EditPost extends AsyncTask<String,Void,String>{
 
-	private String theId;
+	private String title;
 	private String text;
-	private String user_id;
-	private PropertyChangeSupport pcs;
+	private Bitmap bitmap;
+	private String post_id;
 
 	// konstruktor, ta emot rubrik, text, eventuell bild
-	public AddComments(PropertyChangeListener c, String theId, String text, String user_id) {
-		pcs = new PropertyChangeSupport(this);
-		pcs.addPropertyChangeListener(c);
-		
+	public EditPost(String title, String text, String post_id, Bitmap bitmap) {
+		setTitle(title);
 		setText(text);
-		setTheId(theId);
-		setUser_id(user_id);
-		pcs = new PropertyChangeSupport(this);
-		pcs.addPropertyChangeListener(c);
+		setImg(bitmap);
+		this.post_id = post_id;
 	}
 
-	public String getUser_id() {
-		return user_id;
+
+	public String getTitle() {
+		return title;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-	
-	public String getTheId() {
-		return theId;
-	}
-
-	public void setTheId(String theId) {
-		this.theId = theId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getText() {
@@ -66,17 +55,35 @@ public class AddComments extends AsyncTask<String,Void,String>{
 		this.text = text;
 	}
 
+	public Bitmap getImg() {
+		return bitmap;
+	}
+
+	public void setImg(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
+
 	protected String doInBackground(String... params) {
 
 		try { 
-			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/add_comments.php"); 
+			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/edit_posts.php"); 
 			HttpClient clienten = new DefaultHttpClient(); 
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
-			pairs.add(new BasicNameValuePair("post_id", getTheId()));
-			pairs.add(new BasicNameValuePair("user_id", getUser_id()));
-			pairs.add(new BasicNameValuePair("comment", getText()));
+			pairs.add(new BasicNameValuePair("title", getTitle()));
+			pairs.add(new BasicNameValuePair("text", getText()));
+			pairs.add(new BasicNameValuePair("post_id", this.post_id));
+
+			if (bitmap != null) {
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); //compress to which format you want.
+				byte [] byte_arr = stream.toByteArray();
+				String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT); 
+				pairs.add(new BasicNameValuePair("image", image_str));	
+			} else {
+				pairs.add(new BasicNameValuePair("image", "0"));
+			}
 
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 
@@ -88,7 +95,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
-				// Log.d("hej","tjoo comment "+data);
+				Log.d("hej","tjoo "+data);
 				return data; 
 			} 
 
@@ -101,13 +108,8 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	}
 
 	@Override 
-<<<<<<< HEAD
-	protected void onPostExecute(String result) { 
-		//pcs.firePropertyChange("addCommentsDone", null, result); 
-=======
-	protected void onPostExecute(String result) { 		
-		pcs.firePropertyChange("addCommentsDone", null, result);
->>>>>>> 4d5305f317c1de120a5ff5e1295dbbb72538764c
+	protected void onPostExecute(String string) { 
+		Log.d("hej","post added");
 	} 
 
 }
