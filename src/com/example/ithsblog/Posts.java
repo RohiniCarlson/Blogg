@@ -32,6 +32,7 @@ public class Posts extends ActionBarActivity {
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
+	Bitmap bitmap;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,13 +71,43 @@ public class Posts extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		if(resultCode == Activity.RESULT_OK){
+			
+			final Button uploadButton = (Button) findViewById(R.id.up_button);
+			uploadButton.setOnClickListener(new View.OnClickListener(){
+
+				public void onClick(View v){
+					//EditText id, titel hämtas från edittext
+					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+					String title = editTitle.getText().toString();
+					
+					//EditText id, text hämtas från edittext
+					EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+					String text = editTxt.getText().toString();
+					
+					//titel,text och bild skickas till AddPost klassen
+					new AddPost(title,text,bitmap).execute();
+					
+					//Rostad macka med bild.
+					Toast toast = new Toast(Posts.this);
+				    ImageView view = new ImageView(Posts.this); 
+				    view.setImageResource(R.drawable.upload); 
+				    toast.setView(view); 
+				    toast.show();
+
+				    
+				    uploadButton.setEnabled(false);
+				    
+//					Intent intent = new Intent(Posts.this, ReadPost.class);
+//					startActivity(intent);
+				}
+			});
 			Uri selectedImage = imageUri;
 			getContentResolver().notifyChange(selectedImage, null);
 
 			ImageView imageView = (ImageView)findViewById(R.id.image_view);
 			ContentResolver cr = getContentResolver();
 			
-			Bitmap bitmap;
+			
 
 			try{
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
