@@ -75,17 +75,8 @@ public class Posts extends ActionBarActivity {
 			final Button uploadButton = (Button) findViewById(R.id.up_button);
 			uploadButton.setOnClickListener(new View.OnClickListener(){
 
-				public void onClick(View v){
-					//EditText id, titel hämtas från edittext
-					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
-					String title = editTitle.getText().toString();
-					
-					//EditText id, text hämtas från edittext
-					EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-					String text = editTxt.getText().toString();
-					
-					//titel,text och bild skickas till AddPost klassen
-					new AddPost(title,text,bitmap).execute();
+				public void onClick(View v){;
+										
 					
 					//Rostad macka med bild.
 					Toast toast = new Toast(Posts.this);
@@ -94,6 +85,71 @@ public class Posts extends ActionBarActivity {
 				    toast.setView(view); 
 				    toast.show();
 
+				    Uri selectedImage = imageUri;
+					getContentResolver().notifyChange(selectedImage, null);
+
+					ImageView imageView = (ImageView)findViewById(R.id.image_view);
+					ContentResolver cr = getContentResolver();
+					
+					
+
+					try{
+						bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+						imageView.setImageBitmap(bitmap);						
+						
+						EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+						String title = editTitle.getText().toString();
+						
+						EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+						String text = editTxt.getText().toString();
+						
+						int rotation = 0;
+						int rotationInDegrees = 0;
+						
+						ExifInterface exif;
+						try {
+							exif = new ExifInterface(imageUri.getPath());
+							rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+							rotationInDegrees = exifToDegrees(rotation);
+							Log.d("hej","rotation: "+rotationInDegrees);
+						} catch (IOException e1) {				
+							e1.printStackTrace();
+						}
+						
+						Matrix matrix = new Matrix();
+						if (true) {
+						// if (rotation != 0f) {
+							matrix.preRotate(rotationInDegrees);
+						
+							// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+							int width = 640;
+							int height = 480;					
+							
+							int imageWidth = bitmap.getWidth();
+							int imageHeight = bitmap.getHeight();
+							Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
+							
+							 					
+							if (imageWidth < imageHeight){
+								int scalefactor = imageWidth/720;
+								imageWidth = 720;
+								imageHeight = imageHeight/scalefactor;						
+							} else {
+								int scalefactor = imageHeight/720;
+								imageHeight = 720;
+								imageWidth = imageWidth/scalefactor;											
+							}
+							Log.d("hej",imageHeight+" "+imageWidth);
+							bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
+							bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+							
+						}
+						
+						new AddPost(title,text,bitmap).execute();				
+						
+					}catch(Exception e){
+						Log.d(logtag, e.toString());
+					}
 				    
 				    uploadButton.setEnabled(false);
 				    
@@ -101,72 +157,7 @@ public class Posts extends ActionBarActivity {
 //					startActivity(intent);
 				}
 			});
-			Uri selectedImage = imageUri;
-			getContentResolver().notifyChange(selectedImage, null);
-
-			ImageView imageView = (ImageView)findViewById(R.id.image_view);
-			ContentResolver cr = getContentResolver();
 			
-			
-
-			try{
-				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-				imageView.setImageBitmap(bitmap);
-				Toast.makeText(Posts.this, "Bild sparad", Toast.LENGTH_LONG).show();
-				
-				EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
-				String title = editTitle.getText().toString();
-				
-				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-				String text = editTxt.getText().toString();
-				
-				int rotation = 0;
-				int rotationInDegrees = 0;
-				
-				ExifInterface exif;
-				try {
-					exif = new ExifInterface(imageUri.getPath());
-					rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
-					rotationInDegrees = exifToDegrees(rotation);
-					Log.d("hej","rotation: "+rotationInDegrees);
-				} catch (IOException e1) {				
-					e1.printStackTrace();
-				}
-				
-				Matrix matrix = new Matrix();
-				if (true) {
-				// if (rotation != 0f) {
-					matrix.preRotate(rotationInDegrees);
-				
-					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-					int width = 640;
-					int height = 480;					
-					
-					int imageWidth = bitmap.getWidth();
-					int imageHeight = bitmap.getHeight();
-					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
-					
-					 					
-					if (imageWidth < imageHeight){
-						int scalefactor = imageWidth/720;
-						imageWidth = 720;
-						imageHeight = imageHeight/scalefactor;						
-					} else {
-						int scalefactor = imageHeight/720;
-						imageHeight = 720;
-						imageWidth = imageWidth/scalefactor;											
-					}
-					Log.d("hej",imageHeight+" "+imageWidth);
-					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
-					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
-					
-				}
-				
-				new AddPost(title,text,bitmap).execute();				
-				
-			}catch(Exception e){
-				Log.d(logtag, e.toString());
-			}
 
 		}
 
