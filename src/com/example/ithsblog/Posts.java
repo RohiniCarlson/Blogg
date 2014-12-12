@@ -7,14 +7,12 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -89,8 +87,8 @@ public class Posts extends ActionBarActivity {
 				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
 				String text = editTxt.getText().toString();
 				
-				int rotation;
-				int rotationInDegrees;
+				int rotation = 0;
+				int rotationInDegrees = 0;
 				
 				ExifInterface exif;
 				try {
@@ -102,12 +100,34 @@ public class Posts extends ActionBarActivity {
 					e1.printStackTrace();
 				}
 				
-//				Matrix matrix = new Matrix();
-//				if (rotation != 0f) {
-//					matrix.preRotate(rotationInDegrees);
-//				}
-//				Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-//				Bitmap adjustedBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0, width, height, matrix, true);
+				Matrix matrix = new Matrix();
+				if (true) {
+				// if (rotation != 0f) {
+					matrix.preRotate(rotationInDegrees);
+				
+					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+					int width = 640;
+					int height = 480;					
+					
+					int imageWidth = bitmap.getWidth();
+					int imageHeight = bitmap.getHeight();
+					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);
+					
+					 					
+					if (imageWidth < imageHeight){
+						int scalefactor = imageWidth/720;
+						imageWidth = 720;
+						imageHeight = imageHeight/scalefactor;						
+					} else {
+						int scalefactor = imageHeight/720;
+						imageHeight = 720;
+						imageWidth = imageWidth/scalefactor;											
+					}
+					Log.d("hej",imageHeight+" "+imageWidth);
+					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
+					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+					
+				}
 				
 				new AddPost(title,text,bitmap).execute();				
 				
@@ -123,14 +143,8 @@ public class Posts extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		inflateMenu(menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
-	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		inflateMenu(menu);
-		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
@@ -141,35 +155,7 @@ public class Posts extends ActionBarActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		}else if (id == R.id.action_login) {
-			showSignInScreen();
-			return true;
-		} else if (id == R.id.action_logout) {
-			LogOut.doLogOut(this);
-			supportInvalidateOptionsMenu();
-			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		supportInvalidateOptionsMenu();	
-	}
-	
-	private void inflateMenu(Menu menu) {
-		menu.clear();
-		SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
-		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
-			getMenuInflater().inflate(R.menu.logout, menu);
-		} else {
-			getMenuInflater().inflate(R.menu.post_list, menu);
-		}
-	}
-	
-	private void showSignInScreen() {
-		Intent intent = new Intent(Posts.this, LogIn.class);
-		startActivity(intent);
 	}
 }
