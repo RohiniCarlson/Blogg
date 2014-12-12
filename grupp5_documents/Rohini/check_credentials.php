@@ -27,7 +27,8 @@
         if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE id = '$id'")) {
           echo $session_id . "$$$" . $isAdmin;
         } else {
-          echo "LogInFailed";         
+          echo "LogInFailed"; 
+        }        
     } else { // Correct credentials, but registration pending (status=0, i.e confirmed).
       echo "StatusPending";
     }
