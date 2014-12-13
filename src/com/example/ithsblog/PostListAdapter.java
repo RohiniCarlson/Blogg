@@ -1,5 +1,6 @@
 package com.example.ithsblog;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -20,10 +21,13 @@ public class PostListAdapter extends ArrayAdapter<JSONObject>{
 	private LayoutInflater inflater;
 	private ArrayList list;
 	private int pos;
+	private int count = 10;
+	private PropertyChangeListener pcl;
 
 	public PostListAdapter(Activity activity, ArrayList<JSONObject> list) {
 		super(activity, R.layout.posts_list_item, list);
 		this.list = list;
+		pcl = (PropertyChangeListener) activity;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 	}
@@ -39,6 +43,12 @@ public class PostListAdapter extends ArrayAdapter<JSONObject>{
 
 		// Find the post
 		JSONObject currentObjects = (JSONObject) list.get(pos);
+		
+		// Fill the list
+		if(pos == list.size()-1 && count == list.size()){
+			new GetPosts(pcl, ""+count).execute();
+			count = count + 10;
+		}
 
 		// Fill the view
 		try {

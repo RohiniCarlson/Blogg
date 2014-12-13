@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ReadPost extends ActionBarActivity implements PropertyChangeListener {
@@ -44,13 +45,10 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	private EditText comment;
 	private ListView listView;
 	private View post;
-	private boolean author = true;
 	private ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 	private ArrayAdapter<JSONObject> adapter;
 	private Button editButton, deleteButton, addButton;
-	private boolean first = true;
-//	private SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
-
+	private SharedPreferences mySettings;
 	
 	
 	private OnClickListener editButtonListener = new OnClickListener() {
@@ -60,8 +58,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
     };
     private OnClickListener deleteButtonListener = new OnClickListener() {
 		public void onClick(View v) { 			
-			
-			showPopup(ReadPost.this);
+			new CheckIfAuthor(ReadPost.this).execute();
 		}
     };
     private OnClickListener addButtonListener = new OnClickListener() {
@@ -74,22 +71,15 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		comment = (EditText) post.findViewById(R.id.item_comment);
         commentText = comment.getText().toString();
         comment.setText("");
-        user_id="55";
-        first = false;
-        new AddComments(this, id, commentText, user_id).execute();
+        if(mySettings.contains("user_id")){
+        	new AddComments(this, id, commentText, mySettings.getString("user_id", "55")).execute();
+        }else{
+			Toast.makeText(this, "You must be logged in to post a comment", Toast.LENGTH_LONG).show();
+        }
         
-        
-        Intent newIntent = new Intent(ReadPost.this, ReadPost.class);
-		newIntent.putExtra("ID", id);
-		newIntent.putExtra("DATE", date);
-		newIntent.putExtra("TITLE", title);
-		newIntent.putExtra("TEXT", text);
-		newIntent.putExtra("IMAGEURL", imageURL);
-		finish();
-		startActivity(newIntent);
-		
 	}
 
+    
 	private void edit() {
 		Intent intent = new Intent(ReadPost.this, Posts.class);
 		intent.putExtra("ID", id);
@@ -101,6 +91,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		startActivity(intent);
 		
 	}
+	
 	
 	private void delete() {
 		new DeletePost(this, id).execute();
@@ -121,7 +112,9 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		id = intent.getStringExtra("ID");
 		imageURL = intent.getStringExtra("IMAGEURL");
 		
-		new CheckIfAuthor(this).execute();
+		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
+		new GetComments(this, id).execute();
+		startListView();
 	}
 	
 	@Override
@@ -135,9 +128,9 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 
 	private void startListView() {
 		
-		adapter = new ReadPostListAdapter(ReadPost.this, list);
+		adapter = new ReadPostListAdapter(ReadPost.this, list, id);
 		LayoutInflater inflater = LayoutInflater.from(this);
-		if(author){
+		if(mySettings.getBoolean("isAdmin", false)){
 		post = inflater.inflate(R.layout.author_post, null);
 		editButton = (Button) post.findViewById(R.id.edit_button);
         editButton.setOnClickListener(editButtonListener);
@@ -180,7 +173,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.read_post, menu);
-//			menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("author", false));
+			menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("author", false));
 		return true;
 	}
 
@@ -202,16 +195,19 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if(event.getPropertyName().equals("checkIfAuthorDone")){
-			if(event.getNewValue().equals("0")){
-				author = true;
-				new GetComments(this, id).execute();
+			if(event.getNewValue().equals("1")){
+				showPopup(ReadPost.this);
 			}else{
-				new GetComments(this, id).execute();				
+				Toast.makeText(this, "Failed to authenticate admin user", Toast.LENGTH_LONG).show();
 			}
 		} else if(event.getPropertyName().equals("getCommentsDone")){
-			list = (ArrayList<JSONObject>) event.getNewValue();
-				startListView();
+			ArrayList<JSONObject> eventList = (ArrayList<JSONObject>) event.getNewValue(); 
+			for(int i = 0; i < eventList.size(); i++){
+				list.add(eventList.get(i));
+				adapter.notifyDataSetChanged();
+			}				
 		} else if(event.getPropertyName().equals("addCommentsDone")){
+			list.clear();
 			new GetComments(this, id).execute();
 		}
 	}
