@@ -113,7 +113,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		imageURL = intent.getStringExtra("IMAGEURL");
 		
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
-		new GetComments(this, id).execute();
+		new GetComments(this, id, "0").execute();
 		startListView();
 	}
 	
@@ -208,7 +208,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 			}				
 		} else if(event.getPropertyName().equals("addCommentsDone")){
 			list.clear();
-			new GetComments(this, id).execute();
+			new GetComments(this, id, "0").execute();
 		}
 	}
 	

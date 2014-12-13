@@ -45,11 +45,16 @@ public class ReadPostListAdapter extends ArrayAdapter<JSONObject>{
 		// Find the post
 		JSONObject currentObjects = (JSONObject) list.get(pos);
 
+		// Reset count if necessary
+		if(list.size() == 10){
+			count = 10;
+		}
+		
 		// Fill the list
-//		if(pos == list.size()-1 && count == list.size()){
-//			new GetComments(pcl, id, ""+count).execute();
-//			count = count + 10;
-//		}
+		if(pos == list.size()-1 && count == list.size()){
+			new GetComments(pcl, id, ""+count).execute();
+			count = count + 10;
+		}
 
 		// Fill the view
 		try {
