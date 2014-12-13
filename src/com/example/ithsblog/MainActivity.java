@@ -46,7 +46,6 @@ public class MainActivity extends ActionBarActivity implements PropertyChangeLis
 			
 		} else {
 			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
-			myTriggerActivityIntent=new Intent(this,PostList.class);
 			startActivity(myTriggerActivityIntent);
 			finish();
 		}

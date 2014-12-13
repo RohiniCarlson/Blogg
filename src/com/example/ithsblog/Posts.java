@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -155,25 +156,24 @@ public class Posts extends ActionBarActivity {
 					new AddPost(title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
-//					Intent intent = new Intent(Posts.this, ReadPost.class);
-//					startActivity(intent);
+//					goToReadPosts();
+
 					
 				}catch(Exception e){
 					Log.d(logtag, e.toString());
 				}
 				
-				
-				
-
-									
+						
 				}
 			});
-
-
 		}
-
 	}
-
+	/*
+	private void goToReadPosts(){
+		Intent intent = new Intent(Posts.this, ReadPost.class);
+		startActivity(intent);
+		}	
+		*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

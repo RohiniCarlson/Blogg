@@ -24,19 +24,22 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	private ListView listView;
 	private ArrayList<JSONObject> postList = new ArrayList<JSONObject>();
 	private SharedPreferences mySettings;
+	private ArrayAdapter<JSONObject> adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_list);		
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
+		new GetPosts(this, "0").execute();
+		startListView();
+		listClick();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		supportInvalidateOptionsMenu() ;
-		//new GetPosts(this).execute();
 
 	}
 
@@ -72,11 +75,9 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	// 
 	private void startListView() {
 
-		ArrayAdapter<JSONObject> adapter = new PostListAdapter(PostList.this, postList);
+		adapter = new PostListAdapter(PostList.this, postList);
 		listView = (ListView) findViewById(R.id.content_list);
 		listView.setAdapter(adapter);
-
-
 	}
 
 
@@ -116,6 +117,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 	private void inflateMenu(Menu menu) {
 		menu.clear();		
+		menu.clear();
 		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
 		} else {
@@ -138,8 +140,11 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		postList = (ArrayList<JSONObject>) event.getNewValue();
-		startListView();
-		listClick();
+		ArrayList<JSONObject> eventList = (ArrayList<JSONObject>) event.getNewValue();
+		
+		for(int i = 0; i < eventList.size(); i++){
+			postList.add(eventList.get(i));
+			adapter.notifyDataSetChanged();
+		}
 	}
 }
