@@ -38,6 +38,7 @@
         </activity>
         <activity
             android:name=".Posts"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_posts"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
