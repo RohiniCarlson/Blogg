@@ -103,10 +103,11 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-	String sessionId = "";
-	String isAdmin = "";
-		
-		if (event.getPropertyName().equals("checkIfAuthenticationDone")) {
+		String sessionId = "";
+		String isAdmin = "";
+		boolean adminMarker = false;
+
+		if ("checkIfAuthenticationDone".equals(event.getPropertyName())) {
 			String result = (String) event.getNewValue();
 			
 			if ("StatusPending".equals(result)) { //Credentials correct but registration is still pending.
@@ -125,13 +126,18 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 				isAdmin = result.substring(index+3);
 				editor.putString("sessionId", sessionId);
 				if ("1".equals(isAdmin)) {
+					adminMarker = true;
 					editor.putBoolean("isAdmin", true);
 				} else {
 					editor.putBoolean("isAdmin", false);
 				}				
 				editor.commit();
 				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID = " + sessionId + ", isAdmin = " + isAdmin + ", Result = " + result,Toast.LENGTH_LONG).show();
-				finish();				
+				if (adminMarker) {
+					showPostsScreen();
+				} else {
+					finish();
+				}							
 			} else {
 				Toast.makeText(getApplicationContext(), "Result = " + result, Toast.LENGTH_LONG).show();
 				finish();
@@ -141,6 +147,12 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	
 	private void showRegisterNewScreen(){
 		Intent intent = new Intent(LogIn.this, RegisterNewUser.class);
+		startActivity(intent);
+		finish();
+	}
+	
+	private void showPostsScreen(){
+		Intent intent = new Intent(LogIn.this, Posts.class);
 		startActivity(intent);
 		finish();
 	}

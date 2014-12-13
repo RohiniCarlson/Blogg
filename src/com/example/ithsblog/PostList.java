@@ -67,7 +67,6 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 					e.printStackTrace();
 				}
 				startActivity(intent);
-
 			}
 		});		
 
@@ -117,13 +116,21 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 
 	private void inflateMenu(Menu menu) {
+		menu.clear();		
 		menu.clear();
 		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);
 		}
-		menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("isAdmin", false));
+		MenuItem newPost = menu.findItem(R.id.action_new_post);
+		if(newPost!=null) {
+			if (mySettings.contains("isAdmin")) {
+				newPost.setVisible(mySettings.getBoolean("isAdmin", false));	
+			}else {
+				newPost.setVisible(false);
+			}
+		}		
 	}
 
 	private void showSignInScreen() {

@@ -51,6 +51,8 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	private SharedPreferences mySettings;
 
 
+	
+	
 	private OnClickListener editButtonListener = new OnClickListener() {
 		public void onClick(View v) { 			
 			edit();
