@@ -28,11 +28,13 @@ public class GetComments extends AsyncTask<String, Void, ArrayList<JSONObject>>{
 	private PropertyChangeSupport pcs;
 	ArrayList<JSONObject> objectList = new ArrayList<JSONObject>();
 	private String theId;
+	private String offset;
 	
 	// konstruktor
-	public GetComments(PropertyChangeListener c, String theId) {
+	public GetComments(PropertyChangeListener c, String theId, String offset) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
+		this.offset = offset;
 		
 		this.theId = theId;
 	}
@@ -50,6 +52,7 @@ public class GetComments extends AsyncTask<String, Void, ArrayList<JSONObject>>{
 			
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("post_id", this.theId));
+			pairs.add(new BasicNameValuePair("offset", this.offset));
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
 			HttpResponse response = clienten.execute(post); 
