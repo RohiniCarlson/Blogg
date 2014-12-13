@@ -49,7 +49,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	private ArrayAdapter<JSONObject> adapter;
 	private Button editButton, deleteButton, addButton;
 	private boolean first = true;
-//	private SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
+	private SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(this);		
 
 	
 	
@@ -120,7 +120,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		text = intent.getStringExtra("TEXT");
 		id = intent.getStringExtra("ID");
 		imageURL = intent.getStringExtra("IMAGEURL");
-		
+		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
 		new CheckIfAuthor(this).execute();
 	}
 	
@@ -180,7 +180,10 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.read_post, menu);
-//			menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("author", false));
+		MenuItem newPost = menu.findItem(R.id.action_new_post);
+		if(newPost!=null) {
+		   newPost.setVisible(mySettings.getBoolean("isAdmin", false));			
+		}
 		return true;
 	}
 
