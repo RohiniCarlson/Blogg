@@ -1,16 +1,19 @@
 
 package com.example.ithsblog;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+// import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+// import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -29,8 +32,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class Posts extends ActionBarActivity {
-	private AddPost addPost;
+public class Posts extends ActionBarActivity implements PropertyChangeListener {
+	// private AddPost addPost;
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
@@ -130,15 +133,14 @@ public class Posts extends ActionBarActivity {
 					Matrix matrix = new Matrix();
 
 					if (rotation != 0f) {
-					matrix.preRotate(rotationInDegrees);
+						matrix.preRotate(rotationInDegrees);
 					}
 					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-										
 
 					int imageWidth = bitmap.getWidth();
 					int imageHeight = bitmap.getHeight();
 					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);					
-					
+
 					imageWidth = bitmap.getWidth();
 					imageHeight = bitmap.getHeight();
 
@@ -153,17 +155,17 @@ public class Posts extends ActionBarActivity {
 					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
 					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
 
-					new AddPost(title,text,bitmap).execute();				
+					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
-//					goToReadPosts();
+					//					goToReadPosts();
 
-					
+
 				}catch(Exception e){
 					Log.d(logtag, e.toString());
 				}
-				
-						
+
+
 				}
 			});
 		}
@@ -173,7 +175,7 @@ public class Posts extends ActionBarActivity {
 		Intent intent = new Intent(Posts.this, ReadPost.class);
 		startActivity(intent);
 		}	
-		*/
+	 */
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,5 +228,14 @@ public class Posts extends ActionBarActivity {
 	private void showSignInScreen() {
 		Intent intent = new Intent(Posts.this, LogIn.class);
 		startActivity(intent);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals("postAdded")) {									
+			Log.d("hej",(String) event.getNewValue()); 
+			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
+			startActivity(myTriggerActivityIntent);			
+		}		
 	}
 }
