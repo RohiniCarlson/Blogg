@@ -6,16 +6,20 @@ import java.beans.PropertyChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegisterNewUser extends ActionBarActivity implements PropertyChangeListener{
@@ -33,15 +37,6 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	private TextWatcher commonTextWatcher = new TextWatcher() {		
 		@Override
 		public void afterTextChanged(Editable s) {									
-			if (username.getText().hashCode() == s.hashCode()){
-				validateUserName();
-			} else if (email.getText().hashCode() == s.hashCode()) {
-				validateEmail();					
-			} else if (password1.getText().hashCode() == s.hashCode()) {
-				validatePassword(password1, password2);							
-			} else if (password2.getText().hashCode() == s.hashCode()) {
-				validatePassword(password2, password1);			
-			}
 			enableDisableRegisterNewButton();	
 		}
 				
@@ -95,6 +90,13 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	}
 	
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		enableDisableRegisterNewButton();
+	}
+	
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("createNewUserDone")) {
 			String result = (String) event.getNewValue();
@@ -107,25 +109,67 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 			} else if ("PasswordEmpty".equals(result)) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
 			} else if ("RegistrationConfirmed".equals(result)) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_confirmed) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_confirmed) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(RegisterNewUser.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_confirmed);
 			} else if ("RegistrationPending".equals(result)) {				
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(RegisterNewUser.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending);
 			} else if ("MailSent".equals(result)) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_sent) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();				
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_sent) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();	
+				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_sent);
 			} else if ("MailUnsent".equals(result)) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_unsent) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_unsent) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_unsent);
 			} else if ("NotCreated".equals(result)) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_created) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_created) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.user_not_created);
 			} else {
 				Toast.makeText(getApplicationContext(), "Result = " + result,Toast.LENGTH_LONG).show();
 			}
 		}		
 	}
+	
+	// Displays the pop-up dialog window
+		private void showPopup(final Activity context, int width, int height, int layoutId, int xml_layout_id, int msg_id) {
+			int popupWidth = width;
+			int popupHeight = height;
+
+			// Inflate the appropriate popup_layout.xml, defined by Id
+			LinearLayout viewGroup = (LinearLayout) context.findViewById(layoutId);
+			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View layout = layoutInflater.inflate(xml_layout_id, viewGroup);
+
+			// Create the pop-up dialog
+			final PopupWindow popup = new PopupWindow(context);
+			popup.setContentView(layout);
+			popup.setWidth(popupWidth);
+			popup.setHeight(popupHeight);
+			popup.setFocusable(true);
+
+			// Display the pop-up dialog at the specified location, + offsets.
+			popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+			
+			// Get reference to TextView and set specified message
+			TextView infoText = (TextView) layout.findViewById(R.id.info_text);		
+			infoText.setText(getResources().getString(msg_id));				
+
+			// Get a reference to Ok button, and close the pop-up dialog when clicked.
+			// Close the current activity as well.
+			Button close = (Button) layout.findViewById(R.id.ok_button);
+			close.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					popup.dismiss();
+					context.finish();
+				}
+			});
+		}
 	
 	private boolean validateUserName() {	
 		if (Validation.isEmpty(username.getText())) {
@@ -177,5 +221,6 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	private void registerNewUser(){
 		// Password should be encrypted using EncryptionUtilities.encodePassword()
 		new CreateNewUser(this, username.getText().toString(), email.getText().toString(), password1.getText().toString()).execute();				
-	}	
+	}
+	
 }

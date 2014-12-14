@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_register_popup_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/popupbackgrey" >      
+    
+    <TextView
+	   android:id="@+id/info_text"
+	   android:layout_marginTop="5dp"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:textColor="#FFFFFF"/>
+    
+    <Button
+	   android:id="@+id/ok_button"
+	   android:layout_marginTop="15dp"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:layout_gravity="center_horizontal"
+	   android:background="#202020"
+	   android:textColor="#FFFFFF"
+	   android:textStyle="bold"
+	   android:text="@string/ok" />    
+
+</LinearLayout>
