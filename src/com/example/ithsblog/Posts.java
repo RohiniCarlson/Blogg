@@ -158,7 +158,12 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
+<<<<<<< HEAD
 					//					goToReadPosts();
+=======
+					Intent intent = new Intent(Posts.this, Posts.class);
+					startActivity(intent);
+>>>>>>> 26eeae0d573fca3ddaa02632ad9c3036b3fdd90f
 
 
 				}catch(Exception e){
@@ -170,12 +175,16 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 			});
 		}
 	}
+<<<<<<< HEAD
 	/*
 	private void goToReadPosts(){
 		Intent intent = new Intent(Posts.this, ReadPost.class);
 		startActivity(intent);
 		}	
 	 */
+=======
+	
+>>>>>>> 26eeae0d573fca3ddaa02632ad9c3036b3fdd90f
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
