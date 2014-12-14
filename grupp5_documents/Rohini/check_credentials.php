@@ -13,21 +13,21 @@
   $isAdmin = "";
   $session_id = "";
 
-  $result = mysqli_query($con,"SELECT status,id,password,readerOrAdmin FROM iths_users WHERE mail = '$mail'");
+  $result = mysqli_query($con,"SELECT id,status,password,readerOrAdmin FROM iths_users WHERE mail = '$mail'");
 
 	$count = mysqli_num_rows($result);
 
   if ($count > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-      $status = $row["status"];
       $id = $row["id"];
-      $hashedPassword = $row["password"]
+      $status = $row["status"];
+      $hashedPassword = $row["password"];
       $isAdmin = $row["readerOrAdmin"];
     }
     if (validate_password($password,$hashedPassword)) { // Valid password.
       if ($status == 1) { // Correct credentials and registration complete (status=1, i.e confirmed).
         $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
-        if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE id = '$id'")) {
+        if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE mail = '$mail'")) {
           echo $session_id . "$$$" . $isAdmin;
         } else {
           echo "LogInFailed"; 

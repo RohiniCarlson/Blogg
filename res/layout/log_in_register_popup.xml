@@ -20,9 +20,7 @@
 	   android:layout_width="wrap_content"
 	   android:layout_height="wrap_content"
 	   android:layout_gravity="center_horizontal"
-	   android:background="#202020"
-	   android:textColor="#FFFFFF"
-	   android:textStyle="bold"
+	   style="@style/button_style"
 	   android:text="@string/ok" />    
 
 </LinearLayout>
