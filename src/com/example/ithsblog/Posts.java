@@ -156,7 +156,9 @@ public class Posts extends ActionBarActivity {
 					new AddPost(title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
-//					goToReadPosts();
+					Intent intent = new Intent(Posts.this, Posts.class);
+					startActivity(intent);
+
 
 					
 				}catch(Exception e){
@@ -168,12 +170,7 @@ public class Posts extends ActionBarActivity {
 			});
 		}
 	}
-	/*
-	private void goToReadPosts(){
-		Intent intent = new Intent(Posts.this, ReadPost.class);
-		startActivity(intent);
-		}	
-		*/
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
