@@ -53,4 +53,5 @@
 	<string name="mail_sent">A verification email has been sent to the\nemail address you provided. Please check\nyour spam and junk folders as well.\n\nClick the link in the email sent to confirm your registration. Thanks!!</string>
 	<string name="mail_unsent">Our apologies, verification email could not\nbe sent.\n\nWe will resend it ASAP!</string>
 	<string name="user_not_created">Our apologies, you could not be registered.\n\nPlease try again later!</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>		
 </resources>
