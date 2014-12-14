@@ -114,6 +114,8 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent event) {
 		String sessionId = "";
 		String isAdmin = "";
+		String userId = "";
+		String temp = "";
 		boolean adminMarker = false;
 
 		if ("checkIfAuthenticationDone".equals(event.getPropertyName())) {
@@ -131,19 +133,23 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.invalid_credentials, false);
 			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
-				int index = result.indexOf("$");
-				sessionId = result.substring(0, index);
-				isAdmin = result.substring(index+3);
+				sessionId = result.substring(0, result.indexOf("$"));
 				editor.putString("sessionId", sessionId);
+				temp = result.substring(result.indexOf("$")+3);
+				if(temp.indexOf("$") != -1) {
+					isAdmin = temp.substring(0, temp.indexOf("$"));
+				}
 				if ("1".equals(isAdmin)) {
 					adminMarker = true;
 					editor.putBoolean("isAdmin", true);
 				} else {
 					editor.putBoolean("isAdmin", false);
-				}				
+				}
+				userId = temp.substring(temp.indexOf("$")+3);
+				editor.putInt("userId", Integer.parseInt(userId));				
 				editor.commit();
-				//Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID = " + sessionId + ", isAdmin = " + isAdmin + ", Result = " + result,Toast.LENGTH_LONG).show();
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID =" + sessionId + ", isAdmin =" + isAdmin + ", userId =" + userId + ", Result =" + result,Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
 				if (adminMarker) {
 					showPostsScreen();
 				} else {

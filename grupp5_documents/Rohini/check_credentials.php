@@ -28,7 +28,7 @@
       if ($status == 1) { // Correct credentials and registration complete (status=1, i.e confirmed).
         $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
         if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE mail = '$mail'")) {
-          echo $session_id . "$$$" . $isAdmin;
+          echo $session_id . "$$$" . $isAdmin . "$$$" . $id;
         } else {
           echo "LogInFailed"; 
         }        
