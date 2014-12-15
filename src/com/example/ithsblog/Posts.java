@@ -84,6 +84,9 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ImageView imageView = (ImageView)findViewById(R.id.image_view);
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+				
+				//resize here?
+				
 				imageView.setImageBitmap(bitmap);
 			} catch (FileNotFoundException e2) {
 				// TODO Auto-generated catch block
@@ -144,14 +147,25 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 					imageWidth = bitmap.getWidth();
 					imageHeight = bitmap.getHeight();
 
-					if (imageWidth < imageHeight){							
-						imageWidth = 720;
-						imageHeight = 1280;						
+					if (imageWidth < imageHeight){	
+						// portrait
+						int factor = imageWidth/720;						
+						imageWidth = 720;						
+						// calculate height 
+						imageHeight = imageHeight/factor;
+						Log.d("hej", ""+factor);
+						Log.d("hej","portrait");
+						
 					} else {
-						imageWidth = 1280;
-						imageHeight = 720;												
+						// landscape						
+						int factor = imageHeight/720;						
+						imageHeight = 720;						
+						// calculate height 
+						imageWidth = imageWidth/factor;
+						Log.d("hej","landscape");
+						
 					}
-					Log.d("hej",imageHeight+" "+imageWidth);
+					Log.d("hej",imageWidth+" "+imageHeight);
 					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
 					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
 
@@ -240,7 +254,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("postAdded")) {									
-			Log.d("hej",(String) event.getNewValue()); 
+			// Log.d("hej",(String) event.getNewValue()); 
 			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
 			startActivity(myTriggerActivityIntent);			
 		}		
