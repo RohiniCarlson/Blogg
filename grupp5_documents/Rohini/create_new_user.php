@@ -43,9 +43,9 @@
                 		<p> 
                 			Hi! 
                 			<br><br>
-                			Please click the button below to confirm your registration and be able to write comments.
+                			Please click the button below to confirm your registration.
                 			<br><br><br>
-                			<a href='{$confirmationLink}' target='_blank' style='padding:1em; font-weight:bold; background-color:#9999FF; color:#white;'>CONFIRM REGISTRATION</a>
+                			<a href='{$confirmationLink}' target='_blank' style='padding:1em; font-weight:bold; background-color:black; color:white;'>CONFIRM REGISTRATION</a>
                 			<br><br><br>
                 			Kind regards,
                 			<br>

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -114,23 +115,16 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent event) {
 		String sessionId = "";
 		String isAdmin = "";
-		//String userId = "";
-		String temp = "";
 		boolean adminMarker = false;
 
 		if ("checkIfAuthenticationDone".equals(event.getPropertyName())) {
 			String result = (String) event.getNewValue();
 			
 			if ("StatusPending".equals(result)) { //Credentials correct but registration is still pending.
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending, true);				
 			} else if ("LogInFailed".equals(result)) { //SessionId could not be created.
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_login) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.could_not_login, true);
 			} else if ("NotFound".equals(result)) { //Credentials incorrect. Allow to re-enter.
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.invalid_credentials, false);
 			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
 				sessionId = result.substring(0, result.indexOf("$"));
@@ -143,8 +137,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 					editor.putBoolean("isAdmin", false);
 				}			
 				editor.commit();
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID =" + sessionId + ", isAdmin =" + isAdmin + ", Result =" + result,Toast.LENGTH_LONG).show();
-				//Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.logged_out), Toast.LENGTH_LONG).show();
 				if (adminMarker) {
 					showPostsScreen();
 				} else {
@@ -202,8 +195,10 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private void enableDisableLogInButton() {
 		if (validateEmail() && validatePassword()) {
 			logInButton.setEnabled(true);
+			logInButton.setBackgroundResource(R.drawable.check);
 		} else {
-			logInButton.setEnabled(false);
+			logInButton.setEnabled(false);					
+			logInButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
 		}
 	}
 	

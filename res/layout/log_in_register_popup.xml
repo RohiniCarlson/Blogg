@@ -17,10 +17,12 @@
     <Button
 	   android:id="@+id/ok_button"
 	   android:layout_marginTop="15dp"
-	   android:layout_width="wrap_content"
+	   android:layout_width="150dp"
 	   android:layout_height="wrap_content"
 	   android:layout_gravity="center_horizontal"
-	   style="@style/button_style"
+	   android:background="#202020"
+       android:textColor="#FFFFFF"
+       android:textSize="25sp"     
 	   android:text="@string/ok" />    
 
 </LinearLayout>

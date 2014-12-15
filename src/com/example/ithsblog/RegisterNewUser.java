@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -100,6 +101,7 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("createNewUserDone")) {
 			String result = (String) event.getNewValue();
+			// Result from server side validations
 			if("EmailEmpty".equals(result)) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
 			} else if ("EmailInvalid".equals(result)) {
@@ -109,24 +111,14 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 			} else if ("PasswordEmpty".equals(result)) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.required) + "Result = " + result,Toast.LENGTH_LONG).show();				
 			} else if ("RegistrationConfirmed".equals(result)) {
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_confirmed) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(RegisterNewUser.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_confirmed);
 			} else if ("RegistrationPending".equals(result)) {				
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(RegisterNewUser.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending);
-			} else if ("MailSent".equals(result)) {
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_sent) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();	
+			} else if ("MailSent".equals(result)) {	
 				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_sent);
 			} else if ("MailUnsent".equals(result)) {
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.mail_unsent) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_unsent);
 			} else if ("NotCreated".equals(result)) {
-				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_created) + "Result = " + result,Toast.LENGTH_LONG).show();
-				//finish();
 				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.user_not_created);
 			} else {
 				Toast.makeText(getApplicationContext(), "Result = " + result,Toast.LENGTH_LONG).show();
@@ -213,8 +205,10 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 	private void enableDisableRegisterNewButton() {
 		if(validateUserName() && validateEmail() && validatePassword(password1, password2) && validatePassword(password2, password1)) {
 			registerButton.setEnabled(true);
+			registerButton.setBackgroundResource(R.drawable.check);
 		}else{
 			registerButton.setEnabled(false);
+			registerButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
 		}
 	}
 	

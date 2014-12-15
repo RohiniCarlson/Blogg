@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.widget.Toast;
 
 public class LogOut {
 	
@@ -22,6 +22,7 @@ public class LogOut {
 			editor.remove("isAdmin"); // will delete key isAdmin
 			editor.commit();
 		}
+		Toast.makeText(c, c.getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
 		showPostListScreen(c);
 	}
 		

@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,7 +33,6 @@ public class Authentication extends AsyncTask<String,Void,String>{
 	@Override
 	protected String doInBackground(String... params) {
 		try{
-			//String link = "http://jonasekstrom.se/ANNAT/iths_blog/check_credentials.php?mail="+mail+"&password="+password;
 			HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/check_credentials.php"); 
 			
 			HttpClient client = new DefaultHttpClient();
@@ -46,10 +43,6 @@ public class Authentication extends AsyncTask<String,Void,String>{
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
 			HttpResponse response = client.execute(post);
-			
-			/*HttpGet request = new HttpGet();
-			request.setURI(new URI(link));
-			HttpResponse response = client.execute(request);*/
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			while ((in.readLine()) != null) {
