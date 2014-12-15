@@ -1,5 +1,7 @@
 package com.example.ithsblog;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -28,9 +30,12 @@ public class AddPost extends AsyncTask<String,Void,String>{
 	private String title;
 	private String text;
 	private Bitmap bitmap;
+	private PropertyChangeSupport pcs;
 
 	// konstruktor, ta emot rubrik, text, eventuell bild
-	public AddPost(String title, String text, Bitmap bitmap) {
+	public AddPost(PropertyChangeListener c, String title, String text, Bitmap bitmap) {
+		pcs = new PropertyChangeSupport(this);
+		pcs.addPropertyChangeListener(c);
 		setTitle(title);
 		setText(text);
 		setImg(bitmap);
@@ -69,6 +74,8 @@ public class AddPost extends AsyncTask<String,Void,String>{
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
+			// pairs.add(new BasicNameValuePair("title", "åäö"));
+			// pairs.add(new BasicNameValuePair("text", "åäö"));
 			pairs.add(new BasicNameValuePair("title", getTitle()));
 			pairs.add(new BasicNameValuePair("text", getText()));
 
@@ -82,17 +89,16 @@ public class AddPost extends AsyncTask<String,Void,String>{
 				pairs.add(new BasicNameValuePair("image", "0"));
 			}
 
-			post.setEntity(new UrlEncodedFormEntity(pairs));
+			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
 
-			HttpResponse response = clienten.execute(post); 
-
+			HttpResponse response = clienten.execute(post); 			
 			int status = response.getStatusLine().getStatusCode();
 
 			if (status == 200) { 
 
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
-				Log.d("hej","tjoo "+data);
+				// Log.d("hej","tjoo "+data);
 				return data; 
 			} 
 
@@ -106,7 +112,7 @@ public class AddPost extends AsyncTask<String,Void,String>{
 
 	@Override 
 	protected void onPostExecute(String string) { 
-		Log.d("hej","post added");
+		pcs.firePropertyChange("postAdded", null, string);
 	} 
 
 }

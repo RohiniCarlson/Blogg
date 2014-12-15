@@ -42,7 +42,8 @@ public class CreateNewUser extends AsyncTask<String,Void,String>{
 			pairs.add(new BasicNameValuePair("name", username));
 			pairs.add(new BasicNameValuePair("email", email));
 			pairs.add(new BasicNameValuePair("password", password));
-			post.setEntity(new UrlEncodedFormEntity(pairs));
+			
+			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
 			
 			HttpResponse response = client.execute(post);
 		

@@ -16,7 +16,10 @@
     <string name="up_upload">Upload</string>
     <string name="title_activity_post_list">PostList</string>
     <string name="title_activity_read_post">ReadPost</string>
-
+    <string name="delete_post">Are you sure you want to delete this post?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    
     <!-- PostList -->
     <string name="new_post">new post</string>
 
@@ -30,10 +33,11 @@
     <string name="required">Required!</string>
     <string name="welcome">Welcome!</string>
     <string name="invalid_email">Enter valid e-mail: abc@fgh.com</string>
-    <string name="invalid_credentials">Invalid Email/Password! Please re-enter if already a member.</string>
-    <string name="could_not_login">Our apologies, you could not be logged in at this time. Please try again later.</string>
+    <string name="invalid_credentials">Invalid Email/Password!\n\nPlease re-enter if already a member.</string>
+    <string name="could_not_login">Our apologies, you could not be logged in at\nthis time.\n\nPlease try again later.</string>
     <string name="image_description">Person</string>
-
+    <string name="ok">OK</string>
+    
     <!-- Log Out -->
     <string name="log_out">Log Out</string>
 
@@ -44,11 +48,10 @@
     <string name="not_identical">Passwords must be identical</string>
     <string name="email_hint">E-mail</string>
     <string name="register">Register</string>
-    <string name="registration_confirmed">Already a member! You may login if you have not already done so.</string>
-    <string name="registration_pending">Please confirm your registration by clicking on the link sent to you via email.</string>
-    <string name="mail_sent">A verification email has been sent to the email address you provided. Please click the link in the email sent to confirm your registration. Thanks!!</string>
-    <string name="mail_unsent">Our apologies, verification email could not be sent. We will resend it ASAP!</string>
-    <string name="user_not_created">Our apologies, you could not be registered. Please try again later!</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
-
+    <string name="registration_confirmed">Already a member! You may login if you have\nnot already done so.</string>
+	<string name="registration_pending">Please confirm your registration by clicking\non the link sent to you via email.\n\nYou need to do this before you can log in.</string>
+	<string name="mail_sent">A verification email has been sent to the\nemail address you provided. Please check\nyour spam and junk folders as well.\n\nClick the link in the email sent to confirm your registration. Thanks!!</string>
+	<string name="mail_unsent">Our apologies, verification email could not\nbe sent.\n\nWe will resend it ASAP!</string>
+	<string name="user_not_created">Our apologies, you could not be registered.\n\nPlease try again later!</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>		
 </resources>

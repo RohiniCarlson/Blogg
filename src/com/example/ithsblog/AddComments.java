@@ -75,9 +75,9 @@ public class AddComments extends AsyncTask<String,Void,String>{
 			pairs.add(new BasicNameValuePair("post_id", getTheId()));
 			pairs.add(new BasicNameValuePair("session_id", getUser_id()));
 			pairs.add(new BasicNameValuePair("comment", getText()));
-
-			post.setEntity(new UrlEncodedFormEntity(pairs));
-
+			
+			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
+			
 			HttpResponse response = clienten.execute(post); 
 
 			int status = response.getStatusLine().getStatusCode();

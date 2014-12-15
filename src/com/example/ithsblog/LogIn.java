@@ -6,17 +6,24 @@ import java.beans.PropertyChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LogIn extends ActionBarActivity implements PropertyChangeListener{
@@ -43,11 +50,6 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	private TextWatcher commonTextWatcher = new TextWatcher() {	
 		@Override
 		public void afterTextChanged(Editable s) {
-			if (email.getText().hashCode() == s.hashCode()) {
-				validateEmail();
-		    } else if (password.getText().hashCode() == s.hashCode()) {
-		    	validatePassword();	            
-		    }			
 			enableDisableLogInButton();
 		}
 	
@@ -59,7 +61,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			// TODO Auto-generated method stub		
+			// TODO Auto-generated method stub
 		}		
 	};
 
@@ -80,6 +82,13 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		// Create shared preferences -- can be accessed by all activities in application
 		mySettings = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = mySettings.edit();		
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		enableDisableLogInButton();
 	}
 
 	@Override
@@ -105,34 +114,37 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent event) {
 		String sessionId = "";
 		String isAdmin = "";
+		//String userId = "";
+		String temp = "";
 		boolean adminMarker = false;
 
 		if ("checkIfAuthenticationDone".equals(event.getPropertyName())) {
 			String result = (String) event.getNewValue();
 			
 			if ("StatusPending".equals(result)) { //Credentials correct but registration is still pending.
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();				
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_pending) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending, true);				
 			} else if ("LogInFailed".equals(result)) { //SessionId could not be created.
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_login) + "Result = " + result,Toast.LENGTH_LONG).show();
-				finish();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_login) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//finish();
+				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.could_not_login, true);
 			} else if ("NotFound".equals(result)) { //Credentials incorrect. Allow to re-enter.
-				email.setText("");
-				password.setText("");
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_credentials) + "Result = " + result,Toast.LENGTH_LONG).show();
+				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.invalid_credentials, false);
 			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
-				int index = result.indexOf("$");
-				sessionId = result.substring(0, index);
-				isAdmin = result.substring(index+3);
+				sessionId = result.substring(0, result.indexOf("$"));
 				editor.putString("sessionId", sessionId);
+				isAdmin = result.substring(result.indexOf("$")+3);
 				if ("1".equals(isAdmin)) {
 					adminMarker = true;
 					editor.putBoolean("isAdmin", true);
 				} else {
 					editor.putBoolean("isAdmin", false);
-				}				
+				}			
 				editor.commit();
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID = " + sessionId + ", isAdmin = " + isAdmin + ", Result = " + result,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID =" + sessionId + ", isAdmin =" + isAdmin + ", Result =" + result,Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
 				if (adminMarker) {
 					showPostsScreen();
 				} else {
@@ -166,10 +178,10 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	
 	private boolean validateEmail() {
 		if(!Validation.isValidEmail(email.getText())){
-			email.setError(getResources().getString(R.string.invalid_email));
+		    email.setError(getResources().getString(R.string.invalid_email));
 			return false;
 		} else if (Validation.isEmpty(email.getText())) {
-			email.setError(getResources().getString(R.string.required));
+   			email.setError(getResources().getString(R.string.required));
 			return false;
 		} else {
 			email.setError(null);
@@ -193,5 +205,44 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 		} else {
 			logInButton.setEnabled(false);
 		}
+	}
+	
+	// Displays the pop-up dialog window
+	private void showPopup(final Activity context, int width, int height, int layoutId, int xml_layout_id, int msg_id, final boolean closeActivity) {
+		int popupWidth = width;
+		int popupHeight = height;
+
+		// Inflate the appropriate popup_layout.xml, defined by Id
+		LinearLayout viewGroup = (LinearLayout) context.findViewById(layoutId);
+		LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = layoutInflater.inflate(xml_layout_id, viewGroup);
+
+		// Create the pop-up dialog
+		final PopupWindow popup = new PopupWindow(context);
+		popup.setContentView(layout);
+		popup.setWidth(popupWidth);
+		popup.setHeight(popupHeight);
+		popup.setFocusable(true);
+
+		// Display the pop-up dialog at the specified location, + offsets.
+		popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
+		
+		// Get reference to TextView and set specified message
+		TextView infoText = (TextView) layout.findViewById(R.id.info_text);		
+		infoText.setText(getResources().getString(msg_id));				
+
+		// Get a reference to Ok button, and close the pop-up dialog when clicked.
+		// Close the current activity as well, if so required.
+		Button close = (Button) layout.findViewById(R.id.ok_button);
+		close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				popup.dismiss();
+				if (closeActivity) {
+					context.finish();
+				}	
+			}
+		});
 	}
 }
