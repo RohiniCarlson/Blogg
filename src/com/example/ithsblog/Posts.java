@@ -46,7 +46,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
 
-
 	}
 
 
@@ -71,6 +70,28 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		return 0;    
 	}
 
+	private Bitmap scaleImage (Bitmap bitmap) {
+
+		int imageWidth = bitmap.getWidth();
+		int imageHeight = bitmap.getHeight();
+		Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
+
+		if (imageWidth > 1000){	
+
+			int factor = imageWidth/1000;						
+			imageWidth = 1000;						
+			// calculate height 
+			imageHeight = imageHeight/factor;
+			Log.d("hej", "factor; "+factor);
+
+			Log.d("hej","New imagewidth and heigh: "+imageWidth+" "+imageHeight);
+			bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);		
+		}
+
+		return bitmap;		
+	}
+
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		super.onActivityResult(requestCode, resultCode, intent);
@@ -84,10 +105,9 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ImageView imageView = (ImageView)findViewById(R.id.image_view);
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-				
-				//resize here?
-				
+
 				imageView.setImageBitmap(bitmap);
+				
 			} catch (FileNotFoundException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -112,8 +132,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 
 				try{
-
-
 					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
 					String title = editTitle.getText().toString();
 
@@ -133,36 +151,11 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 						e1.printStackTrace();
 					}
 
-					
-					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
+					bitmap = scaleImage(bitmap);
 
 					int imageWidth = bitmap.getWidth();
 					int imageHeight = bitmap.getHeight();
-					Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
 
-					imageWidth = bitmap.getWidth();
-					imageHeight = bitmap.getHeight();
-
-//					if (imageWidth < imageHeight){	
-//						// portrait
-//						int factor = imageWidth/720;						
-//						imageWidth = 720;						
-//						// calculate height 
-//						imageHeight = imageHeight/factor;
-//						Log.d("hej", ""+factor);
-//						Log.d("hej","portrait");
-//						
-//					} else {
-//						// landscape						
-//						int factor = imageHeight/720;						
-//						imageHeight = 720;						
-//						// calculate height 
-//						imageWidth = imageWidth/factor;
-//						Log.d("hej","landscape");						
-//					}
-					Log.d("hej",imageWidth+" "+imageHeight);
-					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
-					
 					Matrix matrix = new Matrix();
 
 					if (rotation != 0f) {
@@ -174,13 +167,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
 
-					//					goToReadPosts();
-
-					Intent intent = new Intent(Posts.this, Posts.class);
-					startActivity(intent);
-
-
-
 				}catch(Exception e){
 					Log.d(logtag, e.toString());
 				}
@@ -191,12 +177,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		}
 	}
 
-	/*
-	private void goToReadPosts(){
-		Intent intent = new Intent(Posts.this, ReadPost.class);
-		startActivity(intent);
-		}	
-	 */
 
 
 	@Override
