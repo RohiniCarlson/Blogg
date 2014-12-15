@@ -74,9 +74,10 @@
             android:id="@+id/edit_view_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:hint="@string/head"
             android:inputType="textCapWords"
+            android:maxLength="28"
             android:singleLine="true"
             android:textSize="30sp" />
 
@@ -85,6 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:hint="@string/regular"
             android:inputType="textMultiLine"
             android:maxLines="20"

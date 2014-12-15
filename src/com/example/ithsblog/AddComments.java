@@ -34,35 +34,11 @@ public class AddComments extends AsyncTask<String,Void,String>{
 	public AddComments(PropertyChangeListener c, String theId, String text, String user_id) {
 		pcs = new PropertyChangeSupport(this);
 		pcs.addPropertyChangeListener(c);
-		
-		setText(text);
-		setTheId(theId);
-		setSessionid(user_id);
-	}
-
-	public String getUser_id() {
-		return sessionid;
-	}
-
-	public void setSessionid(String sessionid) {
-		this.sessionid = sessionid;
-	}
-	
-	public String getTheId() {
-		return theId;
-	}
-
-	public void setTheId(String theId) {
+		sessionid = user_id;
+		this.text = text;
 		this.theId = theId;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	protected String doInBackground(String... params) {
 
@@ -72,9 +48,9 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
-			pairs.add(new BasicNameValuePair("post_id", getTheId()));
-			pairs.add(new BasicNameValuePair("session_id", getUser_id()));
-			pairs.add(new BasicNameValuePair("comment", getText()));
+			pairs.add(new BasicNameValuePair("post_id", theId));
+			pairs.add(new BasicNameValuePair("session_id", sessionid));
+			pairs.add(new BasicNameValuePair("comment", text));
 			
 			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
 			
@@ -86,7 +62,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 				HttpEntity entity = response.getEntity(); 
 				String data = EntityUtils.toString(entity); 
-				// Log.d("hej","tjoo comment "+data);
+				Log.d("hej","tjoo comment "+sessionid);
 				return data; 
 			} 
 
