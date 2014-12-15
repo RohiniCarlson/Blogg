@@ -27,7 +27,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 
 	private String theId;
 	private String text;
-	private String user_id;
+	private String sessionid;
 	private PropertyChangeSupport pcs;
 
 	// konstruktor, ta emot rubrik, text, eventuell bild
@@ -37,15 +37,15 @@ public class AddComments extends AsyncTask<String,Void,String>{
 		
 		setText(text);
 		setTheId(theId);
-		setUser_id(user_id);
+		setSessionid(user_id);
 	}
 
 	public String getUser_id() {
-		return user_id;
+		return sessionid;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
 	}
 	
 	public String getTheId() {
