@@ -41,27 +41,32 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+        
         <activity
             android:name=".Camera"
             android:label="@string/title_activity_camera" >
         </activity>
         <activity
             android:name=".PostList"
+            
             android:screenOrientation="portrait"
             android:label="@string/title_activity_post_list" >
         </activity>
         <activity
             android:name=".ReadPost"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_read_post" >
         </activity>
         <activity
             android:name=".RegisterNewUser"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_register_new_user" >
         </activity>
         <activity
             android:name=".LogIn"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_log_in" >
         </activity>
