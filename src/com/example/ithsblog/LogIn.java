@@ -114,7 +114,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent event) {
 		String sessionId = "";
 		String isAdmin = "";
-		String userId = "";
+		//String userId = "";
 		String temp = "";
 		boolean adminMarker = false;
 
@@ -135,20 +135,15 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
 				sessionId = result.substring(0, result.indexOf("$"));
 				editor.putString("sessionId", sessionId);
-				temp = result.substring(result.indexOf("$")+3);
-				if(temp.indexOf("$") != -1) {
-					isAdmin = temp.substring(0, temp.indexOf("$"));
-				}
+				isAdmin = result.substring(result.indexOf("$")+3);
 				if ("1".equals(isAdmin)) {
 					adminMarker = true;
 					editor.putBoolean("isAdmin", true);
 				} else {
 					editor.putBoolean("isAdmin", false);
-				}
-				userId = temp.substring(temp.indexOf("$")+3);
-				editor.putInt("userId", Integer.parseInt(userId));				
+				}			
 				editor.commit();
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID =" + sessionId + ", isAdmin =" + isAdmin + ", userId =" + userId + ", Result =" + result,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome) +" SessionID =" + sessionId + ", isAdmin =" + isAdmin + ", Result =" + result,Toast.LENGTH_LONG).show();
 				//Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
 				if (adminMarker) {
 					showPostsScreen();
