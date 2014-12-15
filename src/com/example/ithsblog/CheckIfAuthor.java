@@ -31,7 +31,7 @@ public class CheckIfAuthor extends AsyncTask<String,Void,String>{
 		try{
 
 			String mail = "jonas@jonasekstrom.se";
-			String password = "zlatanz";
+			String password = "sha256:1000:rr/esrAf2Mf6eDIM5WfnCtiyNYt3MYLq:U9BW/fLgtwkJYeItP2iws52tbPbB9jsX";
 
 			String link = "http://jonasekstrom.se/ANNAT/iths_blog/check_login.php?mail="
 					+mail+"&password="+password;

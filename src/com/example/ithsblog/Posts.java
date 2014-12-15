@@ -46,7 +46,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
 
-
 	}
 
 
@@ -71,6 +70,28 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		return 0;    
 	}
 
+	private Bitmap scaleImage (Bitmap bitmap) {
+
+		int imageWidth = bitmap.getWidth();
+		int imageHeight = bitmap.getHeight();
+		Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
+
+		if (imageWidth > 1000){	
+
+			int factor = imageWidth/1000;						
+			imageWidth = 1000;						
+			// calculate height 
+			imageHeight = imageHeight/factor;
+			Log.d("hej", "factor; "+factor);
+
+			Log.d("hej","New imagewidth and heigh: "+imageWidth+" "+imageHeight);
+			bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);		
+		}
+
+		return bitmap;		
+	}
+
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		super.onActivityResult(requestCode, resultCode, intent);
@@ -84,7 +105,9 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ImageView imageView = (ImageView)findViewById(R.id.image_view);
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+
 				imageView.setImageBitmap(bitmap);
+				
 			} catch (FileNotFoundException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -109,8 +132,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 
 				try{
-
-
 					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
 					String title = editTitle.getText().toString();
 
@@ -130,41 +151,21 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 						e1.printStackTrace();
 					}
 
+					bitmap = scaleImage(bitmap);
+
+					int imageWidth = bitmap.getWidth();
+					int imageHeight = bitmap.getHeight();
+
 					Matrix matrix = new Matrix();
 
 					if (rotation != 0f) {
 						matrix.preRotate(rotationInDegrees);
-					}
-					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
-
-					int imageWidth = bitmap.getWidth();
-					int imageHeight = bitmap.getHeight();
-					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);					
-
-					imageWidth = bitmap.getWidth();
-					imageHeight = bitmap.getHeight();
-
-					if (imageWidth < imageHeight){							
-						imageWidth = 720;
-						imageHeight = 1280;						
-					} else {
-						imageWidth = 1280;
-						imageHeight = 720;												
-					}
-					Log.d("hej",imageHeight+" "+imageWidth);
-					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
-					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+						bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);						
+					}										
 
 					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
-
-					//					goToReadPosts();
-
-					Intent intent = new Intent(Posts.this, Posts.class);
-					startActivity(intent);
-
-
 
 				}catch(Exception e){
 					Log.d(logtag, e.toString());
@@ -176,12 +177,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		}
 	}
 
-	/*
-	private void goToReadPosts(){
-		Intent intent = new Intent(Posts.this, ReadPost.class);
-		startActivity(intent);
-		}	
-	 */
 
 
 	@Override
@@ -240,7 +235,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("postAdded")) {									
-			Log.d("hej",(String) event.getNewValue()); 
+			// Log.d("hej",(String) event.getNewValue()); 
 			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
 			startActivity(myTriggerActivityIntent);			
 		}		
