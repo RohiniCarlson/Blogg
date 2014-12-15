@@ -115,8 +115,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	}
 
 
-	private void inflateMenu(Menu menu) {
-		menu.clear();		
+	private void inflateMenu(Menu menu) {		
 		menu.clear();
 		if (mySettings.contains("sessionId") && mySettings.contains("isAdmin")) {			
 			getMenuInflater().inflate(R.menu.logout, menu);
@@ -125,11 +124,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		}
 		MenuItem newPost = menu.findItem(R.id.action_new_post);
 		if(newPost!=null) {
-			if (mySettings.contains("isAdmin")) {
-				newPost.setVisible(mySettings.getBoolean("isAdmin", false));	
-			}else {
-				newPost.setVisible(false);
-			}
+				newPost.setVisible(mySettings.getBoolean("isAdmin", false));
 		}		
 	}
 

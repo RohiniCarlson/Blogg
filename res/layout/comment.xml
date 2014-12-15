@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
         android:text="Zlatan W Svensson"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -18,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
         android:text="2003-09-13"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -26,7 +28,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_alignParentLeft="true"
+        android:textColor="#202020"
         android:layout_below="@+id/item_nameView"
         android:text="Bla bla bla bla bla bla bal bal bla bla bal bal bal abl bal blab lbalab."
         android:textAppearance="?android:attr/textAppearanceMedium" />

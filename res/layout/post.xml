@@ -17,6 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:textSize="30sp"
                 android:text="Header For Zlatan"/>
             
@@ -24,14 +25,17 @@
                 android:id="@+id/item_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="14dp"
+                android:textColor="#202020"
                 android:text="Bla bla bla bla bla.."/>
             
             <TextView
                 android:id="@+id/item_dateView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="Small Text"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             
@@ -47,6 +51,7 @@
             android:layout_weight="1"
             android:layout_marginTop="1dp"
             android:background="#202020"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="36dp"
             android:text="Add"

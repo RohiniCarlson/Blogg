@@ -73,7 +73,7 @@ public class AddComments extends AsyncTask<String,Void,String>{
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("postkey", "rkyvlbXFGLHJ52716879"));
 			pairs.add(new BasicNameValuePair("post_id", getTheId()));
-			pairs.add(new BasicNameValuePair("user_id", getUser_id()));
+			pairs.add(new BasicNameValuePair("session_id", getUser_id()));
 			pairs.add(new BasicNameValuePair("comment", getText()));
 
 			post.setEntity(new UrlEncodedFormEntity(pairs));
