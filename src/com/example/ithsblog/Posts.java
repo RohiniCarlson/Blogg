@@ -133,41 +133,42 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 						e1.printStackTrace();
 					}
 
-					Matrix matrix = new Matrix();
-
-					if (rotation != 0f) {
-						matrix.preRotate(rotationInDegrees);
-					}
+					
 					// Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
 
 					int imageWidth = bitmap.getWidth();
 					int imageHeight = bitmap.getHeight();
-					Log.d("hej", " widht: "+imageWidth+" height: "+imageHeight);					
+					Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
 
 					imageWidth = bitmap.getWidth();
 					imageHeight = bitmap.getHeight();
 
-					if (imageWidth < imageHeight){	
-						// portrait
-						int factor = imageWidth/720;						
-						imageWidth = 720;						
-						// calculate height 
-						imageHeight = imageHeight/factor;
-						Log.d("hej", ""+factor);
-						Log.d("hej","portrait");
-						
-					} else {
-						// landscape						
-						int factor = imageHeight/720;						
-						imageHeight = 720;						
-						// calculate height 
-						imageWidth = imageWidth/factor;
-						Log.d("hej","landscape");
-						
-					}
+//					if (imageWidth < imageHeight){	
+//						// portrait
+//						int factor = imageWidth/720;						
+//						imageWidth = 720;						
+//						// calculate height 
+//						imageHeight = imageHeight/factor;
+//						Log.d("hej", ""+factor);
+//						Log.d("hej","portrait");
+//						
+//					} else {
+//						// landscape						
+//						int factor = imageHeight/720;						
+//						imageHeight = 720;						
+//						// calculate height 
+//						imageWidth = imageWidth/factor;
+//						Log.d("hej","landscape");						
+//					}
 					Log.d("hej",imageWidth+" "+imageHeight);
 					bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);
-					bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+					
+					Matrix matrix = new Matrix();
+
+					if (rotation != 0f) {
+						matrix.preRotate(rotationInDegrees);
+						bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);						
+					}										
 
 					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
