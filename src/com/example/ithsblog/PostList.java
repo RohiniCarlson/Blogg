@@ -43,7 +43,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 
 	}
 
-	// Handle clicking the items in the list
+	// Handle clicking items in the list
 	private void listClick() {
 
 		ListView listView = (ListView) findViewById(R.id.content_list);
@@ -111,14 +111,18 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 			supportInvalidateOptionsMenu();
 			return true;
 		} else if (id == R.id.action_listan) {
-			Intent intent = new Intent (PostList.this , PostList.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			refresh();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+
+	private void refresh() {
+		
+		postList.clear();
+		new GetPosts(this, "0").execute();		
+	}
 
 	private void inflateMenu(Menu menu) {		
 		menu.clear();
