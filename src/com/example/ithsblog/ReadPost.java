@@ -73,7 +73,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		comment = (EditText) post.findViewById(R.id.item_comment);
 		commentText = comment.getText().toString();
 		comment.setText("");
-		if(/*mySettings.contains("sessionId")*/true){
+		if(mySettings.contains("sessionId")){
 			new AddComments(this, id, commentText, mySettings.getString("sessionId", "55")).execute();
 		}else{
 			Toast.makeText(this, "You must be logged in to post a comment", Toast.LENGTH_LONG).show();
