@@ -124,6 +124,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 		
 		new EditPost(newTitle, newText, intentEdit.getStringExtra("ID"), bitmap).execute();
+		ImageCache.clearCache();
 		Intent editIntent = new Intent(Posts.this, PostList.class);
 		editIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(editIntent);

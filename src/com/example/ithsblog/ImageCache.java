@@ -33,4 +33,8 @@ public class ImageCache {
         return true;
         }  
 	}
+	
+	public static void clearCache(){
+		bitmapCache.evictAll();
+	}
 }
