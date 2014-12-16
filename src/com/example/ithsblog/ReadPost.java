@@ -78,7 +78,6 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		}else{
 			Toast.makeText(this, "You must be logged in to post a comment", Toast.LENGTH_LONG).show();
 		}
-
 	}
 
 
@@ -122,6 +121,7 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 	@Override
 	protected void onResume(){
 		super.onResume();
+		supportInvalidateOptionsMenu();
 
 
 		//new GetComments(this).execute();
@@ -225,7 +225,6 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 		startActivity(intent);
 	}
 
-
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if(event.getPropertyName().equals("checkIfAuthorDone")){
@@ -241,9 +240,15 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 				adapter.notifyDataSetChanged();
 			}				
 		} else if(event.getPropertyName().equals("addCommentsDone")){
-			list.clear();
-			new GetComments(this, id, "0").execute();
-		}
+			if ("error session id".equals(event.getNewValue())) {
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_again), Toast.LENGTH_SHORT).show();
+				LogOut.doLogOut(this);
+				showSignInScreen();			
+			} else if ("success".equals(event.getNewValue())) {
+				list.clear();
+				new GetComments(this, id, "0").execute();
+			}						
+		} 
 	}
 
 	// The method that displays the popup.

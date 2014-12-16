@@ -36,6 +36,7 @@
     <string name="invalid_credentials">Invalid Email/Password!\n\nPlease re-enter if already a member.</string>
     <string name="could_not_login">Our apologies, you could not be logged in at\nthis time.\n\nPlease try again later.</string>
     <string name="image_description">Person</string>
+    <string name="login_again">Please log in!</string>
     <string name="ok">OK</string>
     
     <!-- Log Out -->
