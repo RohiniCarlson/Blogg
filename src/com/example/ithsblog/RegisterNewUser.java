@@ -115,7 +115,7 @@ public class RegisterNewUser extends ActionBarActivity implements PropertyChange
 			} else if ("RegistrationPending".equals(result)) {				
 				showPopup(RegisterNewUser.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending);
 			} else if ("MailSent".equals(result)) {	
-				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_sent);
+				showPopup(RegisterNewUser.this, 650, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_sent);
 			} else if ("MailUnsent".equals(result)) {
 				showPopup(RegisterNewUser.this, 600, 500, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.mail_unsent);
 			} else if ("NotCreated".equals(result)) {

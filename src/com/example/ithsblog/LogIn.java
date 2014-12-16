@@ -137,7 +137,7 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 					editor.putBoolean("isAdmin", false);
 				}			
 				editor.commit();
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome), Toast.LENGTH_SHORT).show();
 				if (adminMarker) {
 					showPostsScreen();
 				} else {

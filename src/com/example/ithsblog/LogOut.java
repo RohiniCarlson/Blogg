@@ -22,7 +22,7 @@ public class LogOut {
 			editor.remove("isAdmin"); // will delete key isAdmin
 			editor.commit();
 		}
-		Toast.makeText(c, c.getResources().getString(R.string.welcome), Toast.LENGTH_LONG).show();
+		Toast.makeText(c, c.getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
 		showPostListScreen(c);
 	}
 		
@@ -31,59 +31,4 @@ public class LogOut {
 		Intent intent = new Intent(c, PostList.class);
 		c.startActivity(intent);	
 	}
-
-		
-		
-	/*private class LogoutUtil extends AsyncTask<String,Void,String>{
-
-		private String sessionId = "";
-		private String theResult ="";
-		private SharedPreferences mySettings;
-		private Editor editor;
-
-		LogoutUtil(String sessionId, SharedPreferences mySettings, Editor editor) {
-			this.sessionId = sessionId;
-			this.mySettings = mySettings;
-			this.editor = editor;
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			try{
-				HttpPost post = new HttpPost("http://jonasekstrom.se/ANNAT/iths_blog/logout.php"); 
-
-				HttpClient client = new DefaultHttpClient(); 
-
-				List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-				pairs.add(new BasicNameValuePair("sessionid", sessionId));
-				post.setEntity(new UrlEncodedFormEntity(pairs));
-
-				HttpResponse response = client.execute(post);
-
-				BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-				while ((in.readLine()) != null) {
-					theResult = in.readLine();
-					break;
-				}		
-				in.close();
-				return theResult;
-			}catch(Exception e){
-				return new String("Exception: " + e.getMessage());
-			}
-		}
-
-		@Override
-		protected void onPostExecute(String result){
-
-			if (mySettings.contains("sessionId")) {
-				editor.remove("sessionId"); // will delete key sessionId
-				editor.commit();
-			}
-			if (mySettings.contains("isAdmin")) {
-				editor.remove("isAdmin"); // will delete key isAdmin
-				editor.commit();
-			}								
-		}
-	}	*/
 }
