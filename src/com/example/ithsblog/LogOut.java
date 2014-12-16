@@ -26,7 +26,6 @@ public class LogOut {
 		showPostListScreen(c);
 	}
 		
-	
 	private static void showPostListScreen(Context c){
 		Intent intent = new Intent(c, PostList.class);
 		c.startActivity(intent);	
