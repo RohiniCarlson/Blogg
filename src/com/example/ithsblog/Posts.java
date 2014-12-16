@@ -42,6 +42,8 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts);
+		
+		
 
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
@@ -199,6 +201,8 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			Intent intent = new Intent (Posts.this , PostList.class);
+        	startActivity(intent);
 			return true;
 		}else if (id == R.id.action_login) {
 			showSignInScreen();
