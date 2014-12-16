@@ -22,7 +22,7 @@ public class LogOut {
 			editor.remove("isAdmin"); // will delete key isAdmin
 			editor.commit();
 		}
-		Toast.makeText(c, c.getResources().getString(R.string.logged_out), Toast.LENGTH_LONG).show();
+		Toast.makeText(c, c.getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
 		showPostListScreen(c);
 	}
 		
