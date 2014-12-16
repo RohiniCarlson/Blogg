@@ -42,6 +42,8 @@ public class Authentication extends AsyncTask<String,Void,String>{
 			pairs.add(new BasicNameValuePair("password", password));
 			post.setEntity(new UrlEncodedFormEntity(pairs));
 			
+			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
+			
 			HttpResponse response = client.execute(post);
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
