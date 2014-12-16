@@ -121,6 +121,7 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 	private void refresh() {
 		
 		postList.clear();
+		adapter.notifyDataSetChanged();
 		new GetPosts(this, "0").execute();		
 	}
 
