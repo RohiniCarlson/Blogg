@@ -193,6 +193,10 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		Intent intent = new Intent(Posts.this, LogIn.class);
 		startActivity(intent);
 	}
+	private void showPostList() {
+		Intent intent = new Intent(Posts.this, PostList.class);
+		startActivity(intent);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
