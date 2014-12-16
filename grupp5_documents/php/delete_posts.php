@@ -11,6 +11,10 @@
 
 		mysqli_query($con,"DELETE FROM iths_comments WHERE id_post=$post_id");
 
+		// delete images
+		unlink('images/'.$post_id.'.jpg');
+		unlink('images/'.$post_id.'_thumb.jpg');	
+
 		echo "post deleted, the id was: ".$post_id;
 	} else {
 		echo "error";

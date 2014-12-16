@@ -1,36 +1,46 @@
 <?php
 	include 'connect_db.php';
+  include 'PasswordHash.php';
 ?>
 
 <?php
    
-	$mail = $_GET['mail'];	
-	$password = $_GET['password'];
+	$mail = mysqli_real_escape_string($con, $_POST['mail']);	
+	$password = mysqli_real_escape_string($con, $_POST['password']);
 
+  $status = "";
+  $isAdmin = "";
+  $session_id = "";
 
+  $result = mysqli_query($con,"SELECT status,password,readerOrAdmin FROM iths_users WHERE mail = '$mail'");
 
-	// $result = mysqli_query($con,"SELECT status FROM iths_users WHERE mail = '$mail' AND password = '$password'");
+	$count = mysqli_num_rows($result);
 
-  $sql="SELECT status FROM iths_users WHERE mail = '$mail' AND password = '$password'";
-	$result=mysqli_query($con,$sql);
-	$count = mysqli_num_rows($result);		
-    
-    if($count == 0){
-        echo "0"; // Incorrect credentials. No matching row.
-   } else {
-   	 	
-      while($row = mysqli_fetch_assoc($result)) {
-          $status = $row["status"];
+  if ($count > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $status = $row["status"];
+      $hashedPassword = $row["password"];
+      $isAdmin = $row["readerOrAdmin"];
+    }
+    if (validate_password($password,$hashedPassword)) { // Valid password.
+      if ($status == 1) { // Correct credentials and registration complete (status=1, i.e confirmed).
+        $session_id = md5(uniqid("yourcredentialsarecorrectandthisisyournewsessionid"));
+        if (mysqli_query($con,"UPDATE iths_users SET sessionID='$session_id' WHERE mail = '$mail'")) {
+          echo $session_id . "$$$" . $isAdmin;
+        } else {
+          echo "LogInFailed"; 
+        }        
+      } else { // Correct credentials, but registration pending (status=0, i.e confirmed).
+        echo "StatusPending";
       }
-      
-      if ($status == 0) {
-        echo "2"; // Correct credentials, but registration incomplete (status=0, i.e pending).
-      } else {
-          echo "1";  // Correct credentials and registration complete (status=1, i.e confirmed).
-      }	
-   }
-      
-   ?>
+    } else { // Password invalid.
+      echo "NotFound";
+    }    
+  } else { 
+    echo "NotFound";
+  }
+
+?>
 
 <?php
   mysqli_free_result($result); 
