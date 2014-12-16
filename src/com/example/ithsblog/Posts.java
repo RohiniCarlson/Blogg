@@ -70,28 +70,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		return 0;    
 	}
 
-	private Bitmap scaleImage (Bitmap bitmap) {
-
-		int imageWidth = bitmap.getWidth();
-		int imageHeight = bitmap.getHeight();
-		Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
-
-		if (imageWidth > 1000){	
-
-			int factor = imageWidth/1000;						
-			imageWidth = 1000;						
-			// calculate height 
-			imageHeight = imageHeight/factor;
-			Log.d("hej", "factor; "+factor);
-
-			Log.d("hej","New imagewidth and heigh: "+imageWidth+" "+imageHeight);
-			bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);		
-		}
-
-		return bitmap;		
-	}
-
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		super.onActivityResult(requestCode, resultCode, intent);
@@ -106,11 +84,14 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 
-				// Scale here?
+				// Scale image
 				bitmap = scaleImage(bitmap);
-				
+
+				// rotate image
+				bitmap = rotateImage(bitmap);
+
 				imageView.setImageBitmap(bitmap);
-				
+
 			} catch (FileNotFoundException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -133,37 +114,15 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				toast.show();
 
 				try{
+
 					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
 					String title = editTitle.getText().toString();
 
 					EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
 					String text = editTxt.getText().toString();
-
-					int rotation = 0;
-					int rotationInDegrees = 0;
-
-					ExifInterface exif;
-					try {
-						exif = new ExifInterface(imageUri.getPath());
-						rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
-						rotationInDegrees = exifToDegrees(rotation);
-						Log.d("hej","rotation: "+rotationInDegrees);
-					} catch (IOException e1) {				
-						e1.printStackTrace();
-					}
-
-					// bitmap = scaleImage(bitmap);
-
-					int imageWidth = bitmap.getWidth();
-					int imageHeight = bitmap.getHeight();
-
-					Matrix matrix = new Matrix();
-
-					if (rotation != 0f) {
-						matrix.preRotate(rotationInDegrees);
-						bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);						
-					}										
-
+					
+					// rotate was here					
+					
 					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
@@ -240,5 +199,57 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 			Intent myTriggerActivityIntent=new Intent(this,PostList.class);
 			startActivity(myTriggerActivityIntent);			
 		}		
+	}
+
+	private Bitmap rotateImage (Bitmap bitmap) {
+
+		int rotation = 0;
+		int rotationInDegrees = 0;
+
+		ExifInterface exif;
+		try {
+			exif = new ExifInterface(imageUri.getPath());
+			rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+			rotationInDegrees = exifToDegrees(rotation);
+			Log.d("hej","rotation: "+rotationInDegrees);
+		} catch (IOException e1) {				
+			e1.printStackTrace();
+		}					
+
+		int imageWidth = bitmap.getWidth();
+		int imageHeight = bitmap.getHeight();
+
+		Matrix matrix = new Matrix();
+
+		if (rotation != 0f) {
+			matrix.preRotate(rotationInDegrees);
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);						
+		}										
+
+		return bitmap;
+
+	}
+
+	private Bitmap scaleImage (Bitmap bitmap) {
+
+		int imageWidth = bitmap.getWidth();
+		int imageHeight = bitmap.getHeight();
+		Log.d("hej", "widht: "+imageWidth+" height: "+imageHeight);					
+
+		if (imageWidth > 1000){	
+
+			long factor = imageWidth/1000;						
+			imageWidth = 1000;						
+			// calculate height 
+			long imageHeightLong = imageHeight/factor;
+			Log.d("hej",""+imageHeightLong);
+			imageHeight = (int) imageHeightLong;
+			Log.d("hej", "factor; "+factor);
+
+			Log.d("hej","New imagewidth and heigh: "+imageWidth+" "+imageHeight);
+			bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, false);		
+		}
+
+		return bitmap;		
 	}
 }
