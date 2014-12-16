@@ -40,6 +40,7 @@
     
     <!-- Log Out -->
     <string name="log_out">Log Out</string>
+    <string name="logged_out">Logged Out!</string>
 
     <!-- Register New User -->
     <string name="title_activity_register_new_user">Register New</string>
