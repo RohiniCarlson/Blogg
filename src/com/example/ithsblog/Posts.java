@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 // import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +38,30 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	private static String logtag = "Camera";
 	private static int TAKE_PICTURE = 1;
 	private Uri imageUri;
-	Bitmap bitmap;
+	private Bitmap bitmap;
+	private Button uploadButton;
+	private String id, newText, newTitle;
+	private Intent intentEdit;
+	
+	
+	private OnClickListener uploadButtonListener = new OnClickListener() {
+		public void onClick(View v) { 
+			
+			if(intentEdit.hasExtra("ID")){
+			edit();
+			}else{
+			setView();
+			}
+		}
+	};
+	
+	private OnClickListener cameraListener = new OnClickListener(){
+		public void onClick(View v){
+			takePhoto(v);
+		}
+	};
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,15 +69,96 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
+		uploadButton = (Button) findViewById(R.id.up_button);
+		uploadButton.setOnClickListener(uploadButtonListener);
+		uploadButton.setEnabled(false);
+		intentEdit = getIntent();
+		
+		if(intentEdit.hasExtra("ID")){
+			editPost();
+		}
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		supportInvalidateOptionsMenu();
+	}
+	
+	public void editPost() {
+		
+			newTitle = intentEdit.getStringExtra("TITLE");
+			newText = intentEdit.getStringExtra("TEXT");
+			id = intentEdit.getStringExtra("ID");
+			
+			//Title
+			EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+			editTitle.setText(newTitle);
+			//Text
+			EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+			editTxt.setText(newText);
+			//Image
+			ImageView imageView = (ImageView)findViewById(R.id.image_view);
+			String url = "http://jonasekstrom.se/ANNAT/iths_blog/images/"+id+".jpg";
+			if(ImageCache.checkCache(id)){
+				imageView.setImageBitmap(ImageCache.getBitmap());
+			}else{
+				new ImageLoader(imageView, url, id).execute();			
+			}
+			uploadButton.setEnabled(true);
+			uploadButton.setBackgroundResource(R.drawable.check);
+	}
 
-	private OnClickListener cameraListener = new OnClickListener(){
-		public void onClick(View v){
-			takePhoto(v);
-		}
-	};
+	private void edit(){
+		
+		// Get the title
+		EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+		newTitle = editTitle.getText().toString();
+		// Get the text
+		EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+		newText = editTxt.getText().toString();
+		// Get the image
+		ImageView img = (ImageView)findViewById(R.id.image_view);
+		bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
+
+		
+		new EditPost(newTitle, newText, intentEdit.getStringExtra("ID"), bitmap).execute();
+		Intent editIntent = new Intent(Posts.this, PostList.class);
+		editIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(editIntent);
+		finish();
+	}
+	
+	private void setView() {
+
+			//Rostad macka med bild.
+			Toast toast = new Toast(Posts.this);
+			ImageView view = new ImageView(Posts.this); 
+			view.setImageResource(R.drawable.upload); 
+			toast.setView(view); 
+			toast.show();
+
+			try{
+
+				EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
+				String title = editTitle.getText().toString();
+
+				EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
+				String text = editTxt.getText().toString();
+				
+				// rotate was here					
+				
+				new AddPost(Posts.this, title,text,bitmap).execute();				
+				uploadButton.setEnabled(false);
+				uploadButton.setBackgroundResource(R.drawable.grey);
+
+			}catch(Exception e){
+				Log.d(logtag, e.toString());
+			}	
+	}
+	
+
 
 	private void takePhoto(View v){
 		Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -99,41 +204,9 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-
-			final Button uploadButton = (Button) findViewById(R.id.up_button);
+			
 			uploadButton.setBackgroundResource(R.drawable.check);
-			uploadButton.setOnClickListener(new View.OnClickListener(){
-
-				public void onClick(View v){;
-
-				//Rostad macka med bild.
-				Toast toast = new Toast(Posts.this);
-				ImageView view = new ImageView(Posts.this); 
-				view.setImageResource(R.drawable.upload); 
-				toast.setView(view); 
-				toast.show();
-
-				try{
-
-					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
-					String title = editTitle.getText().toString();
-
-					EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
-					String text = editTxt.getText().toString();
-					
-					// rotate was here					
-					
-					new AddPost(Posts.this, title,text,bitmap).execute();				
-					uploadButton.setEnabled(false);
-					uploadButton.setBackgroundResource(R.drawable.grey);
-
-				}catch(Exception e){
-					Log.d(logtag, e.toString());
-				}
-
-
-				}
-			});
+			uploadButton.setEnabled(true);
 		}
 	}
 
@@ -174,11 +247,6 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		supportInvalidateOptionsMenu();	
-	}
 
 	private void inflateMenu(Menu menu) {
 		menu.clear();
