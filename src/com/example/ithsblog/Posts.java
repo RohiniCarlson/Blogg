@@ -106,6 +106,9 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 
+				// Scale here?
+				bitmap = scaleImage(bitmap);
+				
 				imageView.setImageBitmap(bitmap);
 				
 			} catch (FileNotFoundException e2) {
@@ -122,14 +125,12 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 				public void onClick(View v){;
 
-
 				//Rostad macka med bild.
 				Toast toast = new Toast(Posts.this);
 				ImageView view = new ImageView(Posts.this); 
 				view.setImageResource(R.drawable.upload); 
 				toast.setView(view); 
 				toast.show();
-
 
 				try{
 					EditText editTitle = (EditText) findViewById(R.id.edit_view_head);				
@@ -151,7 +152,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 						e1.printStackTrace();
 					}
 
-					bitmap = scaleImage(bitmap);
+					// bitmap = scaleImage(bitmap);
 
 					int imageWidth = bitmap.getWidth();
 					int imageHeight = bitmap.getHeight();
