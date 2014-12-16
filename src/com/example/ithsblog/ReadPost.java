@@ -201,6 +201,11 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 			LogOut.doLogOut(this);
 			supportInvalidateOptionsMenu();
 			return true;
+		}else if (id == R.id.action_listan) {
+			Intent intent = new Intent (ReadPost.this , PostList.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

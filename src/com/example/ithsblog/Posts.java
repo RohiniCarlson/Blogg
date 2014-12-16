@@ -169,6 +169,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 			supportInvalidateOptionsMenu();
 			return true;
 		}
+
 		
 		return super.onOptionsItemSelected(item);
 	}
@@ -187,6 +188,7 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);
 		}
+		menu.findItem(R.id.action_new_post).setVisible(false);
 	}
 
 	private void showSignInScreen() {

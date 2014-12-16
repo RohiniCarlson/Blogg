@@ -37,7 +37,6 @@
         <activity
             android:name=".Posts"
             android:label="@string/title_activity_posts"
-            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
@@ -54,7 +53,6 @@
         </activity>
         <activity
             android:name=".ReadPost"
-            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_read_post" >
         </activity>

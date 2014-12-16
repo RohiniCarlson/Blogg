@@ -110,6 +110,11 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 			LogOut.doLogOut(this);
 			supportInvalidateOptionsMenu();
 			return true;
+		} else if (id == R.id.action_listan) {
+			Intent intent = new Intent (PostList.this , PostList.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -122,10 +127,9 @@ public class PostList extends ActionBarActivity implements PropertyChangeListene
 		} else {
 			getMenuInflater().inflate(R.menu.post_list, menu);
 		}
-		MenuItem newPost = menu.findItem(R.id.action_new_post);
-		if(newPost!=null) {
-				newPost.setVisible(mySettings.getBoolean("isAdmin", false));
-		}		
+		menu.findItem(R.id.action_new_post).setVisible(mySettings.getBoolean("isAdmin", false));
+		menu.findItem(R.id.action_listan).setIcon(R.drawable.ic_action_refresh);
+
 	}
 
 	private void showSignInScreen() {
