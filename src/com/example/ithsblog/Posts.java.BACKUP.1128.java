@@ -42,6 +42,8 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts);
+		
+		
 
 		Button cameraButton = (Button) findViewById(R.id.upload_button);
 		cameraButton.setOnClickListener(cameraListener);
@@ -84,12 +86,18 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 				ContentResolver cr = getContentResolver();
 				bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
 
+<<<<<<< HEAD
+				// Scale here?
+				bitmap = scaleImage(bitmap);
+				
+=======
 				// Scale image
 				bitmap = scaleImage(bitmap);
 
 				// rotate image
 				bitmap = rotateImage(bitmap);
 
+>>>>>>> 32fbcde2a31bf9df61f21fd0e7bbd454283ad8e1
 				imageView.setImageBitmap(bitmap);
 
 			} catch (FileNotFoundException e2) {
@@ -120,9 +128,38 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 
 					EditText editTxt = (EditText) findViewById(R.id.edit_view_regular);				
 					String text = editTxt.getText().toString();
+<<<<<<< HEAD
+
+					int rotation = 0;
+					int rotationInDegrees = 0;
+
+					ExifInterface exif;
+					try {
+						exif = new ExifInterface(imageUri.getPath());
+						rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
+						rotationInDegrees = exifToDegrees(rotation);
+						Log.d("hej","rotation: "+rotationInDegrees);
+					} catch (IOException e1) {				
+						e1.printStackTrace();
+					}
+
+					// bitmap = scaleImage(bitmap);
+
+					int imageWidth = bitmap.getWidth();
+					int imageHeight = bitmap.getHeight();
+
+					Matrix matrix = new Matrix();
+
+					if (rotation != 0f) {
+						matrix.preRotate(rotationInDegrees);
+						bitmap = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);						
+					}										
+
+=======
 					
 					// rotate was here					
 					
+>>>>>>> 32fbcde2a31bf9df61f21fd0e7bbd454283ad8e1
 					new AddPost(Posts.this, title,text,bitmap).execute();				
 					uploadButton.setEnabled(false);
 					uploadButton.setBackgroundResource(R.drawable.grey);
@@ -192,6 +229,10 @@ public class Posts extends ActionBarActivity implements PropertyChangeListener {
 	private void showSignInScreen() {
 		Intent intent = new Intent(Posts.this, LogIn.class);
 		startActivity(intent);
+	}
+	private void showPostList() {
+		Intent intent = new Intent (Posts.this , PostList.class);
+    	startActivity(intent);
 	}
 
 	@Override
