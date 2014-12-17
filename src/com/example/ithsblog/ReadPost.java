@@ -253,8 +253,8 @@ public class ReadPost extends ActionBarActivity implements PropertyChangeListene
 
 	// The method that displays the popup.
 	private void showPopup(final Activity context) {
-		int popupWidth = 330;
-		int popupHeight = 250;
+		int popupWidth = 660;
+		int popupHeight = 500;
 
 		// Inflate the popup_layout.xml
 		LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.popup);

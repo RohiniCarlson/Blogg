@@ -84,9 +84,9 @@ public class EditPost extends AsyncTask<String,Void,String>{
 			} else {
 				pairs.add(new BasicNameValuePair("image", "0"));
 			}
-
-			post.setEntity(new UrlEncodedFormEntity(pairs));
-
+			
+			post.setEntity(new UrlEncodedFormEntity(pairs,"UTF-8"));
+			
 			HttpResponse response = clienten.execute(post); 
 
 			int status = response.getStatusLine().getStatusCode();

@@ -14,27 +14,27 @@
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"/>
 
-    <TextView
-        android:id="@+id/item_titleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/item_imageView"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/item_imageView"
-        android:text="Header For Zlatan"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/item_dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/item_imageView"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:text="2003-09-13"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    
+    <TextView
+        android:id="@+id/item_titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/item_dateTextView"
+        android:layout_toRightOf="@+id/item_imageView"
+        android:text="Header For Zlatan"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
