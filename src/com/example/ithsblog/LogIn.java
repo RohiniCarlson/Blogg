@@ -98,14 +98,13 @@ public class LogIn extends ActionBarActivity implements PropertyChangeListener{
 
 		if ("checkIfAuthenticationDone".equals(event.getPropertyName())) {
 			String result = (String) event.getNewValue();
-			
 			if ("StatusPending".equals(result)) { //Credentials correct but registration is still pending.
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.registration_pending, true);				
 			} else if ("LogInFailed".equals(result)) { //SessionId could not be created.
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.could_not_login, true);
 			} else if ("NotFound".equals(result)) { //Credentials incorrect. Allow to re-enter.
 				showPopup(LogIn.this, 600, 400, R.id.login_register_popup_layout, R.layout.log_in_register_popup, R.string.invalid_credentials, false);
-			} else if (!result.isEmpty() && (result.length() > 0) && (result.indexOf("$") != -1)) {
+			} else if (result!=null && (result.length() > 0) && (result.indexOf("$") != -1)) {
 				sessionId = result.substring(0, result.indexOf("$"));
 				editor.putString("sessionId", sessionId);
 				isAdmin = result.substring(result.indexOf("$")+3);
